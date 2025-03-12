@@ -1,12 +1,12 @@
 Eddy Arriaga - Portfolio Website
-🚀 Live Site: Your GitHub Pages Link Here
+🚀 Live Site: (https://eddyarriaga00.github.io/Portfolio-Website/)
 
 📝 About This Project
-This is my personal portfolio website showcasing my skills, projects, and background in Computer Science, Cybersecurity, and Software Development.
+This is my personal portfolio website showcasing my skills, projects, and background in Computer Science and Software Development.
 
 It includes:
 ✅ About Me - A short introduction about who I am and what I do.
-✅ Projects - A showcase of my best work, including cybersecurity tools and programming projects.
+✅ Projects - A showcase of my work with some programming projects.
 ✅ Skills - My technical skills in programming, cybersecurity, and tools I use.
 ✅ Contact - How to reach me (email, LinkedIn, GitHub).
 
