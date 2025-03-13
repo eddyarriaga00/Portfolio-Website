@@ -10,44 +10,70 @@
         html {
             scroll-behavior: smooth;
         }
+
         body {
-            background: linear-gradient(to right, #3b82f6, #9333ea); /* Blue to Purple gradient */
+            background: linear-gradient(to right, #3b82f6, #9333ea);
+            /* Blue to Purple gradient */
             color: #000000 !important;
         }
+
         .dark-mode {
             background-color: #181818 !important;
             color: #ffffff !important;
         }
+
         .dark-mode nav {
             background-color: rgba(40, 40, 40, 0.95) !important;
         }
-        .dark-mode .bg-gray-200, .dark-mode .bg-grey-200, .dark-mode #about, .dark-mode #skills, .dark-mode footer {
+
+        .dark-mode .bg-gray-200,
+        .dark-mode .bg-grey-200,
+        .dark-mode #about,
+        .dark-mode #skills,
+        .dark-mode footer {
             background-color: #2a2a2a !important;
             border: none !important;
         }
-        .dark-mode .bg-white, .dark-mode .bg-gray-900 {
+
+        .dark-mode .bg-white,
+        .dark-mode .bg-gray-900 {
             background-color: #222 !important;
             color: #ffffff !important;
         }
-        .dark-mode .text-gray-800, .dark-mode .text-gray-700, .dark-mode #skills h2, .dark-mode #about h2, .dark-mode nav a, .dark-mode #hero h1 {
+
+        .dark-mode .text-gray-800,
+        .dark-mode .text-gray-700,
+        .dark-mode #skills h2,
+        .dark-mode #about h2,
+        .dark-mode nav a,
+        .dark-mode #hero h1,
+        .dark-mode #hero p,
+        .dark-mode nav h1 {
             color: #ffffff !important;
         }
+
         .dark-mode .hover\:text-purple-500:hover {
             color: #bb86fc !important;
         }
+
         .dark-mode .bg-gradient-to-r {
             background: linear-gradient(to right, #1e1e1e, #3a3a3a) !important;
         }
+
         .dark-mode footer {
             background-color: #2a2a2a !important;
         }
+
         nav {
             background-color: rgba(255, 255, 255, 0.8) !important;
             color: #000000 !important;
         }
-        nav a {
+
+        nav a,
+        nav h1 {
             color: #000000 !important;
         }
+
         .section-divider {
             border-top: 1px solid rgba(255, 255, 255, 0.5);
             margin: 40px auto;
@@ -70,58 +96,50 @@
         </div>
     </nav>
 
-    <section id="hero" class="h-screen flex flex-col justify-center items-center text-black bg-black text-center animate-fade-in">
+    <section id="hero"
+        class="h-screen flex flex-col justify-center items-center text-black bg-gradient-to-r from-blue-500 to-purple-600 text-center animate-fade-in">
         <h1 class="text-5xl font-extrabold tracking-wide">Hi, I'm Eddy Arriaga-Barrientos</h1>
         <p class="text-xl mt-4">Computer Science Student @ UNCG | Aspiring Software Developer</p>
-        <a href="#about" class="mt-6 px-6 py-3 bg-black text-white font-bold rounded-lg shadow-md hover:bg-gray-700 transition-all duration-300">View My Work</a>
+        <a href="#about"
+            class="mt-6 px-6 py-3 bg-white text-black font-bold rounded-lg shadow-md hover:bg-gray-200 transition-all duration-300">View
+            My Work</a>
     </section>
 
     <div class="section-divider"></div>
 
     <section id="about" class="container mx-auto py-6 px-6 text-center transition-all duration-500 hover:scale-105">
         <h2 class="text-4xl font-bold mb-4">About Me</h2>
-        <p class="text-lg max-w-2xl mx-auto">As a Junior CS student at UNCG with an Associate of Science degree, I am passionate about using technology to solve problems. I hope to produce results. I am bilingual in English and Spanish.</p>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <section id="projects" class="py-10 px-6">
-        <div class="container mx-auto text-center">
-            <h2 class="text-4xl font-bold mb-4">Projects</h2>
-            <div class="grid md:grid-cols-3 gap-6">
-                <div class="bg-white p-6 rounded-lg shadow-md hover:scale-105 transition transform duration-300 hover:shadow-xl">
-                    <h3 class="text-xl font-semibold">Jojo Website Feb14th</h3>
-                    <p class="mt-2">A HTML-CSS-JS website for my girlfriend for Valentine's Day.</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-md hover:scale-105 transition transform duration-300 hover:shadow-xl">
-                    <h3 class="text-xl font-semibold">Portfolio Website</h3>
-                    <p class="mt-2">This website you're viewing! Built with Tailwind CSS and deployed on GitHub Pages.</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-md hover:scale-105 transition transform duration-300 hover:shadow-xl">
-                    <h3 class="text-xl font-semibold">Java Password Manager</h3>
-                    <p class="mt-2">A secure password manager built in Java with encryption.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <section id="skills" class="py-10 px-6 text-center transition-all duration-500 hover:scale-105">
-        <h2 class="text-4xl font-bold mb-4">Skills</h2>
-        <p class="text-lg">Programming Languages: Java, Python, JavaScript</p>
-        <p class="text-lg mt-2">Tools: GitHub, VS Code, Linux</p>
+        <p class="text-lg max-w-2xl mx-auto">As a Junior CS student at UNCG with an Associate of Science degree, I am
+            passionate about using technology to solve problems. I hope to produce results. I am bilingual in English
+            and Spanish.</p>
     </section>
 
     <div class="section-divider"></div>
 
     <section id="contact" class="py-10 px-6 text-center transition-all duration-500 hover:scale-105">
         <h2 class="text-4xl font-bold mb-4">Contact Me</h2>
-        <p class="text-lg">Email: <a href="mailto:eddyarriaga06@gmail.com" class="underline">eddyarriaga06@gmail.com</a></p>
-        <p class="text-lg mt-2">LinkedIn: <a href="https://www.linkedin.com/in/eddy-arriaga/" class="underline">My LinkedIn</a></p>
+        <p class="text-lg">Email: <a href="mailto:eddyarriaga06@gmail.com" class="underline">eddyarriaga06@gmail.com</a>
+        </p>
+        <p class="text-lg mt-2">LinkedIn: <a href="https://www.linkedin.com/in/eddy-arriaga/" class="underline">My
+                LinkedIn</a></p>
         <p class="text-lg mt-2">GitHub: <a href="https://github.com/eddyarriaga00" class="underline">My GitHub</a></p>
-        <p class="text-lg mt-2">Leetcode: <a href="https://leetcode.com/u/delamain/" class="underline">My Leetcode</a></p>
+        <p class="text-lg mt-2">Leetcode: <a href="https://leetcode.com/u/delamain/" class="underline">My Leetcode</a>
+        </p>
     </section>
+
+    <footer class="py-6 text-center transition-all duration-500 hover:scale-105">
+        <h2 class="text-3xl font-bold mb-4">Extras</h2>
+        <div class="flex flex-col md:flex-row justify-center items-center gap-6">
+            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/6mOi11ScFGEjlItIXE1ss1"
+                width="300" height="80" frameborder="0" allowfullscreen
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy"></iframe>
+            <iframe src="https://www.jdoodle.com/plugin" width="600" height="400" class="border rounded-lg"></iframe>
+        </div>
+        <button id="darkModeToggle"
+            class="mt-6 px-6 py-3 bg-white text-black font-bold rounded-lg shadow-md hover:bg-gray-200 transition-all duration-300">Toggle
+            Dark Mode</button>
+    </footer>
 
     <script>
         document.getElementById("darkModeToggle").addEventListener("click", function () {
