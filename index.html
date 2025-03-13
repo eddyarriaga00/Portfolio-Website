@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eddy Arriaga - Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
 </head>
 
 <body class="bg-gray-100 text-gray-900">
@@ -23,15 +28,15 @@
     </nav>
 
     <section
-        class="h-screen flex flex-col justify-center items-center bg-gradient-to-r from-blue-500 to-purple-600 text-white text-center">
+        class="h-screen flex flex-col justify-center items-center bg-gradient-to-r from-blue-500 to-purple-600 text-white text-center opacity-0 animate-fade-in">
         <h1 class="text-5xl font-extrabold tracking-wide">Hi, I'm Eddy Arriaga-Barrientos</h1>
         <p class="text-xl mt-4">Computer Science Student @ UNCG | Aspiring Software Developer</p>
         <a href="#projects"
-            class="mt-6 px-6 py-3 bg-white text-blue-600 font-bold rounded-lg shadow-md hover:bg-gray-200 transition">View
+            class="mt-6 px-6 py-3 bg-white text-blue-600 font-bold rounded-lg shadow-md hover:bg-gray-200 transition-all duration-300">View
             My Work</a>
     </section>
 
-    <section id="about" class="container mx-auto py-16 px-6 text-center">
+    <section id="about" class="container mx-auto py-16 px-6 text-center transition-all duration-500 hover:scale-105">
         <h2 class="text-4xl font-bold mb-4 text-gray-800">About Me</h2>
         <p class="text-lg max-w-2xl mx-auto text-gray-700">As a Junior CS student at UNCG with an Associate of Science
             degree, I am passionate about using technology to solve problems. I hope to produce results. I am bilingual
@@ -62,20 +67,36 @@
         </div>
     </section>
 
-    <section id="skills" class="bg-grey-200 text-black py-16 px-6 text-center">
+    <section id="skills"
+        class="bg-grey-200 text-black py-16 px-6 text-center transition-all duration-500 hover:scale-105">
         <h2 class="text-4xl font-bold mb-4">Skills</h2>
         <p class="text-lg">Programming Languages: Java, Python, JavaScript</p>
         <p class="text-lg mt-2">Tools: GitHub, VS Code, Linux</p>
     </section>
 
-    <section id="contact" class="bg-gradient-to-r from-purple-500 to-blue-600 text-white py-16 px-6 text-center">
+    <section id="contact"
+        class="bg-gradient-to-r from-purple-500 to-blue-600 text-white py-16 px-6 text-center transition-all duration-500 hover:scale-105">
         <h2 class="text-4xl font-bold mb-4">Contact Me</h2>
         <p class="text-lg">Email: <a href="mailto:eddyarriaga06@gmail.com" class="underline">eddyarriaga06@gmail.com</a>
         </p>
         <p class="text-lg mt-2">LinkedIn: <a href="https://www.linkedin.com/in/eddy-arriaga/" class="underline">My
                 LinkedIn</a></p>
         <p class="text-lg mt-2">GitHub: <a href="https://github.com/eddyarriaga00" class="underline">My GitHub</a></p>
-        <p class="text-lg mt-2">Leetcode: <a href="https://leetcode.com/u/delamain/" class="underline">My Leetcode</a></p>    </section>
+        <p class="text-lg mt-2">Leetcode: <a href="https://leetcode.com/u/delamain/" class="underline">My Leetcode</a>
+        </p>
+    </section>
+
+    <footer class="bg-gray-900 text-white py-6 flex justify-center items-center">
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/6mOi11ScFGEjlItIXE1ss1" width="300"
+            height="80" frameborder="0" allowfullscreen
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelector(".animate-fade-in").classList.add("opacity-100");
+        });
+    </script>
 
 </body>
 
