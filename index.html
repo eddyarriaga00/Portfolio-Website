@@ -10,10 +10,48 @@
         html {
             scroll-behavior: smooth;
         }
+        body {
+            background: linear-gradient(to right, #3b82f6, #9333ea); /* Blue to Purple gradient */
+            color: #000000 !important;
+        }
+        .dark-mode {
+            background-color: #181818 !important;
+            color: #ffffff !important;
+        }
+        .dark-mode nav {
+            background-color: rgba(40, 40, 40, 0.95) !important;
+        }
+        .dark-mode .bg-gray-200, .dark-mode .bg-grey-200, .dark-mode #about, .dark-mode #skills, .dark-mode footer {
+            background-color: #2a2a2a !important;
+            border: none !important;
+        }
+        .dark-mode .bg-white, .dark-mode .bg-gray-900 {
+            background-color: #222 !important;
+            color: #ffffff !important;
+        }
+        .dark-mode .text-gray-800, .dark-mode .text-gray-700, .dark-mode #skills h2, .dark-mode #about h2, .dark-mode nav a {
+            color: #ffffff !important;
+        }
+        .dark-mode .hover\:text-purple-500:hover {
+            color: #bb86fc !important;
+        }
+        .dark-mode .bg-gradient-to-r {
+            background: linear-gradient(to right, #1e1e1e, #3a3a3a) !important;
+        }
+        .dark-mode footer {
+            background-color: #2a2a2a !important;
+        }
+        nav {
+            background-color: rgba(255, 255, 255, 0.8) !important;
+            color: #000000 !important;
+        }
+        nav a {
+            color: #000000 !important;
+        }
     </style>
 </head>
 
-<body class="bg-gray-100 text-gray-900">
+<body id="theme">
 
     <nav class="bg-white/80 backdrop-blur-md shadow-md p-4 fixed w-full top-0 z-50 transition duration-300">
         <div class="container mx-auto flex justify-between items-center">
@@ -27,74 +65,60 @@
         </div>
     </nav>
 
-    <section
-        class="h-screen flex flex-col justify-center items-center bg-gradient-to-r from-blue-500 to-purple-600 text-white text-center opacity-0 animate-fade-in">
+    <section class="h-screen flex flex-col justify-center items-center text-white text-center animate-fade-in">
         <h1 class="text-5xl font-extrabold tracking-wide">Hi, I'm Eddy Arriaga-Barrientos</h1>
         <p class="text-xl mt-4">Computer Science Student @ UNCG | Aspiring Software Developer</p>
-        <a href="#projects"
-            class="mt-6 px-6 py-3 bg-white text-blue-600 font-bold rounded-lg shadow-md hover:bg-gray-200 transition-all duration-300">View
-            My Work</a>
+        <a href="#about" class="mt-6 px-6 py-3 bg-white text-blue-600 font-bold rounded-lg shadow-md hover:bg-gray-200 transition-all duration-300">View My Work</a>
     </section>
 
-    <section id="about" class="container mx-auto py-16 px-6 text-center transition-all duration-500 hover:scale-105">
-        <h2 class="text-4xl font-bold mb-4 text-gray-800">About Me</h2>
-        <p class="text-lg max-w-2xl mx-auto text-gray-700">As a Junior CS student at UNCG with an Associate of Science
-            degree, I am passionate about using technology to solve problems. I hope to produce results. I am bilingual
-            in English and Spanish.</p>
+    <section id="about" class="container mx-auto py-6 px-6 text-center transition-all duration-500 hover:scale-105">
+        <h2 class="text-4xl font-bold mb-4">About Me</h2>
+        <p class="text-lg max-w-2xl mx-auto">As a Junior CS student at UNCG with an Associate of Science degree, I am passionate about using technology to solve problems. I hope to produce results. I am bilingual in English and Spanish.</p>
     </section>
 
-    <section id="projects" class="bg-gray-200 py-16 px-6">
+    <section id="projects" class="py-10 px-6">
         <div class="container mx-auto text-center">
-            <h2 class="text-4xl font-bold mb-4 text-gray-800">Projects</h2>
+            <h2 class="text-4xl font-bold mb-4">Projects</h2>
             <div class="grid md:grid-cols-3 gap-6">
-                <div
-                    class="bg-white p-6 rounded-lg shadow-md hover:scale-105 transition transform duration-300 hover:shadow-xl">
+                <div class="bg-white p-6 rounded-lg shadow-md hover:scale-105 transition transform duration-300 hover:shadow-xl">
                     <h3 class="text-xl font-semibold">Jojo Website Feb14th</h3>
-                    <p class="mt-2 text-gray-600">A HTML-CSS-JS website for my girlfriend for Valentine's Day.</p>
+                    <p class="mt-2">A HTML-CSS-JS website for my girlfriend for Valentine's Day.</p>
                 </div>
-                <div
-                    class="bg-white p-6 rounded-lg shadow-md hover:scale-105 transition transform duration-300 hover:shadow-xl">
+                <div class="bg-white p-6 rounded-lg shadow-md hover:scale-105 transition transform duration-300 hover:shadow-xl">
                     <h3 class="text-xl font-semibold">Portfolio Website</h3>
-                    <p class="mt-2 text-gray-600">This website you're viewing! Built with Tailwind CSS and deployed on
-                        GitHub Pages.</p>
+                    <p class="mt-2">This website you're viewing! Built with Tailwind CSS and deployed on GitHub Pages.</p>
                 </div>
-                <div
-                    class="bg-white p-6 rounded-lg shadow-md hover:scale-105 transition transform duration-300 hover:shadow-xl">
+                <div class="bg-white p-6 rounded-lg shadow-md hover:scale-105 transition transform duration-300 hover:shadow-xl">
                     <h3 class="text-xl font-semibold">Java Password Manager</h3>
-                    <p class="mt-2 text-gray-600">A secure password manager built in Java with encryption.</p>
+                    <p class="mt-2">A secure password manager built in Java with encryption.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="skills"
-        class="bg-grey-200 text-black py-16 px-6 text-center transition-all duration-500 hover:scale-105">
+    <section id="skills" class="py-10 px-6 text-center transition-all duration-500 hover:scale-105">
         <h2 class="text-4xl font-bold mb-4">Skills</h2>
         <p class="text-lg">Programming Languages: Java, Python, JavaScript</p>
         <p class="text-lg mt-2">Tools: GitHub, VS Code, Linux</p>
     </section>
 
-    <section id="contact"
-        class="bg-gradient-to-r from-purple-500 to-blue-600 text-white py-16 px-6 text-center transition-all duration-500 hover:scale-105">
+    <section id="contact" class="py-10 px-6 text-center transition-all duration-500 hover:scale-105">
         <h2 class="text-4xl font-bold mb-4">Contact Me</h2>
-        <p class="text-lg">Email: <a href="mailto:eddyarriaga06@gmail.com" class="underline">eddyarriaga06@gmail.com</a>
-        </p>
-        <p class="text-lg mt-2">LinkedIn: <a href="https://www.linkedin.com/in/eddy-arriaga/" class="underline">My
-                LinkedIn</a></p>
+        <p class="text-lg">Email: <a href="mailto:eddyarriaga06@gmail.com" class="underline">eddyarriaga06@gmail.com</a></p>
+        <p class="text-lg mt-2">LinkedIn: <a href="https://www.linkedin.com/in/eddy-arriaga/" class="underline">My LinkedIn</a></p>
         <p class="text-lg mt-2">GitHub: <a href="https://github.com/eddyarriaga00" class="underline">My GitHub</a></p>
-        <p class="text-lg mt-2">Leetcode: <a href="https://leetcode.com/u/delamain/" class="underline">My Leetcode</a>
-        </p>
+        <p class="text-lg mt-2">Leetcode: <a href="https://leetcode.com/u/delamain/" class="underline">My Leetcode</a></p>
     </section>
 
-    <footer class="bg-gray-900 text-white py-6 flex justify-center items-center">
-        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/6mOi11ScFGEjlItIXE1ss1" width="300"
-            height="80" frameborder="0" allowfullscreen
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    <footer class="py-6 flex flex-col items-center space-y-4">
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/6mOi11ScFGEjlItIXE1ss1" width="300" height="80" frameborder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <iframe src="https://www.jdoodle.com/plugin" width="90%" height="500px" class="border rounded-lg"></iframe>
+        <button id="darkModeToggle" class="bg-purple-600 px-4 py-2 rounded-lg shadow-md hover:bg-purple-700 transition">Toggle Dark Mode</button>
     </footer>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            document.querySelector(".animate-fade-in").classList.add("opacity-100");
+        document.getElementById("darkModeToggle").addEventListener("click", function () {
+            document.body.classList.toggle("dark-mode");
         });
     </script>
 
