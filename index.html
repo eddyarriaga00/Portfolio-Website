@@ -29,7 +29,7 @@
             background-color: #222 !important;
             color: #ffffff !important;
         }
-        .dark-mode .text-gray-800, .dark-mode .text-gray-700, .dark-mode #skills h2, .dark-mode #about h2, .dark-mode nav a {
+        .dark-mode .text-gray-800, .dark-mode .text-gray-700, .dark-mode #skills h2, .dark-mode #about h2, .dark-mode nav a, .dark-mode #hero h1 {
             color: #ffffff !important;
         }
         .dark-mode .hover\:text-purple-500:hover {
@@ -48,6 +48,11 @@
         nav a {
             color: #000000 !important;
         }
+        .section-divider {
+            border-top: 1px solid rgba(255, 255, 255, 0.5);
+            margin: 40px auto;
+            width: 80%;
+        }
     </style>
 </head>
 
@@ -65,16 +70,20 @@
         </div>
     </nav>
 
-    <section class="h-screen flex flex-col justify-center items-center text-white text-center animate-fade-in">
+    <section id="hero" class="h-screen flex flex-col justify-center items-center text-black bg-black text-center animate-fade-in">
         <h1 class="text-5xl font-extrabold tracking-wide">Hi, I'm Eddy Arriaga-Barrientos</h1>
         <p class="text-xl mt-4">Computer Science Student @ UNCG | Aspiring Software Developer</p>
-        <a href="#about" class="mt-6 px-6 py-3 bg-white text-blue-600 font-bold rounded-lg shadow-md hover:bg-gray-200 transition-all duration-300">View My Work</a>
+        <a href="#about" class="mt-6 px-6 py-3 bg-black text-white font-bold rounded-lg shadow-md hover:bg-gray-700 transition-all duration-300">View My Work</a>
     </section>
+
+    <div class="section-divider"></div>
 
     <section id="about" class="container mx-auto py-6 px-6 text-center transition-all duration-500 hover:scale-105">
         <h2 class="text-4xl font-bold mb-4">About Me</h2>
         <p class="text-lg max-w-2xl mx-auto">As a Junior CS student at UNCG with an Associate of Science degree, I am passionate about using technology to solve problems. I hope to produce results. I am bilingual in English and Spanish.</p>
     </section>
+
+    <div class="section-divider"></div>
 
     <section id="projects" class="py-10 px-6">
         <div class="container mx-auto text-center">
@@ -96,11 +105,15 @@
         </div>
     </section>
 
+    <div class="section-divider"></div>
+
     <section id="skills" class="py-10 px-6 text-center transition-all duration-500 hover:scale-105">
         <h2 class="text-4xl font-bold mb-4">Skills</h2>
         <p class="text-lg">Programming Languages: Java, Python, JavaScript</p>
         <p class="text-lg mt-2">Tools: GitHub, VS Code, Linux</p>
     </section>
+
+    <div class="section-divider"></div>
 
     <section id="contact" class="py-10 px-6 text-center transition-all duration-500 hover:scale-105">
         <h2 class="text-4xl font-bold mb-4">Contact Me</h2>
@@ -109,12 +122,6 @@
         <p class="text-lg mt-2">GitHub: <a href="https://github.com/eddyarriaga00" class="underline">My GitHub</a></p>
         <p class="text-lg mt-2">Leetcode: <a href="https://leetcode.com/u/delamain/" class="underline">My Leetcode</a></p>
     </section>
-
-    <footer class="py-6 flex flex-col items-center space-y-4">
-        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/6mOi11ScFGEjlItIXE1ss1" width="300" height="80" frameborder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-        <iframe src="https://www.jdoodle.com/plugin" width="90%" height="500px" class="border rounded-lg"></iframe>
-        <button id="darkModeToggle" class="bg-purple-600 px-4 py-2 rounded-lg shadow-md hover:bg-purple-700 transition">Toggle Dark Mode</button>
-    </footer>
 
     <script>
         document.getElementById("darkModeToggle").addEventListener("click", function () {
