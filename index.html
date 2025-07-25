@@ -1,187 +1,412 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Eddy Arriaga - Portfolio</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        html {
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-        }
-
-        body {
-            background: linear-gradient(to right, #3b82f6, #9333ea);
-            /* Blue to Purple gradient */
-            color: #000000 !important;
-            overflow-x: hidden;
-        }
-
-        .dark-mode {
-            background-color: #181818 !important;
-            color: #ffffff !important;
-        }
-
-        .dark-mode nav {
-            background-color: rgba(40, 40, 40, 0.95) !important;
-        }
-
-        .dark-mode .bg-gray-200,
-        .dark-mode .bg-grey-200,
-        .dark-mode #about,
-        .dark-mode #skills,
-        .dark-mode footer {
-            background-color: #2a2a2a !important;
-            border: none !important;
-        }
-
-        .dark-mode .bg-white,
-        .dark-mode .bg-gray-900 {
-            background-color: #222 !important;
-            color: #ffffff !important;
-        }
-
-        .dark-mode .text-gray-800,
-        .dark-mode .text-gray-700,
-        .dark-mode #skills h2,
-        .dark-mode #about h2,
-        .dark-mode nav a,
-        .dark-mode #hero h1,
-        .dark-mode #hero p,
-        .dark-mode nav h1 {
-            color: #ffffff !important;
-        }
-
-        .dark-mode .hover\:text-purple-500:hover {
-            color: #bb86fc !important;
-        }
-
-        .dark-mode .bg-gradient-to-r {
-            background: linear-gradient(to right, #1e1e1e, #3a3a3a) !important;
-        }
-
-        .dark-mode footer {
-            background-color: #2a2a2a !important;
-        }
-
-        nav {
-            background-color: rgba(255, 255, 255, 0.8) !important;
-            color: #000000 !important;
-        }
-
-        nav a,
-        nav h1 {
-            color: #000000 !important;
-        }
-
-        .section-divider {
-            border-top: 1px solid rgba(255, 255, 255, 0.5);
-            margin: 40px auto;
-            width: 80%;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Eddy Arriaga | Software Developer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
+<body data-theme="default">
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
 
-<body id="theme">
+    <!-- Real audio player -->
+    <audio id="audioPlayer" controls preload="metadata" crossorigin="anonymous"></audio>
 
-    <nav class="bg-white/80 backdrop-blur-md shadow-md p-4 fixed w-full top-0 z-50 transition duration-300">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold">Eddy Arriaga</h1>
-            <ul class="flex space-x-6">
-                <li><a href="#about" class="hover:text-purple-500 transition">About</a></li>
-                <li><a href="#projects" class="hover:text-purple-500 transition">Projects</a></li>
-                <li><a href="#skills" class="hover:text-purple-500 transition">Skills</a></li>
-                <li><a href="#contact" class="hover:text-purple-500 transition">Contact</a></li>
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-container">
+            <div class="loading-logo">EA</div>
+            <div class="loading-text">INITIALIZING</div>
+            <div class="loading-progress">
+                <div class="loading-bar"></div>
+            </div>
+        </div>
+        <div class="loading-dots">
+            <div class="loading-dot"></div>
+            <div class="loading-dot"></div>
+            <div class="loading-dot"></div>
+            <div class="loading-dot"></div>
+            <div class="loading-dot"></div>
+        </div>
+    </div>
+
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="index.html" class="logo">EA</a>
+            <ul class="nav-links">
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#experience" class="nav-link">Experience</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
         </div>
     </nav>
 
-    <section id="hero"
-        class="h-screen flex flex-col justify-center items-center text-black bg-gradient-to-r from-blue-500 to-purple-600 text-center animate-fade-in">
-        <h1 class="text-5xl font-extrabold tracking-wide">Hi, I'm Eddy Arriaga-Barrientos</h1>
-        <p class="text-xl mt-4">Computer Science Student @ UNCG | Aspiring Software Developer</p>
-        <a href="#about"
-            class="mt-6 px-6 py-3 bg-white text-black font-bold rounded-lg shadow-md hover:bg-gray-200 transition-all duration-300">View
-            My Work</a>
+    <section class="hero">
+        <div class="bg-animation">
+            <div class="floating-code">console.log('hello');</div>
+            <div class="floating-code">function() { }</div>
+            <div class="floating-code">&lt;div className="app"&gt;</div>
+            <div class="floating-code">const data = [];</div>
+            <div class="floating-code">return &lt;Component /&gt;</div>
+            <div class="floating-code">npm install react</div>
+            <div class="geometric-shape"></div>
+            <div class="geometric-shape"></div>
+            <div class="geometric-shape"></div>
+        </div>
+        <div class="hero-content">
+            <h1 class="hero-title">Eddy<br> Arriaga</h1>
+            <p class="hero-subtitle">Software Developer | Digital Creator</p>
+            <a href="#about" class="hero-cta">Explore My Work</a>
+        </div>
     </section>
 
-    <div class="section-divider"></div>
-
-    <section id="about" class="container mx-auto py-6 px-6 text-center transition-all duration-500 hover:scale-105">
-        <h2 class="text-4xl font-bold mb-4">About Me</h2>
-        <p class="text-lg max-w-2xl mx-auto">As a Junior CS student at UNCG with an Associate of Science degree, I am
-            passionate about using technology to solve problems. I hope to produce results. I am bilingual in English
-            and Spanish.</p>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <section id="projects" class="py-10 px-6 text-center">
-        <h2 class="text-4xl font-bold mb-4">Projects</h2>
-        <div class="grid md:grid-cols-3 gap-6">
-            <div
-                class="bg-white p-6 rounded-lg shadow-md hover:scale-105 transition transform duration-300 hover:shadow-xl">
-                <h3 class="text-xl font-semibold">Jojo Website Feb14th</h3>
-                <p class="mt-2">A HTML-CSS-JS website for my girlfriend for Valentine's Day.</p>
-            </div>
-            <div
-                class="bg-white p-6 rounded-lg shadow-md hover:scale-105 transition transform duration-300 hover:shadow-xl">
-                <h3 class="text-xl font-semibold">Portfolio Website</h3>
-                <p class="mt-2">This website you're viewing! Built with Tailwind CSS and deployed on GitHub Pages.</p>
-            </div>
-            <div
-                class="bg-white p-6 rounded-lg shadow-md hover:scale-105 transition transform duration-300 hover:shadow-xl">
-                <h3 class="text-xl font-semibold">Java Password Manager</h3>
-                <p class="mt-2">A secure password manager built in Java with encryption.</p>
+    <section class="about" id="about">
+        <div class="floating-tech-icon">&lt;/&gt;</div>
+        <div class="floating-tech-icon">{ }</div>
+        <div class="floating-tech-icon">[ ]</div>
+        <div class="floating-tech-icon">( )</div>
+        <div class="container">
+            <h2 class="section-title animate-on-scroll">About Me</h2>
+            <div class="about-content">
+                <div class="about-text animate-on-scroll">
+                    <h3>Building Digital Experiences</h3>
+                    <p>I'm a passionate Computer Science student at UNCG with a love for creating innovative solutions through code. With experience as an Apple Specialist, I bring both technical expertise and strong communication skills to every project.</p>
+                    
+                    <h3>My Philosophy</h3>
+                    <p>I believe in continuous learning, clean code architecture, and the power of collaboration. When I'm not coding, you'll find me exploring new technologies, contributing to open source projects, or mentoring fellow students.</p>
+                </div>
+                
+                <div class="about-stats animate-on-scroll">
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="1">0</span>
+                        <span class="stat-label">Years Experience</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="12">0</span>
+                        <span class="stat-label">Projects Completed</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="8">0</span>
+                        <span class="stat-label">Technologies</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">∞</span>
+                        <span class="stat-label">Lines of Code</span>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <div class="section-divider"></div>
-
-    <section id="skills" class="py-10 px-6 text-center">
-        <h2 class="text-4xl font-bold mb-4">Skills</h2>
-        <p class="text-lg">Programming Languages: Java, Python, JavaScript</p>
-        <p class="text-lg mt-2">Tools: GitHub, VS Code, Linux</p>
-    </section>
-
-    <div class="section-divider"></div>
-
-
-    <section id="contact" class="py-10 px-6 text-center transition-all duration-500 hover:scale-105">
-        <h2 class="text-4xl font-bold mb-4">Contact Me</h2>
-        <p class="text-lg">Email: <a href="mailto:eddyarriaga06@gmail.com" class="underline">eddyarriaga06@gmail.com</a>
-        </p>
-        <p class="text-lg mt-2">LinkedIn: <a href="https://www.linkedin.com/in/eddy-arriaga/" class="underline">My
-                LinkedIn</a></p>
-        <p class="text-lg mt-2">GitHub: <a href="https://github.com/eddyarriaga00" class="underline">My GitHub</a></p>
-        <p class="text-lg mt-2">Leetcode: <a href="https://leetcode.com/u/delamain/" class="underline">My Leetcode</a>
-        </p>
-    </section>
-    <div class="section-divider"></div>
-
-    <footer class="py-6 text-center transition-all duration-500 hover:scale-105">
-        <h2 class="text-3xl font-bold mb-4">Extras</h2>
-        <div class="flex flex-col justify-center items-center gap-6">
-            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/6mOi11ScFGEjlItIXE1ss1"
-                width="300" height="80" frameborder="0" allowfullscreen
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                loading="lazy"></iframe>
-            <iframe src="https://www.jdoodle.com/plugin" width="90%" height="400px" class="border rounded-lg"></iframe>
+    <section class="skills" id="skills">
+        <div class="floating-symbols">;</div>
+        <div class="floating-symbols">=&gt;</div>
+        <div class="floating-symbols">&&</div>
+        <div class="floating-symbols">||</div>
+        <div class="floating-symbols">++</div>
+        <div class="container">
+            <h2 class="section-title animate-on-scroll">Technical Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-card animate-on-scroll">
+                    <span class="skill-icon">💻</span>
+                    <h3 class="skill-title">Frontend Development</h3>
+                    <p class="skill-desc">React, JavaScript, HTML/CSS, and more..</p>
+                    <div class="skill-level">
+                        <div class="skill-progress frontend"></div>
+                    </div>
+                </div>
+                <div class="skill-card animate-on-scroll">
+                    <span class="skill-icon">⚙️</span>
+                    <h3 class="skill-title">Backend Development</h3>
+                    <p class="skill-desc">Node.js, Python, Java, database design, and API development.</p>
+                    <div class="skill-level">
+                        <div class="skill-progress backend"></div>
+                    </div>
+                </div>
+                <div class="skill-card animate-on-scroll">
+                    <span class="skill-icon">🛠️</span>
+                    <h3 class="skill-title">Development Tools</h3>
+                    <p class="skill-desc">Git, VS Code, Linux, and Docker.</p>
+                    <div class="skill-level">
+                        <div class="skill-progress tools"></div>
+                    </div>
+                </div>
+                <div class="skill-card animate-on-scroll">
+                    <span class="skill-icon">📱</span>
+                    <h3 class="skill-title">Mobile Development</h3>
+                    <p class="skill-desc">React Native.</p>
+                    <div class="skill-level">
+                        <div class="skill-progress mobile"></div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <button id="darkModeToggle"
-            class="mt-6 px-6 py-3 bg-white text-black font-bold rounded-lg shadow-md hover:bg-gray-200 transition-all duration-300">Toggle
-            Dark Mode</button>
+    </section>
+
+    <section class="projects" id="projects">
+        <div class="container">
+            <h2 class="section-title animate-on-scroll">Featured Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card animate-on-scroll">
+                    <div class="project-image">
+                        <div class="project-mockup">
+                            <div class="project-code-preview">
+class SecurePass {
+  encrypt(data) {
+    return AES.encrypt(data);
+  }
+}</div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Java-DSA-Helper</h3>
+                        <p class="project-desc">From beginner to intermediate to advanced, covers all topics of CSC230</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Java</span>
+                            <span class="tech-tag">Swing</span>
+                            <span class="tech-tag">AES Encryption</span>
+                        </div>
+                        <a href="#" class="project-link">View Project →</a>
+                    </div>
+                </div>
+                <div class="project-card animate-on-scroll">
+                    <div class="project-image">
+                        <div class="project-mockup">
+                            <div class="project-code-preview">
+const Portfolio = () => {
+  return (
+    &lt;div className="hero"&gt;
+      &lt;h1&gt;Eddy Arriaga&lt;/h1&gt;
+    &lt;/div&gt;
+  );
+};</div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Portfolio-Website</h3>
+                        <p class="project-desc">This exact modern portfolio website you see featuring smooth animations, responsive design, and an engaging user experience built from scratch.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">HTML</span>
+                            <span class="tech-tag">CSS</span>
+                            <span class="tech-tag">JavaScript</span>
+                        </div>
+                        <a href="#" class="project-link">View Project →</a>
+                    </div>
+                </div>
+                <div class="project-card animate-on-scroll">
+                    <div class="project-image">
+                        <div class="project-mockup">
+                            <div class="project-code-preview">
+const TaskApp = () => {
+  const [tasks, setTasks] = useState([]);
+  
+  const addTask = (task) => {
+    setTasks([...tasks, task]);
+  };
+};</div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">NBA-Tracker-STATS-APP</h3>
+                        <p class="project-desc">Cross-platform mobile app for productivity management with real-time synchronization and offline support for seamless workflow.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">React Native</span>
+                            <span class="tech-tag">Firebase</span>
+                            <span class="tech-tag">Redux</span>
+                        </div>
+                        <a href="#" class="project-link">View Project →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="experience" id="experience">
+        <div class="container">
+            <h2 class="section-title animate-on-scroll">Experience</h2>
+            <div class="timeline">
+                <div class="timeline-item animate-on-scroll">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-icon">🍎</div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">2023 - Present</div>
+                        <h3 class="timeline-title">Apple Specialist</h3>
+                        <div class="timeline-company">Apple Inc.</div>
+                        <p class="timeline-desc">Providing technical support and customer service, achieving high satisfaction ratings through effective problem-solving and communication skills.</p>
+                    </div>
+                </div>
+                <div class="timeline-item animate-on-scroll">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-icon">🎓</div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">2022 - Present</div>
+                        <h3 class="timeline-title">Computer Science Student</h3>
+                        <div class="timeline-company">University of North Carolina at Greensboro</div>
+                        <p class="timeline-desc">Pursuing B.S. in Computer Science, maintaining strong GPA while participating in coding competitions and hackathons.</p>
+                    </div>
+                </div>
+                <div class="timeline-item animate-on-scroll">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-icon">💻</div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">2023 - Present</div>
+                        <h3 class="timeline-title">Freelance Developer</h3>
+                        <div class="timeline-company">Self-Employed</div>
+                        <p class="timeline-desc">Developing web applications and working on personal projects, focusing on modern frameworks and exceptional user experience.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <div class="floating-contact-icons">📧</div>
+        <div class="floating-contact-icons">💬</div>
+        <div class="floating-contact-icons">🔗</div>
+        <div class="container">
+            <h2 class="section-title animate-on-scroll">Let's Connect</h2>
+            <div class="contact-content">
+                <p class="contact-text animate-on-scroll">
+                    I'm always interested in new opportunities and collaborations. 
+                    Whether you're looking for a developer, have a project in mind, 
+                    or just want to connect, I'd love to hear from you.
+                </p>
+                <div class="contact-links animate-on-scroll">
+                    <a href="mailto:eddyarriaga06@gmail.com" class="contact-link">Email Me</a>
+                    <a href="https://github.com/eddyarriaga00" class="contact-link" target="_blank">GitHub</a>
+                    <a href="https://www.linkedin.com/in/eddy-arriaga/" class="contact-link" target="_blank">LinkedIn</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p class="footer-text">© 2024 Eddy Arriaga. All rights reserved.</p>
     </footer>
 
-    <script>
-        document.getElementById("darkModeToggle").addEventListener("click", function () {
-            document.body.classList.toggle("dark-mode");
-        });
-    </script>
+    <div class="settings-panel">
+        <button class="settings-button" id="settingsBtn">⚙️</button>
+        <div class="settings-menu" id="settingsMenu">
+            <div class="settings-menu-content">
+                <div class="settings-section">
+                    <h3 class="settings-title">Choose Theme</h3>
+                    <div class="theme-grid">
+                        <div class="theme-option active" data-theme="default">
+                            <div class="theme-preview" style="background: linear-gradient(90deg, #000000 30%, #ffffff 70%);"></div>
+                            Default
+                        </div>
+                        <div class="theme-option" data-theme="github">
+                            <div class="theme-preview" style="background: linear-gradient(90deg, #0d1117 30%, #238636 70%);"></div>
+                            GitHub
+                        </div>
+                        <div class="theme-option" data-theme="discord">
+                            <div class="theme-preview" style="background: linear-gradient(90deg, #2c2f33 30%, #5865f2 70%);"></div>
+                            Discord
+                        </div>
+                        <div class="theme-option" data-theme="spotify">
+                            <div class="theme-preview" style="background: linear-gradient(90deg, #121212 30%, #1db954 70%);"></div>
+                            Spotify
+                        </div>
+                        <div class="theme-option" data-theme="vscode">
+                            <div class="theme-preview" style="background: linear-gradient(90deg, #1e1e1e 30%, #007acc 70%);"></div>
+                            VS Code
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <div class="music-player">
+                        <div id="audioError" class="audio-error" style="display: none;">
+                            Music files not found. Make sure to add your audio files to the /music folder.
+                        </div>
+                        
+                        <div class="now-playing">
+                            <div class="track-info">
+                                <div class="track-title" id="currentTrackTitle">Select a track</div>
+                                <div class="track-artist" id="currentTrackArtist">Click a song to play</div>
+                            </div>
+                            
+                            <div class="player-controls">
+                                <button class="control-btn" id="prevBtn">⏮</button>
+                                <button class="control-btn play-pause" id="playPauseBtn">▶</button>
+                                <button class="control-btn" id="nextBtn">⏭</button>
+                            </div>
+                            
+                            <div class="progress-container">
+                                <div class="progress-bar" id="progressBar">
+                                    <div class="progress-fill" id="progressFill"></div>
+                                </div>
+                                <div class="time-display">
+                                    <span id="currentTime">0:00</span>
+                                    <span id="duration">0:00</span>
+                                </div>
+                            </div>
+                            
+                            <div class="volume-container">
+                                <span class="volume-icon">🔊</span>
+                                <div class="volume-slider" id="volumeSlider">
+                                    <div class="volume-fill" id="volumeFill"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="playlist-container">
+                            <div class="playlist-title">
+                                <span class="chart-icon">🎵</span>
+                                <span>LoFi Playlist</span>
+                            </div>
+                            <ul class="playlist" id="playlist">
+                                <li class="playlist-item" data-src="./music/chill-vibes.mp3">
+                                    <div class="track-number">1</div>
+                                    <div class="track-details">
+                                        <div class="playlist-track-title">Chill Vibes</div>
+                                        <div class="playlist-track-artist">LoFi Artist</div>
+                                    </div>
+                                    <div class="track-duration">3:24</div>
+                                </li>
+                                <li class="playlist-item" data-src="./music/study-session.mp3">
+                                    <div class="track-number">2</div>
+                                    <div class="track-details">
+                                        <div class="playlist-track-title">Study Session</div>
+                                        <div class="playlist-track-artist">Focus Beats</div>
+                                    </div>
+                                    <div class="track-duration">2:47</div>
+                                </li>
+                                <li class="playlist-item" data-src="./music/night-dreams.mp3">
+                                    <div class="track-number">3</div>
+                                    <div class="track-details">
+                                        <div class="playlist-track-title">Night Dreams</div>
+                                        <div class="playlist-track-artist">Ambient Sounds</div>
+                                    </div>
+                                    <div class="track-duration">3:56</div>
+                                </li>
+                                <li class="playlist-item" data-src="./music/coffee-morning.mp3">
+                                    <div class="track-number">4</div>
+                                    <div class="track-details">
+                                        <div class="playlist-track-title">Coffee Morning</div>
+                                        <div class="playlist-track-artist">Cafe Beats</div>
+                                    </div>
+                                    <div class="track-duration">4:12</div>
+                                </li>
+                                <li class="playlist-item" data-src="./music/rain-drops.mp3">
+                                    <div class="track-number">5</div>
+                                    <div class="track-details">
+                                        <div class="playlist-track-title">Rain Drops</div>
+                                        <div class="playlist-track-artist">Nature LoFi</div>
+                                    </div>
+                                    <div class="track-duration">3:38</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <script src="/js/script.js"></script>
 </body>
-
 </html>
