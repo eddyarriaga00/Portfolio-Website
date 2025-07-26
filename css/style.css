@@ -3033,7 +3033,7 @@ body {
     transform: translateX(-50%) !important;
     width: 90% !important;
     max-width: 400px;
-    height: auto !important; /* Let content size define height */
+    height: 60vh !important; /* Let content size define height */
     max-height: 90vh;
     overflow-y: auto !important;
     z-index: 9999;
