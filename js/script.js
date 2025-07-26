@@ -23,7 +23,7 @@ const tracks = [
     {
         title: "Say Slatt Say Ski",
         artist: "Lucki",
-        src: "music/sayslattsayskiLucki.mp3"
+        src: "./music/sayslattsayskiLucki.mp3"
     },
     {
         title: "Blank Song",
@@ -291,30 +291,30 @@ function initSettingsNavigation() {
 }
 
 function showSettingsSection(sectionName) {
-    // Hide all sections
+  // Hide all submenus
+  document.querySelectorAll('.settings-section-view').forEach(section => {
+    section.classList.remove('active');
+  });
+
+  // Toggle visibility based on what was clicked
+  if (sectionName === 'main') {
+    elements.settingsMainMenu.classList.add('active');
+  } else {
     elements.settingsMainMenu.classList.remove('active');
-    document.querySelectorAll('.settings-section-view').forEach(section => {
-        section.classList.remove('active');
-    });
-    
-    // Show target section
-    if (sectionName === 'main') {
-        elements.settingsMainMenu.classList.add('active');
-        currentSettingsSection = 'main';
-    } else {
-        const targetSection = document.getElementById(sectionName + 'Section');
-        if (targetSection) {
-            targetSection.classList.add('active');
-            currentSettingsSection = sectionName;
-        }
+
+    const target = document.getElementById(sectionName + 'Section');
+    if (target) {
+      target.classList.add('active');
     }
-    
-    // Scroll to top of settings panel when switching sections
-    const scrollContainer = document.querySelector('.settings-scroll-container');
-    if (scrollContainer) {
-        scrollContainer.scrollTop = 0;
-    }
+  }
+
+  currentSettingsSection = sectionName;
+
+  // Scroll to top for mobile UX
+  const scrollContainer = document.querySelector('.settings-scroll-container');
+  if (scrollContainer) scrollContainer.scrollTop = 0;
 }
+
 
 function initCursorSettings() {
     if (!elements.cursorEnabled) return;
