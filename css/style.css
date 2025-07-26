@@ -3024,6 +3024,7 @@ body {
         font-size: 0.9rem;
     }
 }
+/* Existing content above stays untouched */
 
 @media (max-width: 768px) {
   #settingsMenu {
@@ -3038,8 +3039,6 @@ body {
     border-radius: 1rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     z-index: 9999;
-
-    /* 🔥 Key Fixes */
     height: auto !important; 
     max-height: none !important;
     overflow-y: visible !important;
@@ -3049,7 +3048,22 @@ body {
     max-height: none;
     overflow-y: visible;
   }
+
+  #settingsCloseBtn {
+    display: block;
+    width: 100%;
+    margin-top: 2rem;
+    padding: 1rem;
+    background: var(--secondary-bg);
+    border: none;
+    border-radius: 0.5rem;
+    color: var(--primary-text);
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+  }
 }
+
 
 
 
