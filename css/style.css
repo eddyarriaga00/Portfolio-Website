@@ -3035,7 +3035,7 @@ body {
     width: 90% !important;
     max-width: 400px;
     background: var(--primary-bg);
-    padding: 1.5rem;
+    padding: 1rem;
     border-radius: 1rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     z-index: 9999;
