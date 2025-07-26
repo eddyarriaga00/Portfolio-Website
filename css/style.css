@@ -3017,6 +3017,27 @@ body {
     }
 }
 
+@media (max-width: 768px) {
+  #settingsMenu {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 90% !important;
+    max-width: 400px;
+    height: auto !important;
+    overflow-y: auto;
+    z-index: 9999;
+    border-radius: 1rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  }
+
+  .settings-scroll-container {
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+}
+
 /* ===========================
    UTILITY CLASSES
    =========================== */
