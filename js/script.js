@@ -1,5 +1,5 @@
 /* ===========================
-   COMPLETE OPTIMIZED PORTFOLIO SCRIPT
+   COMPLETE OPTIMIZED PORTFOLIO SCRIPT WITH ADVANCED SETTINGS
    =========================== */
 
 'use strict';
@@ -18,21 +18,21 @@ let currentTrack = -1;
 let isPlaying = false;
 let volume = 0.7;
 
-// Optimized track data - exactly 3 songs
+// Updated track data with corrected file paths
 const tracks = [
     {
         title: "Say Slatt Say Ski",
         artist: "Lucki",
-        src: "music/sayslattsayskiLucki.mp3"
+        src: "./music/sayslattsayskiLucki.mp3"
     },
     {
-        title: "Study Session",
-        artist: "Focus Beats",
+        title: "Blank Song",
+        artist: "Blank Song Artist", 
         src: "music/study-session.mp3"
     },
     {
-        title: "Night Dreams",
-        artist: "Ambient Sounds",
+        title: "Blank Song",
+        artist: "Blank Song Artist",
         src: "music/night-dreams.mp3"
     }
 ];
@@ -48,6 +48,22 @@ const elements = {};
 // Loading state
 let isLoadingComplete = false;
 
+// Settings state
+let currentSettingsSection = 'main';
+let settings = {
+    cursor: {
+        enabled: true,
+        size: 12,
+        opacity: 100,
+        followerSize: 36
+    },
+    misc: {
+        reducedMotion: false,
+        autoplayMusic: false,
+        showFloatingElements: true
+    }
+};
+
 // ===========================
 // INITIALIZATION
 // ===========================
@@ -57,6 +73,7 @@ window.addEventListener('load', handleWindowLoad);
 
 function initializeApp() {
     cacheElements();
+    loadSettings();
     initCustomCursor();
     initNavigation();
     initScrollAnimations();
@@ -69,12 +86,14 @@ function initializeApp() {
     initAudioPlayer();
     initAudioControls();
     initMobileMenu();
-
+    initBackToTop();
+    initAdvancedSettings();
+    
     // Performance optimization
-    if (isLowEndDevice || prefersReducedMotion) {
+    if (isLowEndDevice || prefersReducedMotion || settings.misc.reducedMotion) {
         disableHeavyAnimations();
     }
-
+    
     if (isMobile) {
         optimizeForMobile();
     }
@@ -85,7 +104,7 @@ function handleWindowLoad() {
     setTimeout(() => {
         isLoadingComplete = true;
         hideLoadingScreen();
-    }, 4500); // Increased to 4.5 seconds to match loading bar animation
+    }, 4500);
 }
 
 function cacheElements() {
@@ -96,6 +115,7 @@ function cacheElements() {
     elements.heroTitle = document.querySelector('.hero-title');
     elements.settingsBtn = document.getElementById('settingsBtn');
     elements.settingsMenu = document.getElementById('settingsMenu');
+    elements.settingsMainMenu = document.getElementById('settingsMainMenu');
     elements.mobileMenuBtn = document.getElementById('mobileMenuBtn');
     elements.mobileMenu = document.getElementById('mobileMenu');
     elements.audioPlayer = document.getElementById('audioPlayer');
@@ -105,7 +125,7 @@ function cacheElements() {
     elements.progressBar = document.getElementById('progressBar');
     elements.progressFill = document.getElementById('progressFill');
     elements.volumeSlider = document.getElementById('volumeSlider');
-    elements.volumeFill = document.getElementById('volumeFill');
+    elements.volumeSliderFill = document.getElementById('volumeSliderFill');
     elements.currentTime = document.getElementById('currentTime');
     elements.duration = document.getElementById('duration');
     elements.currentTrackTitle = document.getElementById('currentTrackTitle');
@@ -115,6 +135,330 @@ function cacheElements() {
     elements.primaryColorPicker = document.getElementById('primaryColor');
     elements.accentColorPicker = document.getElementById('accentColor');
     elements.applyCustomThemeBtn = document.getElementById('applyCustomTheme');
+    elements.backToTop = document.getElementById('backToTop');
+    
+    // Settings elements
+    elements.mouseSection = document.getElementById('mouseSection');
+    elements.themeSection = document.getElementById('themeSection');
+    elements.musicSection = document.getElementById('musicSection');
+    elements.miscSection = document.getElementById('miscSection');
+    
+    // Cursor settings
+    elements.cursorEnabled = document.getElementById('cursorEnabled');
+    elements.cursorSize = document.getElementById('cursorSize');
+    elements.cursorSizeValue = document.getElementById('cursorSizeValue');
+    elements.cursorOpacity = document.getElementById('cursorOpacity');
+    elements.cursorOpacityValue = document.getElementById('cursorOpacityValue');
+    elements.followerSize = document.getElementById('followerSize');
+    elements.followerSizeValue = document.getElementById('followerSizeValue');
+    
+    // Misc settings
+    elements.reducedMotion = document.getElementById('reducedMotion');
+    elements.autoplayMusic = document.getElementById('autoplayMusic');
+    elements.showFloatingElements = document.getElementById('showFloatingElements');
+    elements.resetSettings = document.getElementById('resetSettings');
+}
+
+// ===========================
+// SETTINGS MANAGEMENT
+// ===========================
+
+function loadSettings() {
+    const savedSettings = localStorage.getItem('portfolio-settings');
+    if (savedSettings) {
+        try {
+            const parsed = JSON.parse(savedSettings);
+            settings = { ...settings, ...parsed };
+        } catch (e) {
+            console.warn('Failed to parse saved settings:', e);
+        }
+    }
+    applyLoadedSettings();
+}
+
+function saveSettings() {
+    localStorage.setItem('portfolio-settings', JSON.stringify(settings));
+}
+
+function applyLoadedSettings() {
+    // Apply cursor settings
+    if (settings.cursor) {
+        updateCursorVariables();
+        
+        if (!settings.cursor.enabled && !isMobile) {
+            if (elements.cursor) elements.cursor.style.display = 'none';
+            if (elements.follower) elements.follower.style.display = 'none';
+            document.body.style.cursor = 'auto';
+        }
+    }
+    
+    // Apply misc settings
+    if (settings.misc) {
+        if (settings.misc.reducedMotion) {
+            disableHeavyAnimations();
+        }
+        
+        if (!settings.misc.showFloatingElements) {
+            hideFloatingElements();
+        }
+    }
+}
+
+function updateCursorVariables() {
+    const root = document.documentElement;
+    root.style.setProperty('--cursor-size', settings.cursor.size + 'px');
+    root.style.setProperty('--cursor-opacity', settings.cursor.opacity / 100);
+    root.style.setProperty('--follower-size', settings.cursor.followerSize + 'px');
+}
+
+function hideFloatingElements() {
+    const floatingElements = document.querySelectorAll(
+        '.floating-code, .geometric-shape, .floating-tech-icon, .floating-symbols, .floating-contact-icons'
+    );
+    floatingElements.forEach(el => {
+        el.style.display = 'none';
+    });
+}
+
+function showFloatingElements() {
+    const floatingElements = document.querySelectorAll(
+        '.floating-code, .geometric-shape, .floating-tech-icon, .floating-symbols, .floating-contact-icons'
+    );
+    floatingElements.forEach(el => {
+        el.style.display = '';
+    });
+}
+
+function resetAllSettings() {
+    if (confirm('Are you sure you want to reset all settings to default? This action cannot be undone.')) {
+        localStorage.removeItem('portfolio-settings');
+        localStorage.removeItem('preferred-theme');
+        localStorage.removeItem('custom-theme');
+        
+        // Reset to defaults
+        settings = {
+            cursor: {
+                enabled: true,
+                size: 12,
+                opacity: 100,
+                followerSize: 36
+            },
+            misc: {
+                reducedMotion: false,
+                autoplayMusic: false,
+                showFloatingElements: true
+            }
+        };
+        
+        // Reload page to apply all changes
+        location.reload();
+    }
+}
+
+// ===========================
+// ADVANCED SETTINGS SYSTEM
+// ===========================
+
+function initAdvancedSettings() {
+    initSettingsNavigation();
+    initCursorSettings();
+    initMiscSettings();
+    populateSettingsValues();
+}
+
+function initSettingsNavigation() {
+    // Category navigation
+    const settingsCategories = document.querySelectorAll('.settings-category');
+    settingsCategories.forEach(category => {
+        category.addEventListener('click', () => {
+            const section = category.getAttribute('data-section');
+            if (section) {
+                showSettingsSection(section);
+            }
+        });
+    });
+    
+    // Back buttons
+    const backButtons = document.querySelectorAll('.settings-back-btn');
+    backButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const target = btn.getAttribute('data-back');
+            if (target === 'main') {
+                showSettingsSection('main');
+            }
+        });
+    });
+}
+
+function showSettingsSection(sectionName) {
+    // Hide all sections
+    elements.settingsMainMenu.classList.remove('active');
+    document.querySelectorAll('.settings-section-view').forEach(section => {
+        section.classList.remove('active');
+    });
+    
+    // Show target section
+    if (sectionName === 'main') {
+        elements.settingsMainMenu.classList.add('active');
+        currentSettingsSection = 'main';
+    } else {
+        const targetSection = document.getElementById(sectionName + 'Section');
+        if (targetSection) {
+            targetSection.classList.add('active');
+            currentSettingsSection = sectionName;
+        }
+    }
+    
+    // Scroll to top of settings panel when switching sections
+    const scrollContainer = document.querySelector('.settings-scroll-container');
+    if (scrollContainer) {
+        scrollContainer.scrollTop = 0;
+    }
+}
+
+function initCursorSettings() {
+    if (!elements.cursorEnabled) return;
+    
+    // Cursor enabled toggle
+    elements.cursorEnabled.addEventListener('change', (e) => {
+        settings.cursor.enabled = e.target.checked;
+        
+        if (!isMobile) {
+            if (settings.cursor.enabled) {
+                if (elements.cursor) elements.cursor.style.display = '';
+                if (elements.follower) elements.follower.style.display = '';
+                document.body.style.cursor = 'none';
+            } else {
+                if (elements.cursor) elements.cursor.style.display = 'none';
+                if (elements.follower) elements.follower.style.display = 'none';
+                document.body.style.cursor = 'auto';
+            }
+        }
+        
+        saveSettings();
+    });
+    
+    // Cursor size slider
+    elements.cursorSize.addEventListener('input', (e) => {
+        settings.cursor.size = parseInt(e.target.value);
+        elements.cursorSizeValue.textContent = settings.cursor.size + 'px';
+        updateCursorVariables();
+        saveSettings();
+    });
+    
+    // Cursor opacity slider
+    elements.cursorOpacity.addEventListener('input', (e) => {
+        settings.cursor.opacity = parseInt(e.target.value);
+        elements.cursorOpacityValue.textContent = settings.cursor.opacity + '%';
+        updateCursorVariables();
+        saveSettings();
+    });
+    
+    // Follower size slider
+    elements.followerSize.addEventListener('input', (e) => {
+        settings.cursor.followerSize = parseInt(e.target.value);
+        elements.followerSizeValue.textContent = settings.cursor.followerSize + 'px';
+        updateCursorVariables();
+        saveSettings();
+    });
+}
+
+function initMiscSettings() {
+    if (!elements.reducedMotion) return;
+    
+    // Reduced motion toggle
+    elements.reducedMotion.addEventListener('change', (e) => {
+        settings.misc.reducedMotion = e.target.checked;
+        
+        if (settings.misc.reducedMotion) {
+            disableHeavyAnimations();
+        } else {
+            enableHeavyAnimations();
+        }
+        
+        saveSettings();
+    });
+    
+    // Autoplay music toggle
+    elements.autoplayMusic.addEventListener('change', (e) => {
+        settings.misc.autoplayMusic = e.target.checked;
+        saveSettings();
+    });
+    
+    // Show floating elements toggle
+    elements.showFloatingElements.addEventListener('change', (e) => {
+        settings.misc.showFloatingElements = e.target.checked;
+        
+        if (settings.misc.showFloatingElements) {
+            showFloatingElements();
+        } else {
+            hideFloatingElements();
+        }
+        
+        saveSettings();
+    });
+    
+    // Reset settings button
+    if (elements.resetSettings) {
+        elements.resetSettings.addEventListener('click', resetAllSettings);
+    }
+}
+
+function populateSettingsValues() {
+    // Populate cursor settings
+    if (elements.cursorEnabled) {
+        elements.cursorEnabled.checked = settings.cursor.enabled;
+    }
+    
+    if (elements.cursorSize) {
+        elements.cursorSize.value = settings.cursor.size;
+        if (elements.cursorSizeValue) {
+            elements.cursorSizeValue.textContent = settings.cursor.size + 'px';
+        }
+    }
+    
+    if (elements.cursorOpacity) {
+        elements.cursorOpacity.value = settings.cursor.opacity;
+        if (elements.cursorOpacityValue) {
+            elements.cursorOpacityValue.textContent = settings.cursor.opacity + '%';
+        }
+    }
+    
+    if (elements.followerSize) {
+        elements.followerSize.value = settings.cursor.followerSize;
+        if (elements.followerSizeValue) {
+            elements.followerSizeValue.textContent = settings.cursor.followerSize + 'px';
+        }
+    }
+    
+    // Populate misc settings
+    if (elements.reducedMotion) {
+        elements.reducedMotion.checked = settings.misc.reducedMotion;
+    }
+    
+    if (elements.autoplayMusic) {
+        elements.autoplayMusic.checked = settings.misc.autoplayMusic;
+    }
+    
+    if (elements.showFloatingElements) {
+        elements.showFloatingElements.checked = settings.misc.showFloatingElements;
+    }
+}
+
+function enableHeavyAnimations() {
+    const heavyAnimationElements = document.querySelectorAll(
+        '.floating-code, .geometric-shape, .floating-tech-icon, .floating-symbols, .floating-contact-icons'
+    );
+    
+    heavyAnimationElements.forEach(el => {
+        el.style.animation = '';
+        if (settings.misc.showFloatingElements) {
+            el.style.display = '';
+        }
+    });
+    
+    // Reset animation durations
+    document.documentElement.style.removeProperty('--animation-duration');
 }
 
 // ===========================
@@ -124,7 +468,7 @@ function cacheElements() {
 function hideLoadingScreen() {
     if (elements.loadingScreen) {
         elements.loadingScreen.classList.add('fade-out');
-
+        
         // Remove from DOM after animation completes
         setTimeout(() => {
             if (elements.loadingScreen.parentNode) {
@@ -132,6 +476,31 @@ function hideLoadingScreen() {
             }
         }, 1000);
     }
+}
+
+// ===========================
+// BACK TO TOP FUNCTIONALITY
+// ===========================
+
+function initBackToTop() {
+    if (!elements.backToTop) return;
+    
+    // Show/hide button based on scroll position
+    window.addEventListener('scroll', throttle(() => {
+        if (window.pageYOffset > 300) {
+            elements.backToTop.classList.add('show');
+        } else {
+            elements.backToTop.classList.remove('show');
+        }
+    }, 100));
+    
+    // Smooth scroll to top when clicked
+    elements.backToTop.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
 }
 
 // ===========================
@@ -143,14 +512,14 @@ function optimizeForMobile() {
     if (elements.cursor) elements.cursor.style.display = 'none';
     if (elements.follower) elements.follower.style.display = 'none';
     document.body.style.cursor = 'auto';
-
+    
     // Add mobile class for specific styling
     document.body.classList.add('mobile-device');
-
+    
     // Optimize touch events
-    document.addEventListener('touchstart', () => { }, { passive: true });
-    document.addEventListener('touchmove', () => { }, { passive: true });
-
+    document.addEventListener('touchstart', () => {}, { passive: true });
+    document.addEventListener('touchmove', () => {}, { passive: true });
+    
     // Prevent zoom on double tap
     let lastTouchEnd = 0;
     document.addEventListener('touchend', function (event) {
@@ -168,9 +537,9 @@ function optimizeForMobile() {
 
 function initMobileMenu() {
     if (!elements.mobileMenuBtn || !elements.mobileMenu) return;
-
+    
     elements.mobileMenuBtn.addEventListener('click', toggleMobileMenu);
-
+    
     // Close mobile menu when clicking nav links
     const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
     mobileNavLinks.forEach(link => {
@@ -178,7 +547,7 @@ function initMobileMenu() {
             closeMobileMenu();
         });
     });
-
+    
     // Close mobile menu when clicking outside
     elements.mobileMenu.addEventListener('click', (e) => {
         if (e.target === elements.mobileMenu) {
@@ -189,7 +558,7 @@ function initMobileMenu() {
 
 function toggleMobileMenu() {
     const isActive = elements.mobileMenu.classList.contains('active');
-
+    
     if (isActive) {
         closeMobileMenu();
     } else {
@@ -215,10 +584,10 @@ function closeMobileMenu() {
 
 function initAudioPlayer() {
     if (!elements.audioPlayer) return;
-
+    
     elements.audioPlayer.volume = volume;
     updateVolumeDisplay();
-
+    
     // Audio event listeners with optimized handling
     elements.audioPlayer.addEventListener('loadedmetadata', handleMetadataLoaded);
     elements.audioPlayer.addEventListener('timeupdate', throttle(handleTimeUpdate, 100));
@@ -227,12 +596,23 @@ function initAudioPlayer() {
     elements.audioPlayer.addEventListener('canplay', hideAudioError);
     elements.audioPlayer.addEventListener('play', () => setPlayButtonState(true));
     elements.audioPlayer.addEventListener('pause', () => setPlayButtonState(false));
+    
+    // Better error handling for load failures
+    elements.audioPlayer.addEventListener('loadstart', () => {
+        console.log('Audio loading started...');
+    });
+    
+    elements.audioPlayer.addEventListener('canplaythrough', () => {
+        console.log('Audio can play through');
+        hideAudioError();
+    });
 }
 
 function handleMetadataLoaded() {
     if (elements.duration) {
         elements.duration.textContent = formatTime(elements.audioPlayer.duration);
     }
+    console.log('Metadata loaded successfully');
 }
 
 function handleTimeUpdate() {
@@ -248,13 +628,39 @@ function handleTrackEnded() {
 }
 
 function handleAudioError(e) {
-    console.error('Audio error:', e);
-    showAudioError();
+    const error = e.target.error;
+    let errorMessage = 'Audio file could not be loaded. ';
+    
+    if (error) {
+        switch(error.code) {
+            case error.MEDIA_ERR_ABORTED:
+                errorMessage += 'Playback was aborted.';
+                break;
+            case error.MEDIA_ERR_NETWORK:
+                errorMessage += 'Network error occurred.';
+                break;
+            case error.MEDIA_ERR_DECODE:
+                errorMessage += 'Audio file format not supported.';
+                break;
+            case error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+                errorMessage += 'Audio file not found or format not supported.';
+                break;
+            default:
+                errorMessage += 'Unknown error occurred.';
+                break;
+        }
+    }
+    
+    console.error('Audio error:', errorMessage, 'Track:', currentTrack >= 0 ? tracks[currentTrack].src : 'none');
+    showAudioError(errorMessage);
     setPlayButtonState(false);
 }
 
-function showAudioError() {
+function showAudioError(message = null) {
     if (elements.audioError) {
+        if (message) {
+            elements.audioError.textContent = message;
+        }
         elements.audioError.classList.remove('hidden');
     }
 }
@@ -274,28 +680,47 @@ function formatTime(seconds) {
 
 function setPlayButtonState(playing) {
     if (elements.playPauseBtn) {
-        elements.playPauseBtn.textContent = playing ? '⏸' : '▶';
+        const playIcon = elements.playPauseBtn.querySelector('.play-icon');
+        const pauseIcon = elements.playPauseBtn.querySelector('.pause-icon');
+        
+        if (playIcon && pauseIcon) {
+            if (playing) {
+                playIcon.classList.add('hidden');
+                pauseIcon.classList.remove('hidden');
+            } else {
+                playIcon.classList.remove('hidden');
+                pauseIcon.classList.add('hidden');
+            }
+        }
     }
     isPlaying = playing;
 }
 
 function loadTrack(trackIndex) {
     if (trackIndex < 0 || trackIndex >= tracks.length) return;
-
+    
     currentTrack = trackIndex;
     const track = tracks[trackIndex];
-
+    
+    console.log('Loading track:', track.title, 'from:', track.src);
+    
     // Update UI
     if (elements.currentTrackTitle) elements.currentTrackTitle.textContent = track.title;
     if (elements.currentTrackArtist) elements.currentTrackArtist.textContent = track.artist;
-
+    
     // Update playlist active state
     updatePlaylistActiveState(trackIndex);
-
-    // Load audio
-    elements.audioPlayer.src = track.src;
-    elements.audioPlayer.load();
-
+    
+    // Load audio with better error handling
+    try {
+        elements.audioPlayer.src = track.src;
+        elements.audioPlayer.load();
+        hideAudioError();
+    } catch (error) {
+        console.error('Error loading track:', error);
+        showAudioError('Failed to load audio file: ' + track.title);
+    }
+    
     // Reset progress
     resetProgressDisplay();
 }
@@ -317,7 +742,7 @@ function togglePlayPause() {
         loadTrack(0);
         return;
     }
-
+    
     if (isPlaying) {
         elements.audioPlayer.pause();
     } else {
@@ -325,7 +750,7 @@ function togglePlayPause() {
         if (playPromise !== undefined) {
             playPromise.catch(error => {
                 console.error('Play failed:', error);
-                showAudioError();
+                showAudioError('Playback failed. Please check if the audio file exists.');
             });
         }
     }
@@ -335,7 +760,12 @@ function nextTrack() {
     const nextIndex = (currentTrack + 1) % tracks.length;
     loadTrack(nextIndex);
     if (isPlaying) {
-        setTimeout(() => elements.audioPlayer.play().catch(e => console.error('Auto-play failed:', e)), 100);
+        setTimeout(() => {
+            elements.audioPlayer.play().catch(e => {
+                console.error('Auto-play failed:', e);
+                showAudioError('Auto-play failed. Please try playing manually.');
+            });
+        }, 100);
     }
 }
 
@@ -343,7 +773,12 @@ function prevTrack() {
     const prevIndex = currentTrack === 0 ? tracks.length - 1 : currentTrack - 1;
     loadTrack(prevIndex);
     if (isPlaying) {
-        setTimeout(() => elements.audioPlayer.play().catch(e => console.error('Auto-play failed:', e)), 100);
+        setTimeout(() => {
+            elements.audioPlayer.play().catch(e => {
+                console.error('Auto-play failed:', e);
+                showAudioError('Auto-play failed. Please try playing manually.');
+            });
+        }, 100);
     }
 }
 
@@ -356,39 +791,43 @@ function seekTo(event) {
     }
 }
 
-function setVolume(event) {
-    const rect = elements.volumeSlider.getBoundingClientRect();
-    const clickX = event.clientX - rect.left;
-    volume = Math.max(0, Math.min(1, clickX / rect.width));
-
+function setVolume(value) {
+    volume = Math.max(0, Math.min(1, value / 100));
     elements.audioPlayer.volume = volume;
     updateVolumeDisplay();
 }
 
 function updateVolumeDisplay() {
-    if (elements.volumeFill) {
-        elements.volumeFill.style.width = (volume * 100) + '%';
+    if (elements.volumeSliderFill) {
+        elements.volumeSliderFill.style.width = (volume * 100) + '%';
     }
-
-    const volumeIcon = document.querySelector('.volume-icon');
+    
+    if (elements.volumeSlider) {
+        elements.volumeSlider.value = volume * 100;
+    }
+    
+    const volumeIcon = document.querySelector('.volume-icon-container svg');
     if (volumeIcon) {
-        if (volume === 0) {
-            volumeIcon.textContent = '🔇';
-        } else if (volume < 0.5) {
-            volumeIcon.textContent = '🔉';
-        } else {
-            volumeIcon.textContent = '🔊';
-        }
+        const paths = volumeIcon.querySelectorAll('path');
+        paths.forEach(path => {
+            if (volume === 0) {
+                path.setAttribute('d', 'M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z');
+            } else if (volume < 0.5) {
+                path.setAttribute('d', 'M18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM5 9v6h4l5 5V4L9 9H5z');
+            } else {
+                path.setAttribute('d', 'M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z');
+            }
+        });
     }
 }
 
 // ===========================
-// CUSTOM CURSOR
+// CUSTOM CURSOR (ENHANCED)
 // ===========================
 
 function initCustomCursor() {
-    if (!elements.cursor || !elements.follower || isMobile) return;
-
+    if (!elements.cursor || !elements.follower || isMobile || !settings.cursor.enabled) return;
+    
     let mouseX = 0, mouseY = 0;
     let followerX = 0, followerY = 0;
 
@@ -396,23 +835,25 @@ function initCustomCursor() {
     document.addEventListener('mousemove', throttle((e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
-
-        elements.cursor.style.transform = `translate3d(${mouseX - 8}px, ${mouseY - 8}px, 0)`;
+        
+        const halfSize = settings.cursor.size / 2;
+        elements.cursor.style.transform = `translate3d(${mouseX - halfSize}px, ${mouseY - halfSize}px, 0)`;
     }, 16));
 
     // Smooth follower animation
     function animateFollower() {
         followerX += (mouseX - followerX) * 0.08;
         followerY += (mouseY - followerY) * 0.08;
-
-        elements.follower.style.transform = `translate3d(${followerX - 18}px, ${followerY - 18}px, 0)`;
-
+        
+        const halfFollowerSize = settings.cursor.followerSize / 2;
+        elements.follower.style.transform = `translate3d(${followerX - halfFollowerSize}px, ${followerY - halfFollowerSize}px, 0)`;
+        
         requestAnimationFrame(animateFollower);
     }
     animateFollower();
 
     // Hover effects
-    const hoverElements = document.querySelectorAll('a, button, .skill-card, .project-card, .timeline-content, .logo-container, .theme-option, .playlist-item, .control-btn');
+    const hoverElements = document.querySelectorAll('a, button, .skill-card, .project-card, .timeline-content, .logo-container, .theme-option, .playlist-item, .control-btn, .settings-category');
     hoverElements.forEach(el => {
         el.addEventListener('mouseenter', () => {
             elements.cursor.style.transform += ' scale(1.5)';
@@ -422,7 +863,7 @@ function initCustomCursor() {
         el.addEventListener('mouseleave', () => {
             elements.cursor.style.transform = elements.cursor.style.transform.replace(' scale(1.5)', '');
             elements.follower.style.transform = elements.follower.style.transform.replace(' scale(1.5)', '');
-            elements.follower.style.opacity = '0.6';
+            elements.follower.style.opacity = 'calc(var(--cursor-opacity) * 0.6)';
         });
     });
 }
@@ -434,7 +875,7 @@ function initCustomCursor() {
 function initNavigation() {
     // Optimized scroll handler
     window.addEventListener('scroll', throttle(handleScroll, 16), { passive: true });
-
+    
     // Smooth scrolling for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', handleAnchorClick);
@@ -444,14 +885,14 @@ function initNavigation() {
 function handleScroll() {
     const currentTime = Date.now();
     const currentScrollTop = window.pageYOffset;
-
+    
     const timeDelta = currentTime - lastScrollTime;
     const scrollDelta = Math.abs(currentScrollTop - lastScrollTop);
     scrollSpeed = scrollDelta / timeDelta;
-
+    
     lastScrollTime = currentTime;
     lastScrollTop = currentScrollTop;
-
+    
     // Update navbar
     if (elements.navbar) {
         if (currentScrollTop > 100) {
@@ -468,7 +909,7 @@ function handleAnchorClick(e) {
     if (target) {
         // Close mobile menu if open
         closeMobileMenu();
-
+        
         target.scrollIntoView({
             behavior: 'smooth',
             block: 'start'
@@ -498,10 +939,10 @@ function handleIntersection(entries) {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             const delay = scrollSpeed > 2 ? 0 : Math.min(entry.target.dataset.delay || 0, 300);
-
+            
             setTimeout(() => {
                 entry.target.classList.add('animated');
-
+                
                 // Animate numbers if present
                 const statNumbers = entry.target.querySelectorAll('.stat-number[data-target]');
                 if (statNumbers.length > 0) {
@@ -533,15 +974,15 @@ function animateNumbers(numbers) {
 // ===========================
 
 function initParallax() {
-    if (isLowEndDevice || prefersReducedMotion || isMobile) return;
-
+    if (isLowEndDevice || prefersReducedMotion || isMobile || settings.misc.reducedMotion) return;
+    
     window.addEventListener('scroll', throttle(handleParallax, 16), { passive: true });
 }
 
 function handleParallax() {
     const scrolled = window.pageYOffset;
     const shapes = document.querySelectorAll('.geometric-shape');
-
+    
     shapes.forEach((shape, index) => {
         const speed = 0.2 + (index * 0.1);
         const yPos = scrolled * speed;
@@ -555,11 +996,11 @@ function handleParallax() {
 // ===========================
 
 function initTypingAnimation() {
-    if (!elements.heroTitle || prefersReducedMotion) return;
-
+    if (!elements.heroTitle || prefersReducedMotion || settings.misc.reducedMotion) return;
+    
     const titleText = elements.heroTitle.textContent.trim();
     elements.heroTitle.textContent = '';
-
+    
     setTimeout(() => {
         let i = 0;
         const typeInterval = setInterval(() => {
@@ -579,10 +1020,10 @@ function initTypingAnimation() {
 // ===========================
 
 function init3DTiltEffects() {
-    if (isLowEndDevice || prefersReducedMotion || isMobile) return;
-
+    if (isLowEndDevice || prefersReducedMotion || isMobile || settings.misc.reducedMotion) return;
+    
     const tiltElements = document.querySelectorAll('.project-card, .skill-card');
-
+    
     tiltElements.forEach(card => {
         card.addEventListener('mousemove', handleTilt);
         card.addEventListener('mouseleave', resetTilt);
@@ -593,13 +1034,13 @@ function handleTilt(e) {
     const rect = this.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-
+    
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-
+    
     const rotateX = (y - centerY) / 15;
     const rotateY = (centerX - x) / 15;
-
+    
     this.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-12px)`;
 }
 
@@ -608,23 +1049,39 @@ function resetTilt() {
 }
 
 // ===========================
-// SETTINGS PANEL
+// SETTINGS PANEL (ENHANCED)
 // ===========================
 
 function initSettingsPanel() {
     if (!elements.settingsBtn || !elements.settingsMenu) return;
-
+    
     elements.settingsBtn.addEventListener('click', toggleSettings);
-
+    
     document.addEventListener('click', (e) => {
         if (!elements.settingsBtn.contains(e.target) && !elements.settingsMenu.contains(e.target)) {
-            elements.settingsMenu.classList.remove('active');
+            closeSettings();
         }
     });
+    
+    // Show main menu by default
+    showSettingsSection('main');
 }
 
 function toggleSettings() {
-    elements.settingsMenu.classList.toggle('active');
+    if (elements.settingsMenu.classList.contains('active')) {
+        closeSettings();
+    } else {
+        openSettings();
+    }
+}
+
+function openSettings() {
+    elements.settingsMenu.classList.add('active');
+    showSettingsSection('main');
+}
+
+function closeSettings() {
+    elements.settingsMenu.classList.remove('active');
 }
 
 // ===========================
@@ -633,7 +1090,7 @@ function toggleSettings() {
 
 function initThemeSystem() {
     const themeOptions = document.querySelectorAll('.theme-option');
-
+    
     themeOptions.forEach(option => {
         option.addEventListener('click', () => {
             const theme = option.getAttribute('data-theme');
@@ -642,7 +1099,7 @@ function initThemeSystem() {
             }
         });
     });
-
+    
     // Load saved theme
     const savedTheme = localStorage.getItem('preferred-theme');
     if (savedTheme) {
@@ -653,17 +1110,17 @@ function initThemeSystem() {
 function setTheme(themeName) {
     document.body.setAttribute('data-theme', themeName);
     localStorage.setItem('preferred-theme', themeName);
-
+    
     // Update active theme option
     document.querySelectorAll('.theme-option').forEach(option => {
         option.classList.remove('active');
     });
-
+    
     const selectedOption = document.querySelector(`[data-theme="${themeName}"]`);
     if (selectedOption) {
         selectedOption.classList.add('active');
     }
-
+    
     // Clear custom theme if switching to preset
     if (themeName !== 'custom') {
         localStorage.removeItem('custom-theme');
@@ -676,9 +1133,9 @@ function setTheme(themeName) {
 
 function initCustomThemeMaker() {
     if (!elements.primaryColorPicker || !elements.accentColorPicker || !elements.applyCustomThemeBtn) return;
-
+    
     elements.applyCustomThemeBtn.addEventListener('click', applyCustomTheme);
-
+    
     // Load saved custom theme
     const savedCustomTheme = localStorage.getItem('custom-theme');
     if (savedCustomTheme) {
@@ -691,28 +1148,28 @@ function initCustomThemeMaker() {
 function applyCustomTheme() {
     const primaryColor = elements.primaryColorPicker.value;
     const accentColor = elements.accentColorPicker.value;
-
+    
     // Generate custom theme CSS variables
     const customTheme = generateCustomTheme(primaryColor, accentColor);
-
+    
     // Apply custom theme
     applyThemeVariables(customTheme);
-
+    
     // Save custom theme
     localStorage.setItem('custom-theme', JSON.stringify({
         primary: primaryColor,
         accent: accentColor
     }));
-
+    
     // Update theme selection
     document.querySelectorAll('.theme-option').forEach(option => {
         option.classList.remove('active');
     });
-
+    
     // Add custom theme to body
     document.body.setAttribute('data-theme', 'custom');
     localStorage.setItem('preferred-theme', 'custom');
-
+    
     // Visual feedback
     elements.applyCustomThemeBtn.textContent = 'Applied!';
     setTimeout(() => {
@@ -724,17 +1181,17 @@ function generateCustomTheme(primaryColor, accentColor) {
     // Convert hex to RGB for calculations
     const primaryRGB = hexToRgb(primaryColor);
     const accentRGB = hexToRgb(accentColor);
-
+    
     // Generate color variations
     const secondaryColor = darkenColor(primaryColor, 0.1);
     const tertiaryColor = lightenColor(primaryColor, 0.1);
     const quaternaryColor = lightenColor(primaryColor, 0.2);
-
+    
     // Calculate appropriate text colors
     const primaryTextColor = getContrastColor(primaryColor);
     const secondaryTextColor = blendColors(primaryTextColor, accentColor, 0.7);
     const tertiaryTextColor = blendColors(primaryTextColor, accentColor, 0.4);
-
+    
     return {
         '--primary-bg': primaryColor,
         '--secondary-bg': secondaryColor,
@@ -777,7 +1234,7 @@ function rgbToHex(r, g, b) {
 function darkenColor(hex, factor) {
     const rgb = hexToRgb(hex);
     if (!rgb) return hex;
-
+    
     return rgbToHex(
         Math.round(rgb.r * (1 - factor)),
         Math.round(rgb.g * (1 - factor)),
@@ -788,7 +1245,7 @@ function darkenColor(hex, factor) {
 function lightenColor(hex, factor) {
     const rgb = hexToRgb(hex);
     if (!rgb) return hex;
-
+    
     return rgbToHex(
         Math.round(rgb.r + (255 - rgb.r) * factor),
         Math.round(rgb.g + (255 - rgb.g) * factor),
@@ -799,7 +1256,7 @@ function lightenColor(hex, factor) {
 function getContrastColor(hex) {
     const rgb = hexToRgb(hex);
     if (!rgb) return '#ffffff';
-
+    
     const brightness = (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
     return brightness > 128 ? '#000000' : '#ffffff';
 }
@@ -807,9 +1264,9 @@ function getContrastColor(hex) {
 function blendColors(color1, color2, ratio) {
     const rgb1 = hexToRgb(color1);
     const rgb2 = hexToRgb(color2);
-
+    
     if (!rgb1 || !rgb2) return color1;
-
+    
     return rgbToHex(
         Math.round(rgb1.r * ratio + rgb2.r * (1 - ratio)),
         Math.round(rgb1.g * ratio + rgb2.g * (1 - ratio)),
@@ -826,12 +1283,25 @@ function initAudioControls() {
     if (elements.nextBtn) elements.nextBtn.addEventListener('click', nextTrack);
     if (elements.prevBtn) elements.prevBtn.addEventListener('click', prevTrack);
     if (elements.progressBar) elements.progressBar.addEventListener('click', seekTo);
-    if (elements.volumeSlider) elements.volumeSlider.addEventListener('click', setVolume);
-
-    // Playlist item clicks
-    document.querySelectorAll('.playlist-item').forEach((item, index) => {
+    
+    // Updated volume slider handling for mobile-friendly slider
+    if (elements.volumeSlider) {
+        elements.volumeSlider.addEventListener('input', (e) => {
+            setVolume(parseFloat(e.target.value));
+        });
+        
+        elements.volumeSlider.addEventListener('change', (e) => {
+            setVolume(parseFloat(e.target.value));
+        });
+    }
+    
+    // Playlist item clicks with proper data attribute handling
+    document.querySelectorAll('.playlist-item').forEach((item) => {
         item.addEventListener('click', () => {
-            loadTrack(index);
+            const index = parseInt(item.getAttribute('data-index'));
+            if (!isNaN(index)) {
+                loadTrack(index);
+            }
         });
     });
 }
@@ -845,7 +1315,7 @@ function throttle(func, delay) {
     let lastExecTime = 0;
     return function (...args) {
         const currentTime = Date.now();
-
+        
         if (currentTime - lastExecTime > delay) {
             func.apply(this, args);
             lastExecTime = currentTime;
@@ -871,12 +1341,14 @@ function disableHeavyAnimations() {
     const heavyAnimationElements = document.querySelectorAll(
         '.floating-code, .geometric-shape, .floating-tech-icon, .floating-symbols, .floating-contact-icons'
     );
-
+    
     heavyAnimationElements.forEach(el => {
         el.style.animation = 'none';
-        el.style.display = 'none';
+        if (!settings.misc.showFloatingElements) {
+            el.style.display = 'none';
+        }
     });
-
+    
     // Reduce animation durations
     document.documentElement.style.setProperty('--animation-duration', '0.1s');
 }
@@ -910,7 +1382,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Keyboard navigation for audio controls and accessibility
 document.addEventListener('keydown', (e) => {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-
+    
     switch (e.code) {
         case 'Space':
             e.preventDefault();
@@ -930,8 +1402,14 @@ document.addEventListener('keydown', (e) => {
             break;
         case 'Escape':
             e.preventDefault();
-            elements.settingsMenu.classList.remove('active');
+            closeSettings();
             closeMobileMenu();
+            break;
+        case 'Home':
+            if (e.ctrlKey) {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
             break;
     }
 });
@@ -942,17 +1420,15 @@ document.addEventListener('keydown', (e) => {
 
 function handleResize() {
     const width = window.innerWidth;
-
+    
     // Close mobile menu on resize to desktop
     if (width >= 768) {
         closeMobileMenu();
     }
-
-    // Adjust settings panel position on smaller screens
-    if (width < 400 && elements.settingsMenu) {
-        elements.settingsMenu.style.width = '280px';
-    } else if (elements.settingsMenu) {
-        elements.settingsMenu.style.width = '';
+    
+    // Close settings on resize to prevent layout issues
+    if (width < 768) {
+        closeSettings();
     }
 }
 
@@ -963,7 +1439,7 @@ window.addEventListener('resize', debounce(handleResize, 250));
 // ===========================
 
 // Respect reduced motion preference
-if (prefersReducedMotion) {
+if (prefersReducedMotion || settings.misc.reducedMotion) {
     document.documentElement.style.setProperty('--animation-duration', '0.01ms');
     document.documentElement.style.setProperty('--transition-duration', '0.01ms');
 }
@@ -973,7 +1449,7 @@ document.addEventListener('focusin', (e) => {
     if (!e.target.matches('a, button, input, select, textarea, [tabindex]')) {
         return;
     }
-
+    
     // Add focus indicator for keyboard navigation
     e.target.style.outline = '2px solid var(--accent-color)';
     e.target.style.outlineOffset = '2px';
@@ -1005,17 +1481,19 @@ window.addEventListener('unhandledrejection', (e) => {
 
 // Clean up event listeners on page unload
 window.addEventListener('beforeunload', () => {
+    // Save settings before unloading
+    saveSettings();
+    
     // Remove all event listeners to prevent memory leaks
-    document.removeEventListener('mousemove', handleMouseMove);
     window.removeEventListener('scroll', handleScroll);
     window.removeEventListener('resize', handleResize);
-
+    
     // Pause audio to free resources
     if (elements.audioPlayer) {
         elements.audioPlayer.pause();
         elements.audioPlayer.src = '';
     }
-
+    
     // Clear any running intervals
     clearInterval();
 });
@@ -1038,4 +1516,4 @@ if (document.readyState === 'complete') {
     window.addEventListener('load', handleWindowLoad);
 }
 
-console.log('🚀 Portfolio script loaded successfully!');
+console.log('🚀 Enhanced Portfolio script loaded successfully with optimized settings panel!');
