@@ -3028,15 +3028,18 @@ body {
 @media (max-width: 768px) {
   #settingsMenu {
     position: fixed !important;
-    top: 50% !important;
+    top: 10% !important;
     left: 50% !important;
-    transform: translate(-50%, -50%) !important;
+    transform: translateX(-50%) !important;
     width: 90% !important;
     max-width: 400px;
-    height:90vh !important;
-    overflow-y: auto;
+    height: auto !important; /* Let content size define height */
+    max-height: 90vh;
+    overflow-y: auto !important;
     z-index: 9999;
+    padding: 1.5rem;
     border-radius: 1rem;
+    background: var(--primary-bg); /* consistent with theme */
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   }
 
@@ -3045,6 +3048,7 @@ body {
     overflow-y: auto;
   }
 }
+
 
 /* ===========================
    UTILITY CLASSES
