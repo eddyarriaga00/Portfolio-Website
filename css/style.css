@@ -3033,21 +3033,24 @@ body {
     transform: translateX(-50%) !important;
     width: 90% !important;
     max-width: 400px;
-    height: 60vh !important; /* Let content size define height */
-    max-height: 90vh;
-    overflow-y: auto !important;
-    z-index: 9999;
+    background: var(--primary-bg);
     padding: 1.5rem;
     border-radius: 1rem;
-    background: var(--primary-bg); /* consistent with theme */
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+
+    /* 🔥 Key Fixes */
+    height: auto !important; 
+    max-height: none !important;
+    overflow-y: visible !important;
   }
 
   .settings-scroll-container {
-    max-height: 80vh;
-    overflow-y: auto;
+    max-height: none;
+    overflow-y: visible;
   }
 }
+
 
 
 /* ===========================
