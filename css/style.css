@@ -2032,6 +2032,14 @@ body {
     display: block;
 }
 
+#settingsMainMenu.active {
+    display:block;
+}
+
+#settingsMainMenu {
+    display: none;
+}
+
 /* Setting Groups - Smaller */
 .setting-group {
     display: flex;
