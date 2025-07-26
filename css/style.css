@@ -3025,7 +3025,7 @@ body {
     transform: translate(-50%, -50%) !important;
     width: 90% !important;
     max-width: 400px;
-    height:fit-content !important;
+    height:max-content !important;
     overflow-y: auto;
     z-index: 9999;
     border-radius: 1rem;
