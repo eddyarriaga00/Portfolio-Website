@@ -27,13 +27,13 @@ const tracks = [
     },
     {
         title: "Study Session",
-        artist: "Focus Beats", 
-        src: "/music/study-session.mp3"
+        artist: "Focus Beats",
+        src: "music/study-session.mp3"
     },
     {
         title: "Night Dreams",
         artist: "Ambient Sounds",
-        src: "/music/night-dreams.mp3"
+        src: "music/night-dreams.mp3"
     }
 ];
 
@@ -69,12 +69,12 @@ function initializeApp() {
     initAudioPlayer();
     initAudioControls();
     initMobileMenu();
-    
+
     // Performance optimization
     if (isLowEndDevice || prefersReducedMotion) {
         disableHeavyAnimations();
     }
-    
+
     if (isMobile) {
         optimizeForMobile();
     }
@@ -124,7 +124,7 @@ function cacheElements() {
 function hideLoadingScreen() {
     if (elements.loadingScreen) {
         elements.loadingScreen.classList.add('fade-out');
-        
+
         // Remove from DOM after animation completes
         setTimeout(() => {
             if (elements.loadingScreen.parentNode) {
@@ -143,14 +143,14 @@ function optimizeForMobile() {
     if (elements.cursor) elements.cursor.style.display = 'none';
     if (elements.follower) elements.follower.style.display = 'none';
     document.body.style.cursor = 'auto';
-    
+
     // Add mobile class for specific styling
     document.body.classList.add('mobile-device');
-    
+
     // Optimize touch events
-    document.addEventListener('touchstart', () => {}, { passive: true });
-    document.addEventListener('touchmove', () => {}, { passive: true });
-    
+    document.addEventListener('touchstart', () => { }, { passive: true });
+    document.addEventListener('touchmove', () => { }, { passive: true });
+
     // Prevent zoom on double tap
     let lastTouchEnd = 0;
     document.addEventListener('touchend', function (event) {
@@ -168,9 +168,9 @@ function optimizeForMobile() {
 
 function initMobileMenu() {
     if (!elements.mobileMenuBtn || !elements.mobileMenu) return;
-    
+
     elements.mobileMenuBtn.addEventListener('click', toggleMobileMenu);
-    
+
     // Close mobile menu when clicking nav links
     const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
     mobileNavLinks.forEach(link => {
@@ -178,7 +178,7 @@ function initMobileMenu() {
             closeMobileMenu();
         });
     });
-    
+
     // Close mobile menu when clicking outside
     elements.mobileMenu.addEventListener('click', (e) => {
         if (e.target === elements.mobileMenu) {
@@ -189,7 +189,7 @@ function initMobileMenu() {
 
 function toggleMobileMenu() {
     const isActive = elements.mobileMenu.classList.contains('active');
-    
+
     if (isActive) {
         closeMobileMenu();
     } else {
@@ -215,10 +215,10 @@ function closeMobileMenu() {
 
 function initAudioPlayer() {
     if (!elements.audioPlayer) return;
-    
+
     elements.audioPlayer.volume = volume;
     updateVolumeDisplay();
-    
+
     // Audio event listeners with optimized handling
     elements.audioPlayer.addEventListener('loadedmetadata', handleMetadataLoaded);
     elements.audioPlayer.addEventListener('timeupdate', throttle(handleTimeUpdate, 100));
@@ -281,21 +281,21 @@ function setPlayButtonState(playing) {
 
 function loadTrack(trackIndex) {
     if (trackIndex < 0 || trackIndex >= tracks.length) return;
-    
+
     currentTrack = trackIndex;
     const track = tracks[trackIndex];
-    
+
     // Update UI
     if (elements.currentTrackTitle) elements.currentTrackTitle.textContent = track.title;
     if (elements.currentTrackArtist) elements.currentTrackArtist.textContent = track.artist;
-    
+
     // Update playlist active state
     updatePlaylistActiveState(trackIndex);
-    
+
     // Load audio
     elements.audioPlayer.src = track.src;
     elements.audioPlayer.load();
-    
+
     // Reset progress
     resetProgressDisplay();
 }
@@ -317,7 +317,7 @@ function togglePlayPause() {
         loadTrack(0);
         return;
     }
-    
+
     if (isPlaying) {
         elements.audioPlayer.pause();
     } else {
@@ -360,7 +360,7 @@ function setVolume(event) {
     const rect = elements.volumeSlider.getBoundingClientRect();
     const clickX = event.clientX - rect.left;
     volume = Math.max(0, Math.min(1, clickX / rect.width));
-    
+
     elements.audioPlayer.volume = volume;
     updateVolumeDisplay();
 }
@@ -369,7 +369,7 @@ function updateVolumeDisplay() {
     if (elements.volumeFill) {
         elements.volumeFill.style.width = (volume * 100) + '%';
     }
-    
+
     const volumeIcon = document.querySelector('.volume-icon');
     if (volumeIcon) {
         if (volume === 0) {
@@ -388,7 +388,7 @@ function updateVolumeDisplay() {
 
 function initCustomCursor() {
     if (!elements.cursor || !elements.follower || isMobile) return;
-    
+
     let mouseX = 0, mouseY = 0;
     let followerX = 0, followerY = 0;
 
@@ -396,7 +396,7 @@ function initCustomCursor() {
     document.addEventListener('mousemove', throttle((e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
-        
+
         elements.cursor.style.transform = `translate3d(${mouseX - 8}px, ${mouseY - 8}px, 0)`;
     }, 16));
 
@@ -404,9 +404,9 @@ function initCustomCursor() {
     function animateFollower() {
         followerX += (mouseX - followerX) * 0.08;
         followerY += (mouseY - followerY) * 0.08;
-        
+
         elements.follower.style.transform = `translate3d(${followerX - 18}px, ${followerY - 18}px, 0)`;
-        
+
         requestAnimationFrame(animateFollower);
     }
     animateFollower();
@@ -434,7 +434,7 @@ function initCustomCursor() {
 function initNavigation() {
     // Optimized scroll handler
     window.addEventListener('scroll', throttle(handleScroll, 16), { passive: true });
-    
+
     // Smooth scrolling for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', handleAnchorClick);
@@ -444,14 +444,14 @@ function initNavigation() {
 function handleScroll() {
     const currentTime = Date.now();
     const currentScrollTop = window.pageYOffset;
-    
+
     const timeDelta = currentTime - lastScrollTime;
     const scrollDelta = Math.abs(currentScrollTop - lastScrollTop);
     scrollSpeed = scrollDelta / timeDelta;
-    
+
     lastScrollTime = currentTime;
     lastScrollTop = currentScrollTop;
-    
+
     // Update navbar
     if (elements.navbar) {
         if (currentScrollTop > 100) {
@@ -468,7 +468,7 @@ function handleAnchorClick(e) {
     if (target) {
         // Close mobile menu if open
         closeMobileMenu();
-        
+
         target.scrollIntoView({
             behavior: 'smooth',
             block: 'start'
@@ -498,10 +498,10 @@ function handleIntersection(entries) {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             const delay = scrollSpeed > 2 ? 0 : Math.min(entry.target.dataset.delay || 0, 300);
-            
+
             setTimeout(() => {
                 entry.target.classList.add('animated');
-                
+
                 // Animate numbers if present
                 const statNumbers = entry.target.querySelectorAll('.stat-number[data-target]');
                 if (statNumbers.length > 0) {
@@ -534,14 +534,14 @@ function animateNumbers(numbers) {
 
 function initParallax() {
     if (isLowEndDevice || prefersReducedMotion || isMobile) return;
-    
+
     window.addEventListener('scroll', throttle(handleParallax, 16), { passive: true });
 }
 
 function handleParallax() {
     const scrolled = window.pageYOffset;
     const shapes = document.querySelectorAll('.geometric-shape');
-    
+
     shapes.forEach((shape, index) => {
         const speed = 0.2 + (index * 0.1);
         const yPos = scrolled * speed;
@@ -556,10 +556,10 @@ function handleParallax() {
 
 function initTypingAnimation() {
     if (!elements.heroTitle || prefersReducedMotion) return;
-    
+
     const titleText = elements.heroTitle.textContent.trim();
     elements.heroTitle.textContent = '';
-    
+
     setTimeout(() => {
         let i = 0;
         const typeInterval = setInterval(() => {
@@ -580,9 +580,9 @@ function initTypingAnimation() {
 
 function init3DTiltEffects() {
     if (isLowEndDevice || prefersReducedMotion || isMobile) return;
-    
+
     const tiltElements = document.querySelectorAll('.project-card, .skill-card');
-    
+
     tiltElements.forEach(card => {
         card.addEventListener('mousemove', handleTilt);
         card.addEventListener('mouseleave', resetTilt);
@@ -593,13 +593,13 @@ function handleTilt(e) {
     const rect = this.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    
+
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    
+
     const rotateX = (y - centerY) / 15;
     const rotateY = (centerX - x) / 15;
-    
+
     this.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-12px)`;
 }
 
@@ -613,9 +613,9 @@ function resetTilt() {
 
 function initSettingsPanel() {
     if (!elements.settingsBtn || !elements.settingsMenu) return;
-    
+
     elements.settingsBtn.addEventListener('click', toggleSettings);
-    
+
     document.addEventListener('click', (e) => {
         if (!elements.settingsBtn.contains(e.target) && !elements.settingsMenu.contains(e.target)) {
             elements.settingsMenu.classList.remove('active');
@@ -633,7 +633,7 @@ function toggleSettings() {
 
 function initThemeSystem() {
     const themeOptions = document.querySelectorAll('.theme-option');
-    
+
     themeOptions.forEach(option => {
         option.addEventListener('click', () => {
             const theme = option.getAttribute('data-theme');
@@ -642,7 +642,7 @@ function initThemeSystem() {
             }
         });
     });
-    
+
     // Load saved theme
     const savedTheme = localStorage.getItem('preferred-theme');
     if (savedTheme) {
@@ -653,17 +653,17 @@ function initThemeSystem() {
 function setTheme(themeName) {
     document.body.setAttribute('data-theme', themeName);
     localStorage.setItem('preferred-theme', themeName);
-    
+
     // Update active theme option
     document.querySelectorAll('.theme-option').forEach(option => {
         option.classList.remove('active');
     });
-    
+
     const selectedOption = document.querySelector(`[data-theme="${themeName}"]`);
     if (selectedOption) {
         selectedOption.classList.add('active');
     }
-    
+
     // Clear custom theme if switching to preset
     if (themeName !== 'custom') {
         localStorage.removeItem('custom-theme');
@@ -676,9 +676,9 @@ function setTheme(themeName) {
 
 function initCustomThemeMaker() {
     if (!elements.primaryColorPicker || !elements.accentColorPicker || !elements.applyCustomThemeBtn) return;
-    
+
     elements.applyCustomThemeBtn.addEventListener('click', applyCustomTheme);
-    
+
     // Load saved custom theme
     const savedCustomTheme = localStorage.getItem('custom-theme');
     if (savedCustomTheme) {
@@ -691,28 +691,28 @@ function initCustomThemeMaker() {
 function applyCustomTheme() {
     const primaryColor = elements.primaryColorPicker.value;
     const accentColor = elements.accentColorPicker.value;
-    
+
     // Generate custom theme CSS variables
     const customTheme = generateCustomTheme(primaryColor, accentColor);
-    
+
     // Apply custom theme
     applyThemeVariables(customTheme);
-    
+
     // Save custom theme
     localStorage.setItem('custom-theme', JSON.stringify({
         primary: primaryColor,
         accent: accentColor
     }));
-    
+
     // Update theme selection
     document.querySelectorAll('.theme-option').forEach(option => {
         option.classList.remove('active');
     });
-    
+
     // Add custom theme to body
     document.body.setAttribute('data-theme', 'custom');
     localStorage.setItem('preferred-theme', 'custom');
-    
+
     // Visual feedback
     elements.applyCustomThemeBtn.textContent = 'Applied!';
     setTimeout(() => {
@@ -724,17 +724,17 @@ function generateCustomTheme(primaryColor, accentColor) {
     // Convert hex to RGB for calculations
     const primaryRGB = hexToRgb(primaryColor);
     const accentRGB = hexToRgb(accentColor);
-    
+
     // Generate color variations
     const secondaryColor = darkenColor(primaryColor, 0.1);
     const tertiaryColor = lightenColor(primaryColor, 0.1);
     const quaternaryColor = lightenColor(primaryColor, 0.2);
-    
+
     // Calculate appropriate text colors
     const primaryTextColor = getContrastColor(primaryColor);
     const secondaryTextColor = blendColors(primaryTextColor, accentColor, 0.7);
     const tertiaryTextColor = blendColors(primaryTextColor, accentColor, 0.4);
-    
+
     return {
         '--primary-bg': primaryColor,
         '--secondary-bg': secondaryColor,
@@ -777,7 +777,7 @@ function rgbToHex(r, g, b) {
 function darkenColor(hex, factor) {
     const rgb = hexToRgb(hex);
     if (!rgb) return hex;
-    
+
     return rgbToHex(
         Math.round(rgb.r * (1 - factor)),
         Math.round(rgb.g * (1 - factor)),
@@ -788,7 +788,7 @@ function darkenColor(hex, factor) {
 function lightenColor(hex, factor) {
     const rgb = hexToRgb(hex);
     if (!rgb) return hex;
-    
+
     return rgbToHex(
         Math.round(rgb.r + (255 - rgb.r) * factor),
         Math.round(rgb.g + (255 - rgb.g) * factor),
@@ -799,7 +799,7 @@ function lightenColor(hex, factor) {
 function getContrastColor(hex) {
     const rgb = hexToRgb(hex);
     if (!rgb) return '#ffffff';
-    
+
     const brightness = (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
     return brightness > 128 ? '#000000' : '#ffffff';
 }
@@ -807,9 +807,9 @@ function getContrastColor(hex) {
 function blendColors(color1, color2, ratio) {
     const rgb1 = hexToRgb(color1);
     const rgb2 = hexToRgb(color2);
-    
+
     if (!rgb1 || !rgb2) return color1;
-    
+
     return rgbToHex(
         Math.round(rgb1.r * ratio + rgb2.r * (1 - ratio)),
         Math.round(rgb1.g * ratio + rgb2.g * (1 - ratio)),
@@ -827,7 +827,7 @@ function initAudioControls() {
     if (elements.prevBtn) elements.prevBtn.addEventListener('click', prevTrack);
     if (elements.progressBar) elements.progressBar.addEventListener('click', seekTo);
     if (elements.volumeSlider) elements.volumeSlider.addEventListener('click', setVolume);
-    
+
     // Playlist item clicks
     document.querySelectorAll('.playlist-item').forEach((item, index) => {
         item.addEventListener('click', () => {
@@ -845,7 +845,7 @@ function throttle(func, delay) {
     let lastExecTime = 0;
     return function (...args) {
         const currentTime = Date.now();
-        
+
         if (currentTime - lastExecTime > delay) {
             func.apply(this, args);
             lastExecTime = currentTime;
@@ -871,12 +871,12 @@ function disableHeavyAnimations() {
     const heavyAnimationElements = document.querySelectorAll(
         '.floating-code, .geometric-shape, .floating-tech-icon, .floating-symbols, .floating-contact-icons'
     );
-    
+
     heavyAnimationElements.forEach(el => {
         el.style.animation = 'none';
         el.style.display = 'none';
     });
-    
+
     // Reduce animation durations
     document.documentElement.style.setProperty('--animation-duration', '0.1s');
 }
@@ -910,7 +910,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Keyboard navigation for audio controls and accessibility
 document.addEventListener('keydown', (e) => {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-    
+
     switch (e.code) {
         case 'Space':
             e.preventDefault();
@@ -942,12 +942,12 @@ document.addEventListener('keydown', (e) => {
 
 function handleResize() {
     const width = window.innerWidth;
-    
+
     // Close mobile menu on resize to desktop
     if (width >= 768) {
         closeMobileMenu();
     }
-    
+
     // Adjust settings panel position on smaller screens
     if (width < 400 && elements.settingsMenu) {
         elements.settingsMenu.style.width = '280px';
@@ -973,7 +973,7 @@ document.addEventListener('focusin', (e) => {
     if (!e.target.matches('a, button, input, select, textarea, [tabindex]')) {
         return;
     }
-    
+
     // Add focus indicator for keyboard navigation
     e.target.style.outline = '2px solid var(--accent-color)';
     e.target.style.outlineOffset = '2px';
@@ -1009,13 +1009,13 @@ window.addEventListener('beforeunload', () => {
     document.removeEventListener('mousemove', handleMouseMove);
     window.removeEventListener('scroll', handleScroll);
     window.removeEventListener('resize', handleResize);
-    
+
     // Pause audio to free resources
     if (elements.audioPlayer) {
         elements.audioPlayer.pause();
         elements.audioPlayer.src = '';
     }
-    
+
     // Clear any running intervals
     clearInterval();
 });
