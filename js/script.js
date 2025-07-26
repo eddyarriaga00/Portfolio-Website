@@ -23,17 +23,17 @@ const tracks = [
     {
         title: "Say Slatt Say Ski",
         artist: "Lucki",
-        src: "./music/sayslattsayskiLucki.mp3"
+        src: "music/sayslattsayskiLucki.mp3"
     },
     {
         title: "Blank Song",
         artist: "Blank Song Artist", 
-        src: "music/study-session.mp3"
+        src: "music/blah.mp3"
     },
     {
         title: "Blank Song",
         artist: "Blank Song Artist",
-        src: "music/night-dreams.mp3"
+        src: "music/blah.mp3"
     }
 ];
 
