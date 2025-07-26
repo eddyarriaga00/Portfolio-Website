@@ -5,16 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Eddy Arriaga | Software Developer</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body data-theme="default">
-    <div class="cursor"></div>
+<body data-theme="default" class="font-inter overflow-x-hidden">
+    <div class="custom-cursor"></div>
     <div class="cursor-follower"></div>
 
-    <!-- Real audio player -->
-    <audio id="audioPlayer" controls preload="metadata" crossorigin="anonymous"></audio>
+    <!-- Audio Player (Hidden) -->
+    <audio id="audioPlayer" preload="metadata" crossorigin="anonymous" class="hidden"></audio>
 
-    <div class="loading-screen" id="loadingScreen">
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
         <div class="loading-container">
             <div class="loading-logo">EA</div>
             <div class="loading-text">INITIALIZING</div>
@@ -31,9 +33,12 @@
         </div>
     </div>
 
-    <nav class="nav">
+    <!-- Navigation -->
+    <nav id="navbar" class="nav-bar">
         <div class="nav-container">
-            <a href="index.html" class="logo">EA</a>
+            <a href="#" class="logo-container">
+                <span class="logo-text">EA</span>
+            </a>
             <ul class="nav-links">
                 <li><a href="#about" class="nav-link">About</a></li>
                 <li><a href="#skills" class="nav-link">Skills</a></li>
@@ -41,35 +46,63 @@
                 <li><a href="#experience" class="nav-link">Experience</a></li>
                 <li><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
+            
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobileMenu">
+            <ul class="mobile-nav-links">
+                <li><a href="#about" class="mobile-nav-link">About</a></li>
+                <li><a href="#skills" class="mobile-nav-link">Skills</a></li>
+                <li><a href="#projects" class="mobile-nav-link">Projects</a></li>
+                <li><a href="#experience" class="mobile-nav-link">Experience</a></li>
+                <li><a href="#contact" class="mobile-nav-link">Contact</a></li>
+            </ul>
         </div>
     </nav>
 
-    <section class="hero">
-        <div class="bg-animation">
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="floating-elements">
             <div class="floating-code">console.log('hello');</div>
             <div class="floating-code">function() { }</div>
             <div class="floating-code">&lt;div className="app"&gt;</div>
             <div class="floating-code">const data = [];</div>
             <div class="floating-code">return &lt;Component /&gt;</div>
             <div class="floating-code">npm install react</div>
-            <div class="geometric-shape"></div>
-            <div class="geometric-shape"></div>
-            <div class="geometric-shape"></div>
+            <div class="geometric-shape shape-1"></div>
+            <div class="geometric-shape shape-2"></div>
+            <div class="geometric-shape shape-3"></div>
         </div>
         <div class="hero-content">
-            <h1 class="hero-title">Eddy<br> Arriaga</h1>
+            <h1 class="hero-title">
+                Eddy<br>Arriaga
+            </h1>
             <p class="hero-subtitle">Software Developer | Digital Creator</p>
-            <a href="#about" class="hero-cta">Explore My Work</a>
+            <a href="#about" class="hero-cta">
+                <span class="cta-shimmer"></span>
+                <span class="relative">Explore My Work</span>
+            </a>
         </div>
     </section>
 
-    <section class="about" id="about">
-        <div class="floating-tech-icon">&lt;/&gt;</div>
-        <div class="floating-tech-icon">{ }</div>
-        <div class="floating-tech-icon">[ ]</div>
-        <div class="floating-tech-icon">( )</div>
-        <div class="container">
-            <h2 class="section-title animate-on-scroll">About Me</h2>
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="floating-tech-icon tech-1">&lt;/&gt;</div>
+        <div class="floating-tech-icon tech-2">{ }</div>
+        <div class="floating-tech-icon tech-3">[ ]</div>
+        <div class="floating-tech-icon tech-4">( )</div>
+        <div class="section-container">
+            <h2 class="section-title animate-on-scroll">
+                About Me
+                <span class="section-decorator">{ }</span>
+            </h2>
             <div class="about-content">
                 <div class="about-text animate-on-scroll">
                     <h3>Building Digital Experiences</h3>
@@ -79,7 +112,7 @@
                     <p>I believe in continuous learning, clean code architecture, and the power of collaboration. When I'm not coding, you'll find me exploring new technologies, contributing to open source projects, or mentoring fellow students.</p>
                 </div>
                 
-                <div class="about-stats animate-on-scroll">
+                <div class="stats-grid animate-on-scroll">
                     <div class="stat-item">
                         <span class="stat-number" data-target="1">0</span>
                         <span class="stat-label">Years Experience</span>
@@ -101,44 +134,52 @@
         </div>
     </section>
 
-    <section class="skills" id="skills">
-        <div class="floating-symbols">;</div>
-        <div class="floating-symbols">=&gt;</div>
-        <div class="floating-symbols">&&</div>
-        <div class="floating-symbols">||</div>
-        <div class="floating-symbols">++</div>
-        <div class="container">
-            <h2 class="section-title animate-on-scroll">Technical Skills</h2>
+    <!-- Skills Section -->
+    <section id="skills" class="skills-section">
+        <div class="floating-symbols symbol-1">;</div>
+        <div class="floating-symbols symbol-2">=&gt;</div>
+        <div class="floating-symbols symbol-3">&&</div>
+        <div class="floating-symbols symbol-4">||</div>
+        <div class="floating-symbols symbol-5">++</div>
+        <div class="section-container">
+            <h2 class="section-title animate-on-scroll">
+                Technical Skills
+                <span class="section-decorator">{ }</span>
+            </h2>
             <div class="skills-grid">
-                <div class="skill-card animate-on-scroll">
+                <div class="skill-card animate-on-scroll" data-skill="frontend">
+                    <span class="skill-shimmer"></span>
                     <span class="skill-icon">💻</span>
                     <h3 class="skill-title">Frontend Development</h3>
                     <p class="skill-desc">React, JavaScript, HTML/CSS, and more..</p>
-                    <div class="skill-level">
+                    <div class="skill-progress-container">
                         <div class="skill-progress frontend"></div>
                     </div>
                 </div>
-                <div class="skill-card animate-on-scroll">
+                <div class="skill-card animate-on-scroll" data-skill="backend">
+                    <span class="skill-shimmer"></span>
                     <span class="skill-icon">⚙️</span>
                     <h3 class="skill-title">Backend Development</h3>
                     <p class="skill-desc">Node.js, Python, Java, database design, and API development.</p>
-                    <div class="skill-level">
+                    <div class="skill-progress-container">
                         <div class="skill-progress backend"></div>
                     </div>
                 </div>
-                <div class="skill-card animate-on-scroll">
+                <div class="skill-card animate-on-scroll" data-skill="tools">
+                    <span class="skill-shimmer"></span>
                     <span class="skill-icon">🛠️</span>
                     <h3 class="skill-title">Development Tools</h3>
                     <p class="skill-desc">Git, VS Code, Linux, and Docker.</p>
-                    <div class="skill-level">
+                    <div class="skill-progress-container">
                         <div class="skill-progress tools"></div>
                     </div>
                 </div>
-                <div class="skill-card animate-on-scroll">
+                <div class="skill-card animate-on-scroll" data-skill="mobile">
+                    <span class="skill-shimmer"></span>
                     <span class="skill-icon">📱</span>
                     <h3 class="skill-title">Mobile Development</h3>
                     <p class="skill-desc">React Native.</p>
-                    <div class="skill-level">
+                    <div class="skill-progress-container">
                         <div class="skill-progress mobile"></div>
                     </div>
                 </div>
@@ -146,13 +187,19 @@
         </div>
     </section>
 
-    <section class="projects" id="projects">
-        <div class="container">
-            <h2 class="section-title animate-on-scroll">Featured Projects</h2>
+    <!-- Projects Section -->
+    <section id="projects" class="projects-section">
+        <div class="section-container">
+            <h2 class="section-title animate-on-scroll">
+                Featured Projects
+                <span class="section-decorator">{ }</span>
+            </h2>
             <div class="projects-grid">
                 <div class="project-card animate-on-scroll">
                     <div class="project-image">
                         <div class="project-mockup">
+                            <div class="mockup-header"></div>
+                            <div class="mockup-dots">● ● ●</div>
                             <div class="project-code-preview">
 class SecurePass {
   encrypt(data) {
@@ -160,6 +207,7 @@ class SecurePass {
   }
 }</div>
                         </div>
+                        <div class="project-overlay"></div>
                     </div>
                     <div class="project-content">
                         <h3 class="project-title">Java-DSA-Helper</h3>
@@ -172,9 +220,12 @@ class SecurePass {
                         <a href="#" class="project-link">View Project →</a>
                     </div>
                 </div>
+                
                 <div class="project-card animate-on-scroll">
                     <div class="project-image">
                         <div class="project-mockup">
+                            <div class="mockup-header"></div>
+                            <div class="mockup-dots">● ● ●</div>
                             <div class="project-code-preview">
 const Portfolio = () => {
   return (
@@ -184,6 +235,7 @@ const Portfolio = () => {
   );
 };</div>
                         </div>
+                        <div class="project-overlay"></div>
                     </div>
                     <div class="project-content">
                         <h3 class="project-title">Portfolio-Website</h3>
@@ -196,9 +248,12 @@ const Portfolio = () => {
                         <a href="#" class="project-link">View Project →</a>
                     </div>
                 </div>
+                
                 <div class="project-card animate-on-scroll">
                     <div class="project-image">
                         <div class="project-mockup">
+                            <div class="mockup-header"></div>
+                            <div class="mockup-dots">● ● ●</div>
                             <div class="project-code-preview">
 const TaskApp = () => {
   const [tasks, setTasks] = useState([]);
@@ -208,6 +263,7 @@ const TaskApp = () => {
   };
 };</div>
                         </div>
+                        <div class="project-overlay"></div>
                     </div>
                     <div class="project-content">
                         <h3 class="project-title">NBA-Tracker-STATS-APP</h3>
@@ -224,10 +280,15 @@ const TaskApp = () => {
         </div>
     </section>
 
-    <section class="experience" id="experience">
-        <div class="container">
-            <h2 class="section-title animate-on-scroll">Experience</h2>
+    <!-- Experience Section -->
+    <section id="experience" class="experience-section">
+        <div class="section-container">
+            <h2 class="section-title animate-on-scroll">
+                Experience
+                <span class="section-decorator">{ }</span>
+            </h2>
             <div class="timeline">
+                <div class="timeline-line"></div>
                 <div class="timeline-item animate-on-scroll">
                     <div class="timeline-dot"></div>
                     <div class="timeline-icon">🍎</div>
@@ -262,82 +323,128 @@ const TaskApp = () => {
         </div>
     </section>
 
-    <section class="contact" id="contact">
-        <div class="floating-contact-icons">📧</div>
-        <div class="floating-contact-icons">💬</div>
-        <div class="floating-contact-icons">🔗</div>
-        <div class="container">
-            <h2 class="section-title animate-on-scroll">Let's Connect</h2>
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="floating-contact-icons contact-1">📧</div>
+        <div class="floating-contact-icons contact-2">💬</div>
+        <div class="floating-contact-icons contact-3">🔗</div>
+        <div class="section-container">
+            <h2 class="section-title animate-on-scroll">
+                Let's Connect
+                <span class="section-decorator">{ }</span>
+            </h2>
             <div class="contact-content">
+                <div class="contact-terminal">$ contact --interactive</div>
                 <p class="contact-text animate-on-scroll">
                     I'm always interested in new opportunities and collaborations. 
                     Whether you're looking for a developer, have a project in mind, 
                     or just want to connect, I'd love to hear from you.
                 </p>
                 <div class="contact-links animate-on-scroll">
-                    <a href="mailto:eddyarriaga06@gmail.com" class="contact-link">Email Me</a>
-                    <a href="https://github.com/eddyarriaga00" class="contact-link" target="_blank">GitHub</a>
-                    <a href="https://www.linkedin.com/in/eddy-arriaga/" class="contact-link" target="_blank">LinkedIn</a>
+                    <a href="mailto:eddyarriaga06@gmail.com" class="contact-link">
+                        <span class="contact-fill"></span>
+                        <span class="relative">Email Me</span>
+                    </a>
+                    <a href="https://github.com/eddyarriaga00" class="contact-link" target="_blank">
+                        <span class="contact-fill"></span>
+                        <span class="relative">GitHub</span>
+                    </a>
+                    <a href="https://www.linkedin.com/in/eddy-arriaga/" class="contact-link" target="_blank">
+                        <span class="contact-fill"></span>
+                        <span class="relative">LinkedIn</span>
+                    </a>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Footer -->
     <footer class="footer">
         <p class="footer-text">© 2024 Eddy Arriaga. All rights reserved.</p>
     </footer>
 
+    <!-- Settings Panel -->
     <div class="settings-panel">
         <button class="settings-button" id="settingsBtn">⚙️</button>
         <div class="settings-menu" id="settingsMenu">
-            <div class="settings-menu-content">
+            <div class="settings-content">
                 <div class="settings-section">
                     <h3 class="settings-title">Choose Theme</h3>
                     <div class="theme-grid">
                         <div class="theme-option active" data-theme="default">
-                            <div class="theme-preview" style="background: linear-gradient(90deg, #000000 30%, #ffffff 70%);"></div>
+                            <div class="theme-preview default-preview"></div>
                             Default
                         </div>
                         <div class="theme-option" data-theme="github">
-                            <div class="theme-preview" style="background: linear-gradient(90deg, #0d1117 30%, #238636 70%);"></div>
+                            <div class="theme-preview github-preview"></div>
                             GitHub
                         </div>
                         <div class="theme-option" data-theme="discord">
-                            <div class="theme-preview" style="background: linear-gradient(90deg, #2c2f33 30%, #5865f2 70%);"></div>
+                            <div class="theme-preview discord-preview"></div>
                             Discord
                         </div>
                         <div class="theme-option" data-theme="spotify">
-                            <div class="theme-preview" style="background: linear-gradient(90deg, #121212 30%, #1db954 70%);"></div>
+                            <div class="theme-preview spotify-preview"></div>
                             Spotify
                         </div>
                         <div class="theme-option" data-theme="vscode">
-                            <div class="theme-preview" style="background: linear-gradient(90deg, #1e1e1e 30%, #007acc 70%);"></div>
+                            <div class="theme-preview vscode-preview"></div>
                             VS Code
                         </div>
+                        <div class="theme-option" data-theme="ocean">
+                            <div class="theme-preview ocean-preview"></div>
+                            Ocean
+                        </div>
+                    </div>
+                    
+                    <!-- Custom Theme Maker -->
+                    <div class="custom-theme-section">
+                        <h4 class="custom-theme-title">Create Custom Theme</h4>
+                        <div class="color-pickers">
+                            <div class="color-picker-group">
+                                <label for="primaryColor">Primary Color</label>
+                                <input type="color" id="primaryColor" value="#000000" class="color-input">
+                            </div>
+                            <div class="color-picker-group">
+                                <label for="accentColor">Accent Color</label>
+                                <input type="color" id="accentColor" value="#ffffff" class="color-input">
+                            </div>
+                        </div>
+                        <button class="apply-custom-theme" id="applyCustomTheme">Apply Custom Theme</button>
                     </div>
                 </div>
                 
                 <div class="settings-section">
                     <div class="music-player">
-                        <div id="audioError" class="audio-error" style="display: none;">
+                        <div id="audioError" class="audio-error hidden">
                             Music files not found. Make sure to add your audio files to the /music folder.
                         </div>
                         
-                        <div class="now-playing">
+                        <div class="player-info">
                             <div class="track-info">
                                 <div class="track-title" id="currentTrackTitle">Select a track</div>
                                 <div class="track-artist" id="currentTrackArtist">Click a song to play</div>
                             </div>
                             
                             <div class="player-controls">
-                                <button class="control-btn" id="prevBtn">⏮</button>
-                                <button class="control-btn play-pause" id="playPauseBtn">▶</button>
-                                <button class="control-btn" id="nextBtn">⏭</button>
+                                <button class="control-btn" id="prevBtn">
+                                    <span class="control-shimmer"></span>
+                                    ⏮
+                                </button>
+                                <button class="control-btn play-pause-btn" id="playPauseBtn">
+                                    <span class="control-shimmer"></span>
+                                    ▶
+                                </button>
+                                <button class="control-btn" id="nextBtn">
+                                    <span class="control-shimmer"></span>
+                                    ⏭
+                                </button>
                             </div>
                             
-                            <div class="progress-container">
+                            <div class="progress-section">
                                 <div class="progress-bar" id="progressBar">
                                     <div class="progress-fill" id="progressFill"></div>
+                                    <div class="progress-handle"></div>
                                 </div>
                                 <div class="time-display">
                                     <span id="currentTime">0:00</span>
@@ -345,21 +452,22 @@ const TaskApp = () => {
                                 </div>
                             </div>
                             
-                            <div class="volume-container">
+                            <div class="volume-section">
                                 <span class="volume-icon">🔊</span>
                                 <div class="volume-slider" id="volumeSlider">
                                     <div class="volume-fill" id="volumeFill"></div>
+                                    <div class="volume-handle"></div>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="playlist-container">
-                            <div class="playlist-title">
-                                <span class="chart-icon">🎵</span>
+                        <div class="playlist-section">
+                            <div class="playlist-header">
+                                <span class="playlist-icon">🎵</span>
                                 <span>LoFi Playlist</span>
                             </div>
                             <ul class="playlist" id="playlist">
-                                <li class="playlist-item" data-src="music/say-slatt-say-ski.mp3">
+                                <li class="playlist-item" data-src="music/sayslattsayskiLucki.mp3">
                                     <div class="track-number">1</div>
                                     <div class="track-details">
                                         <div class="playlist-track-title">Say Slatt Say Ski</div>
@@ -382,22 +490,6 @@ const TaskApp = () => {
                                         <div class="playlist-track-artist">Ambient Sounds</div>
                                     </div>
                                     <div class="track-duration">3:56</div>
-                                </li>
-                                <li class="playlist-item" data-src="./music/coffee-morning.mp3">
-                                    <div class="track-number">4</div>
-                                    <div class="track-details">
-                                        <div class="playlist-track-title">Coffee Morning</div>
-                                        <div class="playlist-track-artist">Cafe Beats</div>
-                                    </div>
-                                    <div class="track-duration">4:12</div>
-                                </li>
-                                <li class="playlist-item" data-src="./music/rain-drops.mp3">
-                                    <div class="track-number">5</div>
-                                    <div class="track-details">
-                                        <div class="playlist-track-title">Rain Drops</div>
-                                        <div class="playlist-track-artist">Nature LoFi</div>
-                                    </div>
-                                    <div class="track-duration">3:38</div>
                                 </li>
                             </ul>
                         </div>
