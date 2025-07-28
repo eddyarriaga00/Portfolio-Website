@@ -2,12 +2,6 @@
 
 > A sleek, interactive portfolio
 
-## Features
-
-**🎵 Music Player** – Custom audio controls  
-**🎨 Themes** – GitHub, Discord, Spotify, VS Code, Ocean, Default  
-**⚙️ Settings Panel** – Cursor, theme maker, preferences  
-
 ## 🛠️ Tech Stack
 
 **Frontend** – HTML5, Tailwind CSS, JavaScript  
