@@ -46,6 +46,5 @@ Portfolio-Website/
 ```
 
 📄 License
-MIT License – Free to use or remix for your own site!
 
 <div align="left"> <a href="https://eddyarriaga00.github.io/Portfolio-Website/" target="_blank"> <img src="https://img.shields.io/badge/🌐 Live Demo-000?style=for-the-badge&logo=github&logoColor=white" /> </a> <a href="mailto:eddyarriaga06@gmail.com"> <img src="https://img.shields.io/badge/📧 Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white" /> </a> <a href="https://www.linkedin.com/in/eddy-arriaga/" target="_blank"> <img src="https://img.shields.io/badge/💼 LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" /> </a> </div> 
