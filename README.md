@@ -1,18 +1,30 @@
-# 🚀 Eddy Arriaga - Modern Portfolio
+# 🚀 Eddy Arriaga - Modern Tailwind Portfolio
 
-> A sleek, interactive portfolio with real music player and dynamic themes
+> A sleek, interactive portfolio powered by Tailwind CSS with dynamic themes and real audio
 
 ## ✨ Features
 
-**🎵 Music Player** - Real audio playback with custom controls • **🎨 6 Themes** - Default, GitHub, Discord, Spotify, VS Code, Ocean • **⚙️ Settings Panel** - Cursor customization, theme maker, preferences • **📱 Responsive** - Optimized for desktop, tablet, and mobile • **🖱️ Custom Cursor** - Animated cursor with follower (desktop) • **✨ Animations** - Smooth scroll animations and 3D card effects
+**🎵 Music Player** – Custom audio controls  
+**🎨 Themes** – GitHub, Discord, Spotify, VS Code, Ocean, Default  
+**⚙️ Settings Panel** – Cursor, theme maker, preferences  
+**🖱️ Animated Cursor** – Custom follower (desktop)  
+**📱 Responsive** – Mobile, tablet, desktop friendly  
+**💫 Animations** – Smooth scroll, 3D hover cards
 
 ## 🛠️ Tech Stack
 
-**Frontend:** HTML5, CSS3, Vanilla JavaScript • **Audio:** HTML5 Audio API • **Styling:** Custom CSS with CSS Variables • **Performance:** Optimized animations, throttled events
+**Frontend** – HTML5, Tailwind CSS, JavaScript  
+**Audio** – HTML5 Audio API  
+**Performance** – GPU-accelerated animations, throttled events
 
 ## 🎯 Sections
 
-**Hero** - Animated typewriter intro • **About** - Personal info with animated stats • **Skills** - Technical expertise with progress bars • **Projects** - Featured work with code previews • **Experience** - Professional timeline • **Contact** - Social links and email
+**Hero** – Typewriter intro  
+**About** – Animated stats + bio  
+**Skills** – Progress bars for stack  
+**Projects** – Live code previews  
+**Experience** – Vertical timeline  
+**Contact** – Socials + direct email
 
 ## 🚀 Quick Start
 
@@ -20,32 +32,20 @@
 git clone https://github.com/eddyarriaga00/Portfolio-Website.git
 cd Portfolio-Website
 # Open index.html in your browser
-```
-
-## 📁 Structure
-
-```
+📁 Structure
+bash
+Copy
+Edit
 Portfolio-Website/
-├── index.html          # Main page
-├── css/style.css       # All styles & themes
-├── js/script.js        # Interactive features
-├── music/              # Audio files
+├── index.html          # Main entry point
+├── js/script.js        # All interactivity
+├── tailwind.config.js  # Tailwind setup
+├── postcss.config.js   # PostCSS for Tailwind
+├── music/              # Audio assets
 └── README.md
-```
-## 🎨 Customization
 
-**Themes:** Choose from 6 built-in themes or create custom ones • **Settings:** Adjust cursor, animations, and preferences • **Content:** Update personal info, projects, and experience
 
-## 📄 License
+📄 License
+MIT License – Free to use or remix for your own site!
 
-MIT License - feel free to use for your own portfolio!
-
----
-
-<div align="center">
-
-**Made with ❤️ by [Eddy Arriaga](https://github.com/eddyarriaga00)**
-
-[🌐 Live Demo](your-portfolio-url-here) • [📧 Contact](mailto:eddyarriaga06@gmail.com) • [💼 LinkedIn](https://www.linkedin.com/in/eddy-arriaga/)
-
-</div>
+<div align="center"> <a href="https://eddyarriaga00.github.io/Portfolio-Website/" target="_blank"> <img src="https://img.shields.io/badge/🌐 Live Demo-000?style=for-the-badge&logo=github&logoColor=white" /> </a> <a href="mailto:eddyarriaga06@gmail.com"> <img src="https://img.shields.io/badge/📧 Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white" /> </a> <a href="https://www.linkedin.com/in/eddy-arriaga/" target="_blank"> <img src="https://img.shields.io/badge/💼 LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" /> </a> </div> ```
