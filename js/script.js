@@ -1,5 +1,5 @@
 /* ===========================
-   COMPLETE OPTIMIZED PORTFOLIO SCRIPT WITH ADVANCED SETTINGS
+   COMPLETE MOBILE-OPTIMIZED PORTFOLIO SCRIPT WITH ENHANCED SETTINGS
    =========================== */
 
 'use strict';
@@ -41,6 +41,15 @@ const tracks = [
 const isLowEndDevice = navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4;
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+const isTablet = /iPad|Android(?=.*Mobile)/i.test(navigator.userAgent);
+const isTouch = 'ontouchstart' in window;
+
+// Device type detection
+const deviceType = (() => {
+    if (isMobile && !isTablet) return 'mobile';
+    if (isTablet) return 'tablet';
+    return 'desktop';
+})();
 
 // Cached DOM elements
 const elements = {};
@@ -52,15 +61,20 @@ let isLoadingComplete = false;
 let currentSettingsSection = 'main';
 let settings = {
     cursor: {
-        enabled: true,
+        enabled: !isMobile && !isTouch,
         size: 12,
         opacity: 100,
         followerSize: 36
     },
     misc: {
-        reducedMotion: false,
+        reducedMotion: prefersReducedMotion || isLowEndDevice,
         autoplayMusic: false,
-        showFloatingElements: true
+        showFloatingElements: !isMobile,
+        showParticles: !isMobile,
+        showCodeSnippets: !isMobile,
+        showGeometricShapes: !isMobile,
+        animationSpeed: isLowEndDevice ? 50 : 100,
+        parallaxIntensity: isMobile ? 0 : 100
     }
 };
 
@@ -72,8 +86,15 @@ document.addEventListener('DOMContentLoaded', initializeApp);
 window.addEventListener('load', handleWindowLoad);
 
 function initializeApp() {
+    console.log('🚀 Initializing portfolio app...');
+    console.log('Device type:', deviceType);
+    console.log('Is mobile:', isMobile);
+    console.log('Is tablet:', isTablet);
+    console.log('Is touch device:', isTouch);
+    
     cacheElements();
     loadSettings();
+    setupDeviceOptimizations();
     initCustomCursor();
     initNavigation();
     initScrollAnimations();
@@ -88,6 +109,7 @@ function initializeApp() {
     initMobileMenu();
     initBackToTop();
     initAdvancedSettings();
+    initMobileOptimizations();
     
     // Performance optimization
     if (isLowEndDevice || prefersReducedMotion || settings.misc.reducedMotion) {
@@ -97,6 +119,8 @@ function initializeApp() {
     if (isMobile) {
         optimizeForMobile();
     }
+    
+    console.log('✅ Portfolio app initialized successfully');
 }
 
 function handleWindowLoad() {
@@ -116,6 +140,7 @@ function cacheElements() {
     elements.settingsBtn = document.getElementById('settingsBtn');
     elements.settingsMenu = document.getElementById('settingsMenu');
     elements.settingsMainMenu = document.getElementById('settingsMainMenu');
+    elements.settingsCloseBtn = document.getElementById('settingsCloseBtn');
     elements.mobileMenuBtn = document.getElementById('mobileMenuBtn');
     elements.mobileMenu = document.getElementById('mobileMenu');
     elements.audioPlayer = document.getElementById('audioPlayer');
@@ -152,15 +177,95 @@ function cacheElements() {
     elements.followerSize = document.getElementById('followerSize');
     elements.followerSizeValue = document.getElementById('followerSizeValue');
     
-    // Misc settings
+    // Enhanced misc settings
     elements.reducedMotion = document.getElementById('reducedMotion');
     elements.autoplayMusic = document.getElementById('autoplayMusic');
     elements.showFloatingElements = document.getElementById('showFloatingElements');
+    elements.showParticles = document.getElementById('showParticles');
+    elements.showCodeSnippets = document.getElementById('showCodeSnippets');
+    elements.showGeometricShapes = document.getElementById('showGeometricShapes');
+    elements.animationSpeed = document.getElementById('animationSpeed');
+    elements.animationSpeedValue = document.getElementById('animationSpeedValue');
+    elements.parallaxIntensity = document.getElementById('parallaxIntensity');
+    elements.parallaxIntensityValue = document.getElementById('parallaxIntensityValue');
     elements.resetSettings = document.getElementById('resetSettings');
 }
 
 // ===========================
-// SETTINGS MANAGEMENT
+// DEVICE OPTIMIZATIONS
+// ===========================
+
+function setupDeviceOptimizations() {
+    // Add device-specific classes
+    document.body.classList.add(`device-${deviceType}`);
+    
+    if (isMobile) {
+        document.body.classList.add('mobile-device');
+    }
+    
+    if (isTouch) {
+        document.body.classList.add('touch-device');
+    }
+    
+    if (isLowEndDevice) {
+        document.body.classList.add('low-end-device');
+    }
+}
+
+function initMobileOptimizations() {
+    if (isMobile) {
+        // Optimize viewport
+        const viewport = document.querySelector('meta[name="viewport"]');
+        if (viewport) {
+            viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
+        }
+        
+        // Prevent bounce scrolling on iOS
+        document.body.addEventListener('touchmove', (e) => {
+            if (e.target === document.body) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+        
+        // Optimize touch events
+        const passiveEvents = ['touchstart', 'touchmove', 'touchend'];
+        passiveEvents.forEach(event => {
+            document.addEventListener(event, () => {}, { passive: true });
+        });
+        
+        // Prevent double-tap zoom
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+        
+        // Add visual feedback for touch interactions
+        addTouchFeedback();
+    }
+}
+
+function addTouchFeedback() {
+    const touchElements = document.querySelectorAll('button, .nav-link, .mobile-nav-link, .contact-link, .project-link, .settings-category, .theme-option, .playlist-item, .control-btn');
+    
+    touchElements.forEach(element => {
+        element.addEventListener('touchstart', function() {
+            this.style.transform = 'scale(0.95)';
+        }, { passive: true });
+        
+        element.addEventListener('touchend', function() {
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 150);
+        }, { passive: true });
+    });
+}
+
+// ===========================
+// SETTINGS MANAGEMENT (ENHANCED)
 // ===========================
 
 function loadSettings() {
@@ -173,11 +278,24 @@ function loadSettings() {
             console.warn('Failed to parse saved settings:', e);
         }
     }
+    
+    // Apply device-specific defaults
+    if (isMobile) {
+        settings.cursor.enabled = false;
+        settings.misc.showFloatingElements = false;
+        settings.misc.showParticles = false;
+        settings.misc.parallaxIntensity = 0;
+    }
+    
     applyLoadedSettings();
 }
 
 function saveSettings() {
-    localStorage.setItem('portfolio-settings', JSON.stringify(settings));
+    try {
+        localStorage.setItem('portfolio-settings', JSON.stringify(settings));
+    } catch (e) {
+        console.warn('Failed to save settings:', e);
+    }
 }
 
 function applyLoadedSettings() {
@@ -185,7 +303,7 @@ function applyLoadedSettings() {
     if (settings.cursor) {
         updateCursorVariables();
         
-        if (!settings.cursor.enabled && !isMobile) {
+        if (!settings.cursor.enabled || isMobile || isTouch) {
             if (elements.cursor) elements.cursor.style.display = 'none';
             if (elements.follower) elements.follower.style.display = 'none';
             document.body.style.cursor = 'auto';
@@ -198,9 +316,9 @@ function applyLoadedSettings() {
             disableHeavyAnimations();
         }
         
-        if (!settings.misc.showFloatingElements) {
-            hideFloatingElements();
-        }
+        updateFloatingElementsVisibility();
+        updateAnimationSpeed();
+        updateParallaxIntensity();
     }
 }
 
@@ -211,22 +329,52 @@ function updateCursorVariables() {
     root.style.setProperty('--follower-size', settings.cursor.followerSize + 'px');
 }
 
-function hideFloatingElements() {
-    const floatingElements = document.querySelectorAll(
-        '.floating-code, .geometric-shape, .floating-tech-icon, .floating-symbols, .floating-contact-icons'
-    );
+function updateFloatingElementsVisibility() {
+    const floatingElements = document.querySelectorAll('.floating-element');
+    const codeSnippets = document.querySelectorAll('.floating-code');
+    const geometricShapes = document.querySelectorAll('.geometric-shape');
+    const particles = document.querySelectorAll('.floating-tech-icon, .floating-symbols, .floating-contact-icons');
+    
+    // Show/hide all floating elements
     floatingElements.forEach(el => {
-        el.style.display = 'none';
+        el.style.display = settings.misc.showFloatingElements ? '' : 'none';
+    });
+    
+    // Show/hide specific element types
+    if (settings.misc.showFloatingElements) {
+        codeSnippets.forEach(el => {
+            el.style.display = settings.misc.showCodeSnippets ? '' : 'none';
+        });
+        
+        geometricShapes.forEach(el => {
+            el.style.display = settings.misc.showGeometricShapes ? '' : 'none';
+        });
+        
+        particles.forEach(el => {
+            el.style.display = settings.misc.showParticles ? '' : 'none';
+        });
+    }
+}
+
+function updateAnimationSpeed() {
+    const root = document.documentElement;
+    const speed = settings.misc.animationSpeed / 100;
+    root.style.setProperty('--animation-speed', speed);
+    
+    // Update individual animation durations
+    const animatedElements = document.querySelectorAll('.floating-element');
+    animatedElements.forEach(el => {
+        if (el.style.animationDuration) {
+            const baseDuration = parseFloat(el.style.animationDuration) || 25;
+            el.style.animationDuration = `${baseDuration / speed}s`;
+        }
     });
 }
 
-function showFloatingElements() {
-    const floatingElements = document.querySelectorAll(
-        '.floating-code, .geometric-shape, .floating-tech-icon, .floating-symbols, .floating-contact-icons'
-    );
-    floatingElements.forEach(el => {
-        el.style.display = '';
-    });
+function updateParallaxIntensity() {
+    const root = document.documentElement;
+    const intensity = settings.misc.parallaxIntensity / 100;
+    root.style.setProperty('--parallax-intensity', intensity);
 }
 
 function resetAllSettings() {
@@ -235,18 +383,23 @@ function resetAllSettings() {
         localStorage.removeItem('preferred-theme');
         localStorage.removeItem('custom-theme');
         
-        // Reset to defaults
+        // Reset to defaults with device considerations
         settings = {
             cursor: {
-                enabled: true,
+                enabled: !isMobile && !isTouch,
                 size: 12,
                 opacity: 100,
                 followerSize: 36
             },
             misc: {
-                reducedMotion: false,
+                reducedMotion: prefersReducedMotion || isLowEndDevice,
                 autoplayMusic: false,
-                showFloatingElements: true
+                showFloatingElements: !isMobile,
+                showParticles: !isMobile,
+                showCodeSnippets: !isMobile,
+                showGeometricShapes: !isMobile,
+                animationSpeed: isLowEndDevice ? 50 : 100,
+                parallaxIntensity: isMobile ? 0 : 100
             }
         };
         
@@ -256,13 +409,13 @@ function resetAllSettings() {
 }
 
 // ===========================
-// ADVANCED SETTINGS SYSTEM
+// ENHANCED SETTINGS SYSTEM
 // ===========================
 
 function initAdvancedSettings() {
     initSettingsNavigation();
     initCursorSettings();
-    initMiscSettings();
+    initEnhancedMiscSettings();
     populateSettingsValues();
 }
 
@@ -288,33 +441,39 @@ function initSettingsNavigation() {
             }
         });
     });
+    
+    // Close button for mobile
+    if (elements.settingsCloseBtn) {
+        elements.settingsCloseBtn.addEventListener('click', closeSettings);
+    }
 }
 
 function showSettingsSection(sectionName) {
-  // Hide all submenus
-  document.querySelectorAll('.settings-section-view').forEach(section => {
-    section.classList.remove('active');
-  });
-
-  // Toggle visibility based on what was clicked
-  if (sectionName === 'main') {
-    elements.settingsMainMenu.classList.add('active');
-  } else {
-    elements.settingsMainMenu.classList.remove('active');
-
-    const target = document.getElementById(sectionName + 'Section');
-    if (target) {
-      target.classList.add('active');
+    // Hide all sections
+    document.querySelectorAll('.settings-section-view').forEach(section => {
+        section.classList.remove('active');
+    });
+    
+    // Toggle visibility based on what was clicked
+    if (sectionName === 'main') {
+        elements.settingsMainMenu.classList.add('active');
+    } else {
+        elements.settingsMainMenu.classList.remove('active');
+        
+        const target = document.getElementById(sectionName + 'Section');
+        if (target) {
+            target.classList.add('active');
+        }
     }
-  }
-
-  currentSettingsSection = sectionName;
-
-  // Scroll to top for mobile UX
-  const scrollContainer = document.querySelector('.settings-scroll-container');
-  if (scrollContainer) scrollContainer.scrollTop = 0;
+    
+    currentSettingsSection = sectionName;
+    
+    // Scroll to top for better UX
+    const scrollContainer = document.querySelector('.settings-scroll-container');
+    if (scrollContainer) {
+        scrollContainer.scrollTop = 0;
+    }
 }
-
 
 function initCursorSettings() {
     if (!elements.cursorEnabled) return;
@@ -323,10 +482,10 @@ function initCursorSettings() {
     elements.cursorEnabled.addEventListener('change', (e) => {
         settings.cursor.enabled = e.target.checked;
         
-        if (!isMobile) {
+        if (!isMobile && !isTouch) {
             if (settings.cursor.enabled) {
-                if (elements.cursor) elements.cursor.style.display = '';
-                if (elements.follower) elements.follower.style.display = '';
+                if (elements.cursor) elements.cursor.style.display = 'block';
+                if (elements.follower) elements.follower.style.display = 'block';
                 document.body.style.cursor = 'none';
             } else {
                 if (elements.cursor) elements.cursor.style.display = 'none';
@@ -339,31 +498,43 @@ function initCursorSettings() {
     });
     
     // Cursor size slider
-    elements.cursorSize.addEventListener('input', (e) => {
-        settings.cursor.size = parseInt(e.target.value);
-        elements.cursorSizeValue.textContent = settings.cursor.size + 'px';
-        updateCursorVariables();
-        saveSettings();
-    });
+    if (elements.cursorSize) {
+        elements.cursorSize.addEventListener('input', (e) => {
+            settings.cursor.size = parseInt(e.target.value);
+            if (elements.cursorSizeValue) {
+                elements.cursorSizeValue.textContent = settings.cursor.size + 'px';
+            }
+            updateCursorVariables();
+            saveSettings();
+        });
+    }
     
     // Cursor opacity slider
-    elements.cursorOpacity.addEventListener('input', (e) => {
-        settings.cursor.opacity = parseInt(e.target.value);
-        elements.cursorOpacityValue.textContent = settings.cursor.opacity + '%';
-        updateCursorVariables();
-        saveSettings();
-    });
+    if (elements.cursorOpacity) {
+        elements.cursorOpacity.addEventListener('input', (e) => {
+            settings.cursor.opacity = parseInt(e.target.value);
+            if (elements.cursorOpacityValue) {
+                elements.cursorOpacityValue.textContent = settings.cursor.opacity + '%';
+            }
+            updateCursorVariables();
+            saveSettings();
+        });
+    }
     
     // Follower size slider
-    elements.followerSize.addEventListener('input', (e) => {
-        settings.cursor.followerSize = parseInt(e.target.value);
-        elements.followerSizeValue.textContent = settings.cursor.followerSize + 'px';
-        updateCursorVariables();
-        saveSettings();
-    });
+    if (elements.followerSize) {
+        elements.followerSize.addEventListener('input', (e) => {
+            settings.cursor.followerSize = parseInt(e.target.value);
+            if (elements.followerSizeValue) {
+                elements.followerSizeValue.textContent = settings.cursor.followerSize + 'px';
+            }
+            updateCursorVariables();
+            saveSettings();
+        });
+    }
 }
 
-function initMiscSettings() {
+function initEnhancedMiscSettings() {
     if (!elements.reducedMotion) return;
     
     // Reduced motion toggle
@@ -380,23 +551,72 @@ function initMiscSettings() {
     });
     
     // Autoplay music toggle
-    elements.autoplayMusic.addEventListener('change', (e) => {
-        settings.misc.autoplayMusic = e.target.checked;
-        saveSettings();
-    });
+    if (elements.autoplayMusic) {
+        elements.autoplayMusic.addEventListener('change', (e) => {
+            settings.misc.autoplayMusic = e.target.checked;
+            saveSettings();
+        });
+    }
     
     // Show floating elements toggle
-    elements.showFloatingElements.addEventListener('change', (e) => {
-        settings.misc.showFloatingElements = e.target.checked;
-        
-        if (settings.misc.showFloatingElements) {
-            showFloatingElements();
-        } else {
-            hideFloatingElements();
-        }
-        
-        saveSettings();
-    });
+    if (elements.showFloatingElements) {
+        elements.showFloatingElements.addEventListener('change', (e) => {
+            settings.misc.showFloatingElements = e.target.checked;
+            updateFloatingElementsVisibility();
+            saveSettings();
+        });
+    }
+    
+    // Show particles toggle
+    if (elements.showParticles) {
+        elements.showParticles.addEventListener('change', (e) => {
+            settings.misc.showParticles = e.target.checked;
+            updateFloatingElementsVisibility();
+            saveSettings();
+        });
+    }
+    
+    // Show code snippets toggle
+    if (elements.showCodeSnippets) {
+        elements.showCodeSnippets.addEventListener('change', (e) => {
+            settings.misc.showCodeSnippets = e.target.checked;
+            updateFloatingElementsVisibility();
+            saveSettings();
+        });
+    }
+    
+    // Show geometric shapes toggle
+    if (elements.showGeometricShapes) {
+        elements.showGeometricShapes.addEventListener('change', (e) => {
+            settings.misc.showGeometricShapes = e.target.checked;
+            updateFloatingElementsVisibility();
+            saveSettings();
+        });
+    }
+    
+    // Animation speed slider
+    if (elements.animationSpeed) {
+        elements.animationSpeed.addEventListener('input', (e) => {
+            settings.misc.animationSpeed = parseInt(e.target.value);
+            if (elements.animationSpeedValue) {
+                elements.animationSpeedValue.textContent = settings.misc.animationSpeed + '%';
+            }
+            updateAnimationSpeed();
+            saveSettings();
+        });
+    }
+    
+    // Parallax intensity slider
+    if (elements.parallaxIntensity) {
+        elements.parallaxIntensity.addEventListener('input', (e) => {
+            settings.misc.parallaxIntensity = parseInt(e.target.value);
+            if (elements.parallaxIntensityValue) {
+                elements.parallaxIntensityValue.textContent = settings.misc.parallaxIntensity + '%';
+            }
+            updateParallaxIntensity();
+            saveSettings();
+        });
+    }
     
     // Reset settings button
     if (elements.resetSettings) {
@@ -431,7 +651,7 @@ function populateSettingsValues() {
         }
     }
     
-    // Populate misc settings
+    // Populate enhanced misc settings
     if (elements.reducedMotion) {
         elements.reducedMotion.checked = settings.misc.reducedMotion;
     }
@@ -443,19 +663,43 @@ function populateSettingsValues() {
     if (elements.showFloatingElements) {
         elements.showFloatingElements.checked = settings.misc.showFloatingElements;
     }
+    
+    if (elements.showParticles) {
+        elements.showParticles.checked = settings.misc.showParticles;
+    }
+    
+    if (elements.showCodeSnippets) {
+        elements.showCodeSnippets.checked = settings.misc.showCodeSnippets;
+    }
+    
+    if (elements.showGeometricShapes) {
+        elements.showGeometricShapes.checked = settings.misc.showGeometricShapes;
+    }
+    
+    if (elements.animationSpeed) {
+        elements.animationSpeed.value = settings.misc.animationSpeed;
+        if (elements.animationSpeedValue) {
+            elements.animationSpeedValue.textContent = settings.misc.animationSpeed + '%';
+        }
+    }
+    
+    if (elements.parallaxIntensity) {
+        elements.parallaxIntensity.value = settings.misc.parallaxIntensity;
+        if (elements.parallaxIntensityValue) {
+            elements.parallaxIntensityValue.textContent = settings.misc.parallaxIntensity + '%';
+        }
+    }
 }
 
 function enableHeavyAnimations() {
-    const heavyAnimationElements = document.querySelectorAll(
-        '.floating-code, .geometric-shape, .floating-tech-icon, .floating-symbols, .floating-contact-icons'
-    );
+    const heavyAnimationElements = document.querySelectorAll('.floating-element');
     
     heavyAnimationElements.forEach(el => {
         el.style.animation = '';
-        if (settings.misc.showFloatingElements) {
-            el.style.display = '';
-        }
     });
+    
+    updateFloatingElementsVisibility();
+    updateAnimationSpeed();
     
     // Reset animation durations
     document.documentElement.style.removeProperty('--animation-duration');
@@ -492,7 +736,7 @@ function initBackToTop() {
         } else {
             elements.backToTop.classList.remove('show');
         }
-    }, 100));
+    }, 100), { passive: true });
     
     // Smooth scroll to top when clicked
     elements.backToTop.addEventListener('click', () => {
@@ -516,9 +760,11 @@ function optimizeForMobile() {
     // Add mobile class for specific styling
     document.body.classList.add('mobile-device');
     
-    // Optimize touch events
-    document.addEventListener('touchstart', () => {}, { passive: true });
-    document.addEventListener('touchmove', () => {}, { passive: true });
+    // Optimize touch events with passive listeners
+    const passiveOptions = { passive: true };
+    document.addEventListener('touchstart', () => {}, passiveOptions);
+    document.addEventListener('touchmove', () => {}, passiveOptions);
+    document.addEventListener('touchend', () => {}, passiveOptions);
     
     // Prevent zoom on double tap
     let lastTouchEnd = 0;
@@ -529,10 +775,19 @@ function optimizeForMobile() {
         }
         lastTouchEnd = now;
     }, false);
+    
+    // Disable floating elements on mobile for performance
+    settings.misc.showFloatingElements = false;
+    settings.misc.showParticles = false;
+    settings.misc.showCodeSnippets = false;
+    settings.misc.showGeometricShapes = false;
+    settings.misc.parallaxIntensity = 0;
+    
+    updateFloatingElementsVisibility();
 }
 
 // ===========================
-// MOBILE MENU
+// MOBILE MENU (ENHANCED)
 // ===========================
 
 function initMobileMenu() {
@@ -554,6 +809,13 @@ function initMobileMenu() {
             closeMobileMenu();
         }
     });
+    
+    // Handle escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && elements.mobileMenu.classList.contains('active')) {
+            closeMobileMenu();
+        }
+    });
 }
 
 function toggleMobileMenu() {
@@ -570,6 +832,9 @@ function openMobileMenu() {
     elements.mobileMenuBtn.classList.add('active');
     elements.mobileMenu.classList.add('active');
     document.body.style.overflow = 'hidden';
+    
+    // Focus management for accessibility
+    elements.mobileMenu.focus();
 }
 
 function closeMobileMenu() {
@@ -579,7 +844,7 @@ function closeMobileMenu() {
 }
 
 // ===========================
-// AUDIO PLAYER FUNCTIONS
+// AUDIO PLAYER FUNCTIONS (ENHANCED)
 // ===========================
 
 function initAudioPlayer() {
@@ -806,6 +1071,7 @@ function updateVolumeDisplay() {
         elements.volumeSlider.value = volume * 100;
     }
     
+    // Update volume icon based on level
     const volumeIcon = document.querySelector('.volume-icon-container svg');
     if (volumeIcon) {
         const paths = volumeIcon.querySelectorAll('path');
@@ -822,58 +1088,86 @@ function updateVolumeDisplay() {
 }
 
 // ===========================
-// CUSTOM CURSOR (ENHANCED)
+// CUSTOM CURSOR (ENHANCED FOR DESKTOP ONLY)
 // ===========================
 
 function initCustomCursor() {
-    if (!elements.cursor || !elements.follower || isMobile || !settings.cursor.enabled) return;
+    // Only initialize on non-touch devices
+    if (!elements.cursor || !elements.follower || isMobile || isTouch || !settings.cursor.enabled) {
+        return;
+    }
     
     let mouseX = 0, mouseY = 0;
     let followerX = 0, followerY = 0;
+    let isMoving = false;
 
-    // Optimized mouse move handler
+    // Optimized mouse move handler with RAF
     document.addEventListener('mousemove', throttle((e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
+        isMoving = true;
         
         const halfSize = settings.cursor.size / 2;
         elements.cursor.style.transform = `translate3d(${mouseX - halfSize}px, ${mouseY - halfSize}px, 0)`;
-    }, 16));
+    }, 16), { passive: true });
 
-    // Smooth follower animation
+    // Smooth follower animation with RAF
     function animateFollower() {
-        followerX += (mouseX - followerX) * 0.08;
-        followerY += (mouseY - followerY) * 0.08;
-        
-        const halfFollowerSize = settings.cursor.followerSize / 2;
-        elements.follower.style.transform = `translate3d(${followerX - halfFollowerSize}px, ${followerY - halfFollowerSize}px, 0)`;
+        if (isMoving) {
+            followerX += (mouseX - followerX) * 0.08;
+            followerY += (mouseY - followerY) * 0.08;
+            
+            const halfFollowerSize = settings.cursor.followerSize / 2;
+            elements.follower.style.transform = `translate3d(${followerX - halfFollowerSize}px, ${followerY - halfFollowerSize}px, 0)`;
+        }
         
         requestAnimationFrame(animateFollower);
     }
     animateFollower();
 
-    // Hover effects
-    const hoverElements = document.querySelectorAll('a, button, .skill-card, .project-card, .timeline-content, .logo-container, .theme-option, .playlist-item, .control-btn, .settings-category');
+    // Enhanced hover effects for interactive elements
+    const hoverElements = document.querySelectorAll('a, button, .skill-card, .project-card, .timeline-content, .logo-container, .theme-option, .playlist-item, .control-btn, .settings-category, input[type="range"], .toggle-switch');
+    
     hoverElements.forEach(el => {
         el.addEventListener('mouseenter', () => {
-            elements.cursor.style.transform += ' scale(1.5)';
-            elements.follower.style.transform += ' scale(1.5)';
-            elements.follower.style.opacity = '0.8';
+            if (elements.cursor && elements.follower) {
+                elements.cursor.style.transform += ' scale(1.5)';
+                elements.follower.style.transform += ' scale(1.5)';
+                elements.follower.style.opacity = '0.8';
+            }
         });
+        
         el.addEventListener('mouseleave', () => {
-            elements.cursor.style.transform = elements.cursor.style.transform.replace(' scale(1.5)', '');
-            elements.follower.style.transform = elements.follower.style.transform.replace(' scale(1.5)', '');
-            elements.follower.style.opacity = 'calc(var(--cursor-opacity) * 0.6)';
+            if (elements.cursor && elements.follower) {
+                elements.cursor.style.transform = elements.cursor.style.transform.replace(' scale(1.5)', '');
+                elements.follower.style.transform = elements.follower.style.transform.replace(' scale(1.5)', '');
+                elements.follower.style.opacity = 'calc(var(--cursor-opacity) * 0.6)';
+            }
         });
+    });
+
+    // Hide cursor when leaving viewport
+    document.addEventListener('mouseleave', () => {
+        if (elements.cursor && elements.follower) {
+            elements.cursor.style.opacity = '0';
+            elements.follower.style.opacity = '0';
+        }
+    });
+
+    document.addEventListener('mouseenter', () => {
+        if (elements.cursor && elements.follower) {
+            elements.cursor.style.opacity = 'var(--cursor-opacity)';
+            elements.follower.style.opacity = 'calc(var(--cursor-opacity) * 0.6)';
+        }
     });
 }
 
 // ===========================
-// NAVIGATION & SCROLLING
+// NAVIGATION & SCROLLING (ENHANCED)
 // ===========================
 
 function initNavigation() {
-    // Optimized scroll handler
+    // Optimized scroll handler with passive listener
     window.addEventListener('scroll', throttle(handleScroll, 16), { passive: true });
     
     // Smooth scrolling for navigation links
@@ -893,7 +1187,7 @@ function handleScroll() {
     lastScrollTime = currentTime;
     lastScrollTop = currentScrollTop;
     
-    // Update navbar
+    // Update navbar with enhanced animation
     if (elements.navbar) {
         if (currentScrollTop > 100) {
             elements.navbar.classList.add('scrolled');
@@ -910,6 +1204,9 @@ function handleAnchorClick(e) {
         // Close mobile menu if open
         closeMobileMenu();
         
+        // Close settings if open
+        closeSettings();
+        
         target.scrollIntoView({
             behavior: 'smooth',
             block: 'start'
@@ -918,19 +1215,19 @@ function handleAnchorClick(e) {
 }
 
 // ===========================
-// SCROLL ANIMATIONS
+// SCROLL ANIMATIONS (ENHANCED)
 // ===========================
 
 function initScrollAnimations() {
     const observerOptions = {
-        threshold: 0.05,
-        rootMargin: '0px 0px -10px 0px'
+        threshold: isMobile ? 0.1 : 0.05,
+        rootMargin: isMobile ? '20px 0px -20px 0px' : '0px 0px -10px 0px'
     };
 
     const observer = new IntersectionObserver(handleIntersection, observerOptions);
 
     document.querySelectorAll('.animate-on-scroll').forEach((el, index) => {
-        el.dataset.delay = index * 50;
+        el.dataset.delay = isMobile ? Math.min(index * 25, 150) : index * 50;
         observer.observe(el);
     });
 }
@@ -938,7 +1235,7 @@ function initScrollAnimations() {
 function handleIntersection(entries) {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            const delay = scrollSpeed > 2 ? 0 : Math.min(entry.target.dataset.delay || 0, 300);
+            const delay = scrollSpeed > 2 ? 0 : Math.min(entry.target.dataset.delay || 0, isMobile ? 150 : 300);
             
             setTimeout(() => {
                 entry.target.classList.add('animated');
@@ -957,7 +1254,7 @@ function animateNumbers(numbers) {
     numbers.forEach(num => {
         const target = parseInt(num.getAttribute('data-target'));
         let current = 0;
-        const increment = target / 50;
+        const increment = target / (isMobile ? 30 : 50);
         const timer = setInterval(() => {
             current += increment;
             if (current >= target) {
@@ -965,34 +1262,37 @@ function animateNumbers(numbers) {
                 clearInterval(timer);
             }
             num.textContent = Math.floor(current) + (target > 10 ? '+' : '');
-        }, 40);
+        }, isMobile ? 60 : 40);
     });
 }
 
 // ===========================
-// PARALLAX EFFECTS
+// PARALLAX EFFECTS (DESKTOP ONLY)
 // ===========================
 
 function initParallax() {
-    if (isLowEndDevice || prefersReducedMotion || isMobile || settings.misc.reducedMotion) return;
+    if (isLowEndDevice || prefersReducedMotion || isMobile || settings.misc.reducedMotion || settings.misc.parallaxIntensity === 0) return;
     
     window.addEventListener('scroll', throttle(handleParallax, 16), { passive: true });
 }
 
 function handleParallax() {
+    if (settings.misc.parallaxIntensity === 0) return;
+    
     const scrolled = window.pageYOffset;
+    const intensity = settings.misc.parallaxIntensity / 100;
     const shapes = document.querySelectorAll('.geometric-shape');
     
     shapes.forEach((shape, index) => {
-        const speed = 0.2 + (index * 0.1);
+        const speed = (0.2 + (index * 0.1)) * intensity;
         const yPos = scrolled * speed;
-        const rotation = scrolled * 0.05;
+        const rotation = scrolled * 0.05 * intensity;
         shape.style.transform = `translate3d(0, ${yPos}px, 0) rotate(${rotation}deg)`;
     });
 }
 
 // ===========================
-// TYPING ANIMATION
+// TYPING ANIMATION (ENHANCED)
 // ===========================
 
 function initTypingAnimation() {
@@ -1000,6 +1300,7 @@ function initTypingAnimation() {
     
     const titleText = elements.heroTitle.textContent.trim();
     elements.heroTitle.textContent = '';
+    elements.heroTitle.style.opacity = '1'; // Show container immediately
     
     setTimeout(() => {
         let i = 0;
@@ -1008,19 +1309,18 @@ function initTypingAnimation() {
             i++;
             if (i > titleText.length) {
                 clearInterval(typeInterval);
-                // Remove any cursor after typing is complete
                 elements.heroTitle.textContent = titleText;
             }
-        }, 100);
+        }, isMobile ? 120 : 100);
     }, 1500);
 }
 
 // ===========================
-// 3D TILT EFFECTS
+// 3D TILT EFFECTS (DESKTOP ONLY)
 // ===========================
 
 function init3DTiltEffects() {
-    if (isLowEndDevice || prefersReducedMotion || isMobile || settings.misc.reducedMotion) return;
+    if (isLowEndDevice || prefersReducedMotion || isMobile || isTouch || settings.misc.reducedMotion) return;
     
     const tiltElements = document.querySelectorAll('.project-card, .skill-card');
     
@@ -1049,7 +1349,7 @@ function resetTilt() {
 }
 
 // ===========================
-// SETTINGS PANEL (ENHANCED)
+// SETTINGS PANEL (ENHANCED MOBILE SUPPORT)
 // ===========================
 
 function initSettingsPanel() {
@@ -1057,11 +1357,26 @@ function initSettingsPanel() {
     
     elements.settingsBtn.addEventListener('click', toggleSettings);
     
+    // Click outside to close (but not on mobile)
     document.addEventListener('click', (e) => {
-        if (!elements.settingsBtn.contains(e.target) && !elements.settingsMenu.contains(e.target)) {
+        if (!isMobile && !elements.settingsBtn.contains(e.target) && !elements.settingsMenu.contains(e.target)) {
             closeSettings();
         }
     });
+    
+    // Enhanced mobile handling
+    if (isMobile) {
+        // Add touch event handling
+        elements.settingsBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            toggleSettings();
+        });
+        
+        // Prevent body scroll when settings open
+        elements.settingsMenu.addEventListener('touchmove', (e) => {
+            e.stopPropagation();
+        }, { passive: true });
+    }
     
     // Show main menu by default
     showSettingsSection('main');
@@ -1078,14 +1393,24 @@ function toggleSettings() {
 function openSettings() {
     elements.settingsMenu.classList.add('active');
     showSettingsSection('main');
+    
+    // Prevent body scroll on mobile when settings are open
+    if (isMobile) {
+        document.body.style.overflow = 'hidden';
+    }
 }
 
 function closeSettings() {
     elements.settingsMenu.classList.remove('active');
+    
+    // Restore body scroll
+    if (isMobile) {
+        document.body.style.overflow = '';
+    }
 }
 
 // ===========================
-// THEME SYSTEM
+// THEME SYSTEM (ENHANCED)
 // ===========================
 
 function initThemeSystem() {
@@ -1109,7 +1434,12 @@ function initThemeSystem() {
 
 function setTheme(themeName) {
     document.body.setAttribute('data-theme', themeName);
-    localStorage.setItem('preferred-theme', themeName);
+    
+    try {
+        localStorage.setItem('preferred-theme', themeName);
+    } catch (e) {
+        console.warn('Failed to save theme preference:', e);
+    }
     
     // Update active theme option
     document.querySelectorAll('.theme-option').forEach(option => {
@@ -1123,12 +1453,16 @@ function setTheme(themeName) {
     
     // Clear custom theme if switching to preset
     if (themeName !== 'custom') {
-        localStorage.removeItem('custom-theme');
+        try {
+            localStorage.removeItem('custom-theme');
+        } catch (e) {
+            console.warn('Failed to remove custom theme:', e);
+        }
     }
 }
 
 // ===========================
-// CUSTOM THEME MAKER
+// CUSTOM THEME MAKER (ENHANCED)
 // ===========================
 
 function initCustomThemeMaker() {
@@ -1137,11 +1471,15 @@ function initCustomThemeMaker() {
     elements.applyCustomThemeBtn.addEventListener('click', applyCustomTheme);
     
     // Load saved custom theme
-    const savedCustomTheme = localStorage.getItem('custom-theme');
-    if (savedCustomTheme) {
-        const customTheme = JSON.parse(savedCustomTheme);
-        elements.primaryColorPicker.value = customTheme.primary;
-        elements.accentColorPicker.value = customTheme.accent;
+    try {
+        const savedCustomTheme = localStorage.getItem('custom-theme');
+        if (savedCustomTheme) {
+            const customTheme = JSON.parse(savedCustomTheme);
+            elements.primaryColorPicker.value = customTheme.primary;
+            elements.accentColorPicker.value = customTheme.accent;
+        }
+    } catch (e) {
+        console.warn('Failed to load custom theme:', e);
     }
 }
 
@@ -1156,10 +1494,14 @@ function applyCustomTheme() {
     applyThemeVariables(customTheme);
     
     // Save custom theme
-    localStorage.setItem('custom-theme', JSON.stringify({
-        primary: primaryColor,
-        accent: accentColor
-    }));
+    try {
+        localStorage.setItem('custom-theme', JSON.stringify({
+            primary: primaryColor,
+            accent: accentColor
+        }));
+    } catch (e) {
+        console.warn('Failed to save custom theme:', e);
+    }
     
     // Update theme selection
     document.querySelectorAll('.theme-option').forEach(option => {
@@ -1168,7 +1510,12 @@ function applyCustomTheme() {
     
     // Add custom theme to body
     document.body.setAttribute('data-theme', 'custom');
-    localStorage.setItem('preferred-theme', 'custom');
+    
+    try {
+        localStorage.setItem('preferred-theme', 'custom');
+    } catch (e) {
+        console.warn('Failed to save theme preference:', e);
+    }
     
     // Visual feedback
     elements.applyCustomThemeBtn.textContent = 'Applied!';
@@ -1275,16 +1622,23 @@ function blendColors(color1, color2, ratio) {
 }
 
 // ===========================
-// AUDIO CONTROLS
+// AUDIO CONTROLS (ENHANCED)
 // ===========================
 
 function initAudioControls() {
     if (elements.playPauseBtn) elements.playPauseBtn.addEventListener('click', togglePlayPause);
     if (elements.nextBtn) elements.nextBtn.addEventListener('click', nextTrack);
     if (elements.prevBtn) elements.prevBtn.addEventListener('click', prevTrack);
-    if (elements.progressBar) elements.progressBar.addEventListener('click', seekTo);
+    if (elements.progressBar) {
+        elements.progressBar.addEventListener('click', seekTo);
+        
+        // Add touch support for mobile
+        if (isTouch) {
+            elements.progressBar.addEventListener('touchend', seekTo);
+        }
+    }
     
-    // Updated volume slider handling for mobile-friendly slider
+    // Enhanced volume slider handling
     if (elements.volumeSlider) {
         elements.volumeSlider.addEventListener('input', (e) => {
             setVolume(parseFloat(e.target.value));
@@ -1293,21 +1647,43 @@ function initAudioControls() {
         elements.volumeSlider.addEventListener('change', (e) => {
             setVolume(parseFloat(e.target.value));
         });
+        
+        // Touch support
+        if (isTouch) {
+            elements.volumeSlider.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const rect = elements.volumeSlider.getBoundingClientRect();
+                const percentage = (touch.clientX - rect.left) / rect.width;
+                const value = Math.max(0, Math.min(100, percentage * 100));
+                setVolume(value);
+            });
+        }
     }
     
-    // Playlist item clicks with proper data attribute handling
+    // Playlist item clicks with enhanced mobile support
     document.querySelectorAll('.playlist-item').forEach((item) => {
-        item.addEventListener('click', () => {
+        const clickHandler = () => {
             const index = parseInt(item.getAttribute('data-index'));
             if (!isNaN(index)) {
                 loadTrack(index);
             }
-        });
+        };
+        
+        item.addEventListener('click', clickHandler);
+        
+        // Touch support
+        if (isTouch) {
+            item.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                clickHandler();
+            });
+        }
     });
 }
 
 // ===========================
-// PERFORMANCE OPTIMIZATIONS
+// PERFORMANCE OPTIMIZATIONS (ENHANCED)
 // ===========================
 
 function throttle(func, delay) {
@@ -1338,19 +1714,23 @@ function debounce(func, delay) {
 }
 
 function disableHeavyAnimations() {
-    const heavyAnimationElements = document.querySelectorAll(
-        '.floating-code, .geometric-shape, .floating-tech-icon, .floating-symbols, .floating-contact-icons'
-    );
+    const heavyAnimationElements = document.querySelectorAll('.floating-element');
     
     heavyAnimationElements.forEach(el => {
         el.style.animation = 'none';
-        if (!settings.misc.showFloatingElements) {
-            el.style.display = 'none';
-        }
+        el.style.display = 'none';
     });
     
-    // Reduce animation durations
+    // Reduce animation durations globally
     document.documentElement.style.setProperty('--animation-duration', '0.1s');
+    
+    // Update settings state
+    settings.misc.showFloatingElements = false;
+    settings.misc.showParticles = false;
+    settings.misc.showCodeSnippets = false;
+    settings.misc.showGeometricShapes = false;
+    
+    updateFloatingElementsVisibility();
 }
 
 // ===========================
@@ -1365,8 +1745,8 @@ const globalObserver = new IntersectionObserver((entries) => {
         }
     });
 }, {
-    threshold: 0.1,
-    rootMargin: '50px'
+    threshold: isMobile ? 0.05 : 0.1,
+    rootMargin: isMobile ? '20px' : '50px'
 });
 
 // Observe elements that need scroll animations
@@ -1376,11 +1756,12 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ===========================
-// KEYBOARD NAVIGATION
+// KEYBOARD NAVIGATION (ENHANCED)
 // ===========================
 
-// Keyboard navigation for audio controls and accessibility
+// Enhanced keyboard navigation for accessibility and audio controls
 document.addEventListener('keydown', (e) => {
+    // Don't interfere with form inputs
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
     
     switch (e.code) {
@@ -1411,40 +1792,71 @@ document.addEventListener('keydown', (e) => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
             break;
+        case 'KeyS':
+            if (e.ctrlKey || e.metaKey) {
+                e.preventDefault();
+                toggleSettings();
+            }
+            break;
+        case 'KeyM':
+            if (e.ctrlKey || e.metaKey) {
+                e.preventDefault();
+                toggleMobileMenu();
+            }
+            break;
     }
 });
 
 // ===========================
-// RESPONSIVE BREAKPOINT HANDLING
+// RESPONSIVE BREAKPOINT HANDLING (ENHANCED)
 // ===========================
 
 function handleResize() {
     const width = window.innerWidth;
+    const height = window.innerHeight;
     
     // Close mobile menu on resize to desktop
     if (width >= 768) {
         closeMobileMenu();
     }
     
-    // Close settings on resize to prevent layout issues
-    if (width < 768) {
-        closeSettings();
+    // Adjust settings menu on resize
+    if (width < 768 && elements.settingsMenu.classList.contains('active')) {
+        // Keep settings open but adjust position
+        showSettingsSection(currentSettingsSection);
     }
+    
+    // Handle orientation change on mobile
+    if (isMobile) {
+        // Adjust viewport height for mobile browsers
+        document.documentElement.style.setProperty('--vh', `${height * 0.01}px`);
+        
+        // Recalculate settings menu position
+        if (elements.settingsMenu.classList.contains('active')) {
+            setTimeout(() => {
+                showSettingsSection(currentSettingsSection);
+            }, 100);
+        }
+    }
+    
+    // Update floating elements based on new screen size
+    updateFloatingElementsVisibility();
 }
 
 window.addEventListener('resize', debounce(handleResize, 250));
 
+// Handle orientation change specifically
+window.addEventListener('orientationchange', () => {
+    setTimeout(() => {
+        handleResize();
+    }, 100);
+});
+
 // ===========================
-// ACCESSIBILITY IMPROVEMENTS
+// ACCESSIBILITY IMPROVEMENTS (ENHANCED)
 // ===========================
 
-// Respect reduced motion preference
-if (prefersReducedMotion || settings.misc.reducedMotion) {
-    document.documentElement.style.setProperty('--animation-duration', '0.01ms');
-    document.documentElement.style.setProperty('--transition-duration', '0.01ms');
-}
-
-// Focus management for keyboard navigation
+// Enhanced focus management for keyboard navigation
 document.addEventListener('focusin', (e) => {
     if (!e.target.matches('a, button, input, select, textarea, [tabindex]')) {
         return;
@@ -1453,6 +1865,7 @@ document.addEventListener('focusin', (e) => {
     // Add focus indicator for keyboard navigation
     e.target.style.outline = '2px solid var(--accent-color)';
     e.target.style.outlineOffset = '2px';
+    e.target.style.borderRadius = '4px';
 });
 
 document.addEventListener('focusout', (e) => {
@@ -1460,26 +1873,70 @@ document.addEventListener('focusout', (e) => {
     e.target.style.outlineOffset = '';
 });
 
+// Skip to main content link
+const skipLink = document.createElement('a');
+skipLink.href = '#about';
+skipLink.textContent = 'Skip to main content';
+skipLink.className = 'sr-only';
+skipLink.style.position = 'absolute';
+skipLink.style.top = '-40px';
+skipLink.style.left = '6px';
+skipLink.style.zIndex = '10000';
+skipLink.style.background = 'var(--accent-color)';
+skipLink.style.color = 'var(--primary-bg)';
+skipLink.style.padding = '8px';
+skipLink.style.textDecoration = 'none';
+skipLink.style.borderRadius = '4px';
+
+skipLink.addEventListener('focus', () => {
+    skipLink.style.top = '6px';
+});
+
+skipLink.addEventListener('blur', () => {
+    skipLink.style.top = '-40px';
+});
+
+document.body.appendChild(skipLink);
+
 // ===========================
-// ERROR HANDLING & GRACEFUL DEGRADATION
+// ERROR HANDLING & GRACEFUL DEGRADATION (ENHANCED)
 // ===========================
 
 window.addEventListener('error', (e) => {
     console.error('JavaScript error:', e.error);
-    // Graceful degradation - continue without the failing feature
+    
+    // Graceful degradation for specific components
+    if (e.error && e.error.message) {
+        if (e.error.message.includes('audioPlayer')) {
+            showAudioError('Audio player encountered an error. Please refresh the page.');
+        }
+    }
 });
 
 // Handle unhandled promise rejections
 window.addEventListener('unhandledrejection', (e) => {
     console.error('Unhandled promise rejection:', e.reason);
-    e.preventDefault(); // Prevent the default unhandled rejection behavior
+    e.preventDefault();
 });
 
+// Service worker registration for PWA functionality (optional)
+if ('serviceWorker' in navigator && !isMobile) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+                console.log('SW registered: ', registration);
+            })
+            .catch((registrationError) => {
+                console.log('SW registration failed: ', registrationError);
+            });
+    });
+}
+
 // ===========================
-// MEMORY MANAGEMENT
+// MEMORY MANAGEMENT (ENHANCED)
 // ===========================
 
-// Clean up event listeners on page unload
+// Enhanced cleanup on page unload
 window.addEventListener('beforeunload', () => {
     // Save settings before unloading
     saveSettings();
@@ -1488,14 +1945,47 @@ window.addEventListener('beforeunload', () => {
     window.removeEventListener('scroll', handleScroll);
     window.removeEventListener('resize', handleResize);
     
-    // Pause audio to free resources
+    // Pause and cleanup audio
     if (elements.audioPlayer) {
         elements.audioPlayer.pause();
         elements.audioPlayer.src = '';
+        elements.audioPlayer.load();
     }
     
-    // Clear any running intervals
+    // Clear any running intervals and timeouts
     clearInterval();
+    clearTimeout();
+    
+    // Disconnect observers
+    if (globalObserver) {
+        globalObserver.disconnect();
+    }
+});
+
+// Cleanup on page hide (for mobile)
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        // Pause animations and audio when page is hidden
+        if (isPlaying && elements.audioPlayer) {
+            elements.audioPlayer.pause();
+        }
+        
+        // Reduce CPU usage by pausing animations
+        if (settings.misc.showFloatingElements) {
+            const animatedElements = document.querySelectorAll('.floating-element');
+            animatedElements.forEach(el => {
+                el.style.animationPlayState = 'paused';
+            });
+        }
+    } else {
+        // Resume animations when page is visible again
+        if (settings.misc.showFloatingElements && !settings.misc.reducedMotion) {
+            const animatedElements = document.querySelectorAll('.floating-element');
+            animatedElements.forEach(el => {
+                el.style.animationPlayState = 'running';
+            });
+        }
+    }
 });
 
 // ===========================
@@ -1516,4 +2006,19 @@ if (document.readyState === 'complete') {
     window.addEventListener('load', handleWindowLoad);
 }
 
-console.log('🚀 Enhanced Portfolio script loaded successfully with optimized settings panel!');
+// Performance monitoring (development only)
+if (window.performance && window.performance.measure) {
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            const perfData = performance.getEntriesByType('navigation')[0];
+            console.log('🚀 Portfolio Performance Stats:');
+            console.log(`📊 DOM Content Loaded: ${perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart}ms`);
+            console.log(`📊 Page Load Complete: ${perfData.loadEventEnd - perfData.loadEventStart}ms`);
+            console.log(`📊 Total Load Time: ${perfData.loadEventEnd - perfData.fetchStart}ms`);
+        }, 1000);
+    });
+}
+
+console.log('🚀 Enhanced mobile-optimized portfolio script loaded successfully!');
+console.log('📱 Device optimizations active for:', deviceType);
+console.log('⚡ Performance mode:', isLowEndDevice ? 'Low-end device detected' : 'Standard performance');
