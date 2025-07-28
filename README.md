@@ -2,7 +2,7 @@
 
 > A sleek, interactive portfolio powered by Tailwind CSS with dynamic themes and real audio
 
-## ✨ Features
+## Features
 
 **🎵 Music Player** – Custom audio controls  
 **🎨 Themes** – GitHub, Discord, Spotify, VS Code, Ocean, Default  
@@ -43,7 +43,7 @@ Portfolio-Website/
 ├── postcss.config.js   # PostCSS for Tailwind
 ├── music/              # Audio assets
 └── README.md
-
+```
 
 📄 License
 MIT License – Free to use or remix for your own site!
