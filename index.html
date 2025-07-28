@@ -129,12 +129,12 @@
             <div class="about-content">
                 <div class="about-text animate-on-scroll">
                     <h3>I build things with code.</h3>
-                    <p>I'm a passionate Computer Science student at UNCG with a love for creating innovative solutions
+                    <p>I'm a passionate Computer Science student with a love for creating innovative solutions
                         through code. With experience as an Apple Specialist, I bring both technical expertise and
                         strong communication skills to every project.</p>
 
-                    <h3>My Philosophy</h3>
-                    <p>As a Junior CS student at UNCG, with an Associate of Science degree, I am passionate about using
+                    <h3>My Belief</h3>
+                    <p>As a Senior CS student at UNCG, with an Associate of Science degree, I am passionate about using
                         technology to solve problems. I hope to produce results. I am bilingual in English and Spanish.
                     </p>
                 </div>
@@ -239,11 +239,17 @@
                             <div class="mockup-dots">● ● ●</div>
                             <div class="project-code-preview">
                                 <pre><code class="language-java">
-public class SecurePass {
-    public String encrypt(String data) {
-        return AES.encrypt(data);
-    }
-}
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Java DSA Learning Site - Master Data Structures &amp; Algorithms&lt;/title&gt;
+    &lt;meta name="description" content="Complete Java Data Structures &amp; Algorithms learning platform with interactive examples, quizzes, and flashcards"&gt;
+    &lt;link rel="stylesheet" href="styles.css"&gt;
+    &lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;
+&lt;/head&gt;
+
 </code></pre>
                             </div>
                         </div>
@@ -252,6 +258,7 @@ public class SecurePass {
                     <div class="project-content">
                         <h3 class="project-title">Java-DSA-Helper</h3>
                         <p class="project-desc">From beginner to intermediate to advanced, covers all topics of CSC230
+                            and more
                         </p>
                         <div class="project-tech">
                             <span class="tech-tag">Java</span>
@@ -271,12 +278,17 @@ public class SecurePass {
                             <div class="mockup-dots">● ● ●</div>
                             <div class="project-code-preview">
                                 <pre><code class="language-jsx">
-const Portfolio = () => (
-    &lt;section className="hero"&gt;
-        &lt;h1&gt;Hi, I’m Eddy&lt;/h1&gt;
-        &lt;p&gt;CS Student & Dev&lt;/p&gt;
-    &lt;/section&gt;
-);
+    &lt;!-- Preload critical resources --&gt;
+    &lt;link rel="preload" href="css/style.css" as="style"&gt;
+    &lt;link rel="preload" href="js/script.js" as="script"&gt;
+&lt;/head&gt;
+
+&lt;body data-theme="default" class="font-inter overflow-x-hidden"&gt;
+    &lt;!-- Mobile Touch Indicator --&gt;
+    &lt;div class="mobile-touch-indicator"&gt;&lt;/div&gt;
+
+    &lt;!-- Custom Cursors (Now mobile-enabled) --&gt;
+
 </code></pre>
                             </div>
                         </div>
@@ -284,8 +296,7 @@ const Portfolio = () => (
                     </div>
                     <div class="project-content">
                         <h3 class="project-title">Portfolio-Website</h3>
-                        <p class="project-desc">This exact modern portfolio website you see featuring smooth animations,
-                            responsive design, and an engaging user experience built from scratch.</p>
+                        <p class="project-desc">This exact sleek modern portfolio website you see.</p>
                         <div class="project-tech">
                             <span class="tech-tag">HTML</span>
                             <span class="tech-tag">Tailwind CSS</span>
@@ -303,11 +314,17 @@ const Portfolio = () => (
                             <div class="mockup-dots">● ● ●</div>
                             <div class="project-code-preview">
                                 <pre><code class="language-js">
-const [stats, setStats] = useState([]);
+import Sidebar from '../components/Sidebar';
+import StatsSummary from '../components/StatsSummary';
+import WeekNavigator from '../components/WeekNavigator';
+import GameCard from '../components/GameCard';
+import DarkModeToggle from '../components/DarkModeToggle';
+import SettingsModal from '../components/SettingsModal';
+import TopPlayers from '../components/TopPlayers';
 
-useEffect(() => {
-    fetchNBAData().then(setStats);
-}, []);
+import { useEffect, useState } from 'react';
+
+
 </code></pre>
                             </div>
                         </div>
@@ -315,8 +332,8 @@ useEffect(() => {
                     </div>
                     <div class="project-content">
                         <h3 class="project-title">NBA-Tracker-STATS-APP</h3>
-                        <p class="project-desc">Cross-platform mobile app for productivity management with real-time
-                            synchronization and offline support for seamless workflow.</p>
+                        <p class="project-desc">A clean, mobile-first NBA game tracker that displays live scores,
+                            scheduled games, and top player stats.</p>
                         <div class="project-tech">
                             <span class="tech-tag">React Native</span>
                             <span class="tech-tag">Firebase</span>
@@ -345,10 +362,9 @@ useEffect(() => {
                         <div class="timeline-date">Nov. 2024 - Mar. 2025</div>
                         <h3 class="timeline-title">Apple Specialist</h3>
                         <div class="timeline-company">Apple</div>
-                        <p class="timeline-desc">
-• Assist customers with purchasing Apple products, including iPhones, iPads, MacBooks, and accessories, by providing personalized solutions based on their needs
-• Completed the ongoing Apple training to stay updated on product features and updates
-• Build strong customer relationships through clear communication, active listening, and problem-solving to enhance the overall shopping experience</p>
+                        <p class="timeline-desc">Assist customers with purchasing Apple products, including iPhones,
+                            iPads, MacBooks, and accessories, by providing personalized solutions based on their needs.
+                            </p>
                     </div>
                 </div>
                 <div class="timeline-item animate-on-scroll">
@@ -604,7 +620,8 @@ useEffect(() => {
                     <div class="settings-content">
                         <div class="music-player">
                             <div id="audioError" class="audio-error hidden">
-                                Music files not found. Make sure to add your audio files to the /music folder or reload the page and try again.
+                                Music files not found. Make sure to add your audio files to the /music folder or reload
+                                the page and try again.
                             </div>
 
                             <div class="player-info">
