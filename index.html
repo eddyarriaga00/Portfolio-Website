@@ -3,16 +3,30 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Eddy Arriaga | Software Developer</title>
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap"
         rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Mobile Performance Optimizations -->
+    <meta name="theme-color" content="#000000">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="css/style.css" as="style">
+    <link rel="preload" href="js/script.js" as="script">
 </head>
 
 <body data-theme="default" class="font-inter overflow-x-hidden">
+    <!-- Mobile Touch Indicator -->
+    <div class="mobile-touch-indicator"></div>
+    
+    <!-- Custom Cursors (Now mobile-enabled) -->
     <div class="custom-cursor"></div>
     <div class="cursor-follower"></div>
 
@@ -319,7 +333,7 @@
                     <div class="timeline-dot"></div>
                     <div class="timeline-icon">🍎</div>
                     <div class="timeline-content">
-                        <div class="timeline-date">2023 - Present</div>
+                        <div class="timeline-date">Nov. 2024 - Mar. 2025</div>
                         <h3 class="timeline-title">Apple Specialist</h3>
                         <div class="timeline-company">Apple Inc.</div>
                         <p class="timeline-desc">Providing technical support and customer service, achieving high
@@ -330,18 +344,17 @@
                     <div class="timeline-dot"></div>
                     <div class="timeline-icon">🎓</div>
                     <div class="timeline-content">
-                        <div class="timeline-date">2022 - Present</div>
+                        <div class="timeline-date">2024 - Present</div>
                         <h3 class="timeline-title">Computer Science Student</h3>
-                        <div class="timeline-company">University of North Carolina at Greensboro</div>
-                        <p class="timeline-desc">Pursuing B.S. in Computer Science, maintaining strong GPA while
-                            participating in coding competitions and hackathons.</p>
+                        <div class="timeline-company">University of North Carolina at Greensboro (UNCG)</div>
+                        <p class="timeline-desc">Pursuing B.S. in Computer Science, maintaining strong GPA.</p>
                     </div>
                 </div>
                 <div class="timeline-item animate-on-scroll">
                     <div class="timeline-dot"></div>
                     <div class="timeline-icon">💻</div>
                     <div class="timeline-content">
-                        <div class="timeline-date">2023 - Present</div>
+                        <div class="timeline-date">2024 - Present</div>
                         <h3 class="timeline-title">Freelance Developer</h3>
                         <div class="timeline-company">Self-Employed</div>
                         <p class="timeline-desc">Developing web applications and working on personal projects, focusing
@@ -438,7 +451,7 @@
                         <div class="settings-category" data-section="misc">
                             <div class="category-icon">⚙️</div>
                             <div class="category-info">
-                                <div class="category-title">Visual & Performance</div>
+                                <div class="category-title">Misc.</div>
                                 <div class="category-desc">Animations, effects, and preferences</div>
                             </div>
                             <div class="category-arrow">→</div>
@@ -460,7 +473,7 @@
                         <div class="setting-group">
                             <label class="setting-label">
                                 <span class="setting-name">Enable Custom Cursor</span>
-                                <span class="setting-desc">Show custom cursor on desktop</span>
+                                <span class="setting-desc">Show custom cursor (works on mobile)</span>
                             </label>
                             <label class="toggle-switch">
                                 <input type="checkbox" id="cursorEnabled" checked>
@@ -529,7 +542,7 @@
                             </div>
                             <div class="theme-option" data-theme="github">
                                 <div class="theme-preview github-preview"></div>
-                                GitHub
+                                GitHub 
                             </div>
                             <div class="theme-option" data-theme="discord">
                                 <div class="theme-preview discord-preview"></div>
@@ -545,7 +558,7 @@
                             </div>
                             <div class="theme-option" data-theme="ocean">
                                 <div class="theme-preview ocean-preview"></div>
-                                Ocean
+                                Ocean 
                             </div>
                         </div>
 
@@ -681,7 +694,7 @@
                     </div>
                 </div>
 
-                <!-- Visual & Performance Section (Enhanced) -->
+                <!-- Visual & Performance Section -->
                 <div class="settings-section-view" id="miscSection">
                     <div class="settings-header">
                         <button class="settings-back-btn" data-back="main" aria-label="Back to main menu">
@@ -695,7 +708,7 @@
                         <div class="setting-group">
                             <label class="setting-label">
                                 <span class="setting-name">Reduced Motion</span>
-                                <span class="setting-desc">Disable animations for better performance</span>
+                                <span class="setting-desc">Disable heavy animations for better performance</span>
                             </label>
                             <label class="toggle-switch">
                                 <input type="checkbox" id="reducedMotion">
