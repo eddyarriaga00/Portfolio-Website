@@ -27,7 +27,7 @@ const tracks = [
     },
     {
         title: "Blank Song",
-        artist: "Blank Song Artist", 
+        artist: "Blank Song Artist",
         src: "music/blah.mp3"
     },
     {
@@ -91,7 +91,7 @@ function initializeApp() {
     console.log('Is mobile:', isMobile);
     console.log('Is tablet:', isTablet);
     console.log('Is touch device:', isTouch);
-    
+
     cacheElements();
     loadSettings();
     setupDeviceOptimizations();
@@ -110,16 +110,16 @@ function initializeApp() {
     initBackToTop();
     initAdvancedSettings();
     initMobileOptimizations();
-    
+
     // Performance optimization
     if (isLowEndDevice || prefersReducedMotion || settings.misc.reducedMotion) {
         disableHeavyAnimations();
     }
-    
+
     if (isMobile) {
         optimizeForMobile();
     }
-    
+
     console.log('✅ Portfolio app initialized successfully');
 }
 
@@ -161,13 +161,13 @@ function cacheElements() {
     elements.accentColorPicker = document.getElementById('accentColor');
     elements.applyCustomThemeBtn = document.getElementById('applyCustomTheme');
     elements.backToTop = document.getElementById('backToTop');
-    
+
     // Settings elements
     elements.mouseSection = document.getElementById('mouseSection');
     elements.themeSection = document.getElementById('themeSection');
     elements.musicSection = document.getElementById('musicSection');
     elements.miscSection = document.getElementById('miscSection');
-    
+
     // Cursor settings
     elements.cursorEnabled = document.getElementById('cursorEnabled');
     elements.cursorSize = document.getElementById('cursorSize');
@@ -176,7 +176,7 @@ function cacheElements() {
     elements.cursorOpacityValue = document.getElementById('cursorOpacityValue');
     elements.followerSize = document.getElementById('followerSize');
     elements.followerSizeValue = document.getElementById('followerSizeValue');
-    
+
     // Enhanced misc settings
     elements.reducedMotion = document.getElementById('reducedMotion');
     elements.autoplayMusic = document.getElementById('autoplayMusic');
@@ -198,15 +198,15 @@ function cacheElements() {
 function setupDeviceOptimizations() {
     // Add device-specific classes
     document.body.classList.add(`device-${deviceType}`);
-    
+
     if (isMobile) {
         document.body.classList.add('mobile-device');
     }
-    
+
     if (isTouch) {
         document.body.classList.add('touch-device');
     }
-    
+
     if (isLowEndDevice) {
         document.body.classList.add('low-end-device');
     }
@@ -219,20 +219,20 @@ function initMobileOptimizations() {
         if (viewport) {
             viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
         }
-        
+
         // Prevent bounce scrolling on iOS
         document.body.addEventListener('touchmove', (e) => {
             if (e.target === document.body) {
                 e.preventDefault();
             }
         }, { passive: false });
-        
+
         // Optimize touch events
         const passiveEvents = ['touchstart', 'touchmove', 'touchend'];
         passiveEvents.forEach(event => {
-            document.addEventListener(event, () => {}, { passive: true });
+            document.addEventListener(event, () => { }, { passive: true });
         });
-        
+
         // Prevent double-tap zoom
         let lastTouchEnd = 0;
         document.addEventListener('touchend', function (event) {
@@ -242,7 +242,7 @@ function initMobileOptimizations() {
             }
             lastTouchEnd = now;
         }, false);
-        
+
         // Add visual feedback for touch interactions
         addTouchFeedback();
     }
@@ -250,13 +250,13 @@ function initMobileOptimizations() {
 
 function addTouchFeedback() {
     const touchElements = document.querySelectorAll('button, .nav-link, .mobile-nav-link, .contact-link, .project-link, .settings-category, .theme-option, .playlist-item, .control-btn');
-    
+
     touchElements.forEach(element => {
-        element.addEventListener('touchstart', function() {
+        element.addEventListener('touchstart', function () {
             this.style.transform = 'scale(0.95)';
         }, { passive: true });
-        
-        element.addEventListener('touchend', function() {
+
+        element.addEventListener('touchend', function () {
             setTimeout(() => {
                 this.style.transform = '';
             }, 150);
@@ -278,7 +278,7 @@ function loadSettings() {
             console.warn('Failed to parse saved settings:', e);
         }
     }
-    
+
     // Apply device-specific defaults
     if (isMobile) {
         settings.cursor.enabled = false;
@@ -286,7 +286,7 @@ function loadSettings() {
         settings.misc.showParticles = false;
         settings.misc.parallaxIntensity = 0;
     }
-    
+
     applyLoadedSettings();
 }
 
@@ -302,20 +302,20 @@ function applyLoadedSettings() {
     // Apply cursor settings
     if (settings.cursor) {
         updateCursorVariables();
-        
+
         if (!settings.cursor.enabled || isMobile || isTouch) {
             if (elements.cursor) elements.cursor.style.display = 'none';
             if (elements.follower) elements.follower.style.display = 'none';
             document.body.style.cursor = 'auto';
         }
     }
-    
+
     // Apply misc settings
     if (settings.misc) {
         if (settings.misc.reducedMotion) {
             disableHeavyAnimations();
         }
-        
+
         updateFloatingElementsVisibility();
         updateAnimationSpeed();
         updateParallaxIntensity();
@@ -334,22 +334,22 @@ function updateFloatingElementsVisibility() {
     const codeSnippets = document.querySelectorAll('.floating-code');
     const geometricShapes = document.querySelectorAll('.geometric-shape');
     const particles = document.querySelectorAll('.floating-tech-icon, .floating-symbols, .floating-contact-icons');
-    
+
     // Show/hide all floating elements
     floatingElements.forEach(el => {
         el.style.display = settings.misc.showFloatingElements ? '' : 'none';
     });
-    
+
     // Show/hide specific element types
     if (settings.misc.showFloatingElements) {
         codeSnippets.forEach(el => {
             el.style.display = settings.misc.showCodeSnippets ? '' : 'none';
         });
-        
+
         geometricShapes.forEach(el => {
             el.style.display = settings.misc.showGeometricShapes ? '' : 'none';
         });
-        
+
         particles.forEach(el => {
             el.style.display = settings.misc.showParticles ? '' : 'none';
         });
@@ -360,7 +360,7 @@ function updateAnimationSpeed() {
     const root = document.documentElement;
     const speed = settings.misc.animationSpeed / 100;
     root.style.setProperty('--animation-speed', speed);
-    
+
     // Update individual animation durations
     const animatedElements = document.querySelectorAll('.floating-element');
     animatedElements.forEach(el => {
@@ -382,7 +382,7 @@ function resetAllSettings() {
         localStorage.removeItem('portfolio-settings');
         localStorage.removeItem('preferred-theme');
         localStorage.removeItem('custom-theme');
-        
+
         // Reset to defaults with device considerations
         settings = {
             cursor: {
@@ -402,7 +402,7 @@ function resetAllSettings() {
                 parallaxIntensity: isMobile ? 0 : 100
             }
         };
-        
+
         // Reload page to apply all changes
         location.reload();
     }
@@ -430,7 +430,7 @@ function initSettingsNavigation() {
             }
         });
     });
-    
+
     // Back buttons
     const backButtons = document.querySelectorAll('.settings-back-btn');
     backButtons.forEach(btn => {
@@ -441,7 +441,7 @@ function initSettingsNavigation() {
             }
         });
     });
-    
+
     // Close button for mobile
     if (elements.settingsCloseBtn) {
         elements.settingsCloseBtn.addEventListener('click', closeSettings);
@@ -453,21 +453,21 @@ function showSettingsSection(sectionName) {
     document.querySelectorAll('.settings-section-view').forEach(section => {
         section.classList.remove('active');
     });
-    
+
     // Toggle visibility based on what was clicked
     if (sectionName === 'main') {
         elements.settingsMainMenu.classList.add('active');
     } else {
         elements.settingsMainMenu.classList.remove('active');
-        
+
         const target = document.getElementById(sectionName + 'Section');
         if (target) {
             target.classList.add('active');
         }
     }
-    
+
     currentSettingsSection = sectionName;
-    
+
     // Scroll to top for better UX
     const scrollContainer = document.querySelector('.settings-scroll-container');
     if (scrollContainer) {
@@ -477,11 +477,11 @@ function showSettingsSection(sectionName) {
 
 function initCursorSettings() {
     if (!elements.cursorEnabled) return;
-    
+
     // Cursor enabled toggle
     elements.cursorEnabled.addEventListener('change', (e) => {
         settings.cursor.enabled = e.target.checked;
-        
+
         if (!isMobile && !isTouch) {
             if (settings.cursor.enabled) {
                 if (elements.cursor) elements.cursor.style.display = 'block';
@@ -493,10 +493,10 @@ function initCursorSettings() {
                 document.body.style.cursor = 'auto';
             }
         }
-        
+
         saveSettings();
     });
-    
+
     // Cursor size slider
     if (elements.cursorSize) {
         elements.cursorSize.addEventListener('input', (e) => {
@@ -508,7 +508,7 @@ function initCursorSettings() {
             saveSettings();
         });
     }
-    
+
     // Cursor opacity slider
     if (elements.cursorOpacity) {
         elements.cursorOpacity.addEventListener('input', (e) => {
@@ -520,7 +520,7 @@ function initCursorSettings() {
             saveSettings();
         });
     }
-    
+
     // Follower size slider
     if (elements.followerSize) {
         elements.followerSize.addEventListener('input', (e) => {
@@ -536,20 +536,20 @@ function initCursorSettings() {
 
 function initEnhancedMiscSettings() {
     if (!elements.reducedMotion) return;
-    
+
     // Reduced motion toggle
     elements.reducedMotion.addEventListener('change', (e) => {
         settings.misc.reducedMotion = e.target.checked;
-        
+
         if (settings.misc.reducedMotion) {
             disableHeavyAnimations();
         } else {
             enableHeavyAnimations();
         }
-        
+
         saveSettings();
     });
-    
+
     // Autoplay music toggle
     if (elements.autoplayMusic) {
         elements.autoplayMusic.addEventListener('change', (e) => {
@@ -557,7 +557,7 @@ function initEnhancedMiscSettings() {
             saveSettings();
         });
     }
-    
+
     // Show floating elements toggle
     if (elements.showFloatingElements) {
         elements.showFloatingElements.addEventListener('change', (e) => {
@@ -566,7 +566,7 @@ function initEnhancedMiscSettings() {
             saveSettings();
         });
     }
-    
+
     // Show particles toggle
     if (elements.showParticles) {
         elements.showParticles.addEventListener('change', (e) => {
@@ -575,7 +575,7 @@ function initEnhancedMiscSettings() {
             saveSettings();
         });
     }
-    
+
     // Show code snippets toggle
     if (elements.showCodeSnippets) {
         elements.showCodeSnippets.addEventListener('change', (e) => {
@@ -584,7 +584,7 @@ function initEnhancedMiscSettings() {
             saveSettings();
         });
     }
-    
+
     // Show geometric shapes toggle
     if (elements.showGeometricShapes) {
         elements.showGeometricShapes.addEventListener('change', (e) => {
@@ -593,7 +593,7 @@ function initEnhancedMiscSettings() {
             saveSettings();
         });
     }
-    
+
     // Animation speed slider
     if (elements.animationSpeed) {
         elements.animationSpeed.addEventListener('input', (e) => {
@@ -605,7 +605,7 @@ function initEnhancedMiscSettings() {
             saveSettings();
         });
     }
-    
+
     // Parallax intensity slider
     if (elements.parallaxIntensity) {
         elements.parallaxIntensity.addEventListener('input', (e) => {
@@ -617,7 +617,7 @@ function initEnhancedMiscSettings() {
             saveSettings();
         });
     }
-    
+
     // Reset settings button
     if (elements.resetSettings) {
         elements.resetSettings.addEventListener('click', resetAllSettings);
@@ -629,60 +629,60 @@ function populateSettingsValues() {
     if (elements.cursorEnabled) {
         elements.cursorEnabled.checked = settings.cursor.enabled;
     }
-    
+
     if (elements.cursorSize) {
         elements.cursorSize.value = settings.cursor.size;
         if (elements.cursorSizeValue) {
             elements.cursorSizeValue.textContent = settings.cursor.size + 'px';
         }
     }
-    
+
     if (elements.cursorOpacity) {
         elements.cursorOpacity.value = settings.cursor.opacity;
         if (elements.cursorOpacityValue) {
             elements.cursorOpacityValue.textContent = settings.cursor.opacity + '%';
         }
     }
-    
+
     if (elements.followerSize) {
         elements.followerSize.value = settings.cursor.followerSize;
         if (elements.followerSizeValue) {
             elements.followerSizeValue.textContent = settings.cursor.followerSize + 'px';
         }
     }
-    
+
     // Populate enhanced misc settings
     if (elements.reducedMotion) {
         elements.reducedMotion.checked = settings.misc.reducedMotion;
     }
-    
+
     if (elements.autoplayMusic) {
         elements.autoplayMusic.checked = settings.misc.autoplayMusic;
     }
-    
+
     if (elements.showFloatingElements) {
         elements.showFloatingElements.checked = settings.misc.showFloatingElements;
     }
-    
+
     if (elements.showParticles) {
         elements.showParticles.checked = settings.misc.showParticles;
     }
-    
+
     if (elements.showCodeSnippets) {
         elements.showCodeSnippets.checked = settings.misc.showCodeSnippets;
     }
-    
+
     if (elements.showGeometricShapes) {
         elements.showGeometricShapes.checked = settings.misc.showGeometricShapes;
     }
-    
+
     if (elements.animationSpeed) {
         elements.animationSpeed.value = settings.misc.animationSpeed;
         if (elements.animationSpeedValue) {
             elements.animationSpeedValue.textContent = settings.misc.animationSpeed + '%';
         }
     }
-    
+
     if (elements.parallaxIntensity) {
         elements.parallaxIntensity.value = settings.misc.parallaxIntensity;
         if (elements.parallaxIntensityValue) {
@@ -693,14 +693,14 @@ function populateSettingsValues() {
 
 function enableHeavyAnimations() {
     const heavyAnimationElements = document.querySelectorAll('.floating-element');
-    
+
     heavyAnimationElements.forEach(el => {
         el.style.animation = '';
     });
-    
+
     updateFloatingElementsVisibility();
     updateAnimationSpeed();
-    
+
     // Reset animation durations
     document.documentElement.style.removeProperty('--animation-duration');
 }
@@ -712,7 +712,7 @@ function enableHeavyAnimations() {
 function hideLoadingScreen() {
     if (elements.loadingScreen) {
         elements.loadingScreen.classList.add('fade-out');
-        
+
         // Remove from DOM after animation completes
         setTimeout(() => {
             if (elements.loadingScreen.parentNode) {
@@ -728,7 +728,7 @@ function hideLoadingScreen() {
 
 function initBackToTop() {
     if (!elements.backToTop) return;
-    
+
     // Show/hide button based on scroll position
     window.addEventListener('scroll', throttle(() => {
         if (window.pageYOffset > 300) {
@@ -737,7 +737,7 @@ function initBackToTop() {
             elements.backToTop.classList.remove('show');
         }
     }, 100), { passive: true });
-    
+
     // Smooth scroll to top when clicked
     elements.backToTop.addEventListener('click', () => {
         window.scrollTo({
@@ -756,16 +756,16 @@ function optimizeForMobile() {
     if (elements.cursor) elements.cursor.style.display = 'none';
     if (elements.follower) elements.follower.style.display = 'none';
     document.body.style.cursor = 'auto';
-    
+
     // Add mobile class for specific styling
     document.body.classList.add('mobile-device');
-    
+
     // Optimize touch events with passive listeners
     const passiveOptions = { passive: true };
-    document.addEventListener('touchstart', () => {}, passiveOptions);
-    document.addEventListener('touchmove', () => {}, passiveOptions);
-    document.addEventListener('touchend', () => {}, passiveOptions);
-    
+    document.addEventListener('touchstart', () => { }, passiveOptions);
+    document.addEventListener('touchmove', () => { }, passiveOptions);
+    document.addEventListener('touchend', () => { }, passiveOptions);
+
     // Prevent zoom on double tap
     let lastTouchEnd = 0;
     document.addEventListener('touchend', function (event) {
@@ -775,14 +775,14 @@ function optimizeForMobile() {
         }
         lastTouchEnd = now;
     }, false);
-    
+
     // Disable floating elements on mobile for performance
     settings.misc.showFloatingElements = false;
     settings.misc.showParticles = false;
     settings.misc.showCodeSnippets = false;
     settings.misc.showGeometricShapes = false;
     settings.misc.parallaxIntensity = 0;
-    
+
     updateFloatingElementsVisibility();
 }
 
@@ -792,9 +792,9 @@ function optimizeForMobile() {
 
 function initMobileMenu() {
     if (!elements.mobileMenuBtn || !elements.mobileMenu) return;
-    
+
     elements.mobileMenuBtn.addEventListener('click', toggleMobileMenu);
-    
+
     // Close mobile menu when clicking nav links
     const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
     mobileNavLinks.forEach(link => {
@@ -802,14 +802,14 @@ function initMobileMenu() {
             closeMobileMenu();
         });
     });
-    
+
     // Close mobile menu when clicking outside
     elements.mobileMenu.addEventListener('click', (e) => {
         if (e.target === elements.mobileMenu) {
             closeMobileMenu();
         }
     });
-    
+
     // Handle escape key
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && elements.mobileMenu.classList.contains('active')) {
@@ -820,7 +820,7 @@ function initMobileMenu() {
 
 function toggleMobileMenu() {
     const isActive = elements.mobileMenu.classList.contains('active');
-    
+
     if (isActive) {
         closeMobileMenu();
     } else {
@@ -832,7 +832,7 @@ function openMobileMenu() {
     elements.mobileMenuBtn.classList.add('active');
     elements.mobileMenu.classList.add('active');
     document.body.style.overflow = 'hidden';
-    
+
     // Focus management for accessibility
     elements.mobileMenu.focus();
 }
@@ -849,10 +849,10 @@ function closeMobileMenu() {
 
 function initAudioPlayer() {
     if (!elements.audioPlayer) return;
-    
+
     elements.audioPlayer.volume = volume;
     updateVolumeDisplay();
-    
+
     // Audio event listeners with optimized handling
     elements.audioPlayer.addEventListener('loadedmetadata', handleMetadataLoaded);
     elements.audioPlayer.addEventListener('timeupdate', throttle(handleTimeUpdate, 100));
@@ -861,12 +861,12 @@ function initAudioPlayer() {
     elements.audioPlayer.addEventListener('canplay', hideAudioError);
     elements.audioPlayer.addEventListener('play', () => setPlayButtonState(true));
     elements.audioPlayer.addEventListener('pause', () => setPlayButtonState(false));
-    
+
     // Better error handling for load failures
     elements.audioPlayer.addEventListener('loadstart', () => {
         console.log('Audio loading started...');
     });
-    
+
     elements.audioPlayer.addEventListener('canplaythrough', () => {
         console.log('Audio can play through');
         hideAudioError();
@@ -895,9 +895,9 @@ function handleTrackEnded() {
 function handleAudioError(e) {
     const error = e.target.error;
     let errorMessage = 'Audio file could not be loaded. ';
-    
+
     if (error) {
-        switch(error.code) {
+        switch (error.code) {
             case error.MEDIA_ERR_ABORTED:
                 errorMessage += 'Playback was aborted.';
                 break;
@@ -915,7 +915,7 @@ function handleAudioError(e) {
                 break;
         }
     }
-    
+
     console.error('Audio error:', errorMessage, 'Track:', currentTrack >= 0 ? tracks[currentTrack].src : 'none');
     showAudioError(errorMessage);
     setPlayButtonState(false);
@@ -947,7 +947,7 @@ function setPlayButtonState(playing) {
     if (elements.playPauseBtn) {
         const playIcon = elements.playPauseBtn.querySelector('.play-icon');
         const pauseIcon = elements.playPauseBtn.querySelector('.pause-icon');
-        
+
         if (playIcon && pauseIcon) {
             if (playing) {
                 playIcon.classList.add('hidden');
@@ -963,19 +963,19 @@ function setPlayButtonState(playing) {
 
 function loadTrack(trackIndex) {
     if (trackIndex < 0 || trackIndex >= tracks.length) return;
-    
+
     currentTrack = trackIndex;
     const track = tracks[trackIndex];
-    
+
     console.log('Loading track:', track.title, 'from:', track.src);
-    
+
     // Update UI
     if (elements.currentTrackTitle) elements.currentTrackTitle.textContent = track.title;
     if (elements.currentTrackArtist) elements.currentTrackArtist.textContent = track.artist;
-    
+
     // Update playlist active state
     updatePlaylistActiveState(trackIndex);
-    
+
     // Load audio with better error handling
     try {
         elements.audioPlayer.src = track.src;
@@ -985,7 +985,7 @@ function loadTrack(trackIndex) {
         console.error('Error loading track:', error);
         showAudioError('Failed to load audio file: ' + track.title);
     }
-    
+
     // Reset progress
     resetProgressDisplay();
 }
@@ -1007,7 +1007,7 @@ function togglePlayPause() {
         loadTrack(0);
         return;
     }
-    
+
     if (isPlaying) {
         elements.audioPlayer.pause();
     } else {
@@ -1066,11 +1066,11 @@ function updateVolumeDisplay() {
     if (elements.volumeSliderFill) {
         elements.volumeSliderFill.style.width = (volume * 100) + '%';
     }
-    
+
     if (elements.volumeSlider) {
         elements.volumeSlider.value = volume * 100;
     }
-    
+
     // Update volume icon based on level
     const volumeIcon = document.querySelector('.volume-icon-container svg');
     if (volumeIcon) {
@@ -1096,7 +1096,7 @@ function initCustomCursor() {
     if (!elements.cursor || !elements.follower || isMobile || isTouch || !settings.cursor.enabled) {
         return;
     }
-    
+
     let mouseX = 0, mouseY = 0;
     let followerX = 0, followerY = 0;
     let isMoving = false;
@@ -1106,7 +1106,7 @@ function initCustomCursor() {
         mouseX = e.clientX;
         mouseY = e.clientY;
         isMoving = true;
-        
+
         const halfSize = settings.cursor.size / 2;
         elements.cursor.style.transform = `translate3d(${mouseX - halfSize}px, ${mouseY - halfSize}px, 0)`;
     }, 16), { passive: true });
@@ -1116,18 +1116,18 @@ function initCustomCursor() {
         if (isMoving) {
             followerX += (mouseX - followerX) * 0.08;
             followerY += (mouseY - followerY) * 0.08;
-            
+
             const halfFollowerSize = settings.cursor.followerSize / 2;
             elements.follower.style.transform = `translate3d(${followerX - halfFollowerSize}px, ${followerY - halfFollowerSize}px, 0)`;
         }
-        
+
         requestAnimationFrame(animateFollower);
     }
     animateFollower();
 
     // Enhanced hover effects for interactive elements
     const hoverElements = document.querySelectorAll('a, button, .skill-card, .project-card, .timeline-content, .logo-container, .theme-option, .playlist-item, .control-btn, .settings-category, input[type="range"], .toggle-switch');
-    
+
     hoverElements.forEach(el => {
         el.addEventListener('mouseenter', () => {
             if (elements.cursor && elements.follower) {
@@ -1136,7 +1136,7 @@ function initCustomCursor() {
                 elements.follower.style.opacity = '0.8';
             }
         });
-        
+
         el.addEventListener('mouseleave', () => {
             if (elements.cursor && elements.follower) {
                 elements.cursor.style.transform = elements.cursor.style.transform.replace(' scale(1.5)', '');
@@ -1169,7 +1169,7 @@ function initCustomCursor() {
 function initNavigation() {
     // Optimized scroll handler with passive listener
     window.addEventListener('scroll', throttle(handleScroll, 16), { passive: true });
-    
+
     // Smooth scrolling for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', handleAnchorClick);
@@ -1179,14 +1179,14 @@ function initNavigation() {
 function handleScroll() {
     const currentTime = Date.now();
     const currentScrollTop = window.pageYOffset;
-    
+
     const timeDelta = currentTime - lastScrollTime;
     const scrollDelta = Math.abs(currentScrollTop - lastScrollTop);
     scrollSpeed = scrollDelta / timeDelta;
-    
+
     lastScrollTime = currentTime;
     lastScrollTop = currentScrollTop;
-    
+
     // Update navbar with enhanced animation
     if (elements.navbar) {
         if (currentScrollTop > 100) {
@@ -1203,10 +1203,10 @@ function handleAnchorClick(e) {
     if (target) {
         // Close mobile menu if open
         closeMobileMenu();
-        
+
         // Close settings if open
         closeSettings();
-        
+
         target.scrollIntoView({
             behavior: 'smooth',
             block: 'start'
@@ -1236,10 +1236,10 @@ function handleIntersection(entries) {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             const delay = scrollSpeed > 2 ? 0 : Math.min(entry.target.dataset.delay || 0, isMobile ? 150 : 300);
-            
+
             setTimeout(() => {
                 entry.target.classList.add('animated');
-                
+
                 // Animate numbers if present
                 const statNumbers = entry.target.querySelectorAll('.stat-number[data-target]');
                 if (statNumbers.length > 0) {
@@ -1272,17 +1272,17 @@ function animateNumbers(numbers) {
 
 function initParallax() {
     if (isLowEndDevice || prefersReducedMotion || isMobile || settings.misc.reducedMotion || settings.misc.parallaxIntensity === 0) return;
-    
+
     window.addEventListener('scroll', throttle(handleParallax, 16), { passive: true });
 }
 
 function handleParallax() {
     if (settings.misc.parallaxIntensity === 0) return;
-    
+
     const scrolled = window.pageYOffset;
     const intensity = settings.misc.parallaxIntensity / 100;
     const shapes = document.querySelectorAll('.geometric-shape');
-    
+
     shapes.forEach((shape, index) => {
         const speed = (0.2 + (index * 0.1)) * intensity;
         const yPos = scrolled * speed;
@@ -1297,11 +1297,11 @@ function handleParallax() {
 
 function initTypingAnimation() {
     if (!elements.heroTitle || prefersReducedMotion || settings.misc.reducedMotion) return;
-    
+
     const titleText = elements.heroTitle.textContent.trim();
     elements.heroTitle.textContent = '';
     elements.heroTitle.style.opacity = '1'; // Show container immediately
-    
+
     setTimeout(() => {
         let i = 0;
         const typeInterval = setInterval(() => {
@@ -1321,9 +1321,9 @@ function initTypingAnimation() {
 
 function init3DTiltEffects() {
     if (isLowEndDevice || prefersReducedMotion || isMobile || isTouch || settings.misc.reducedMotion) return;
-    
+
     const tiltElements = document.querySelectorAll('.project-card, .skill-card');
-    
+
     tiltElements.forEach(card => {
         card.addEventListener('mousemove', handleTilt);
         card.addEventListener('mouseleave', resetTilt);
@@ -1334,13 +1334,13 @@ function handleTilt(e) {
     const rect = this.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    
+
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    
+
     const rotateX = (y - centerY) / 15;
     const rotateY = (centerX - x) / 15;
-    
+
     this.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-12px)`;
 }
 
@@ -1354,16 +1354,16 @@ function resetTilt() {
 
 function initSettingsPanel() {
     if (!elements.settingsBtn || !elements.settingsMenu) return;
-    
+
     elements.settingsBtn.addEventListener('click', toggleSettings);
-    
+
     // Click outside to close (but not on mobile)
     document.addEventListener('click', (e) => {
         if (!isMobile && !elements.settingsBtn.contains(e.target) && !elements.settingsMenu.contains(e.target)) {
             closeSettings();
         }
     });
-    
+
     // Enhanced mobile handling
     if (isMobile) {
         // Add touch event handling
@@ -1371,13 +1371,13 @@ function initSettingsPanel() {
             e.preventDefault();
             toggleSettings();
         });
-        
+
         // Prevent body scroll when settings open
         elements.settingsMenu.addEventListener('touchmove', (e) => {
             e.stopPropagation();
         }, { passive: true });
     }
-    
+
     // Show main menu by default
     showSettingsSection('main');
 }
@@ -1393,7 +1393,7 @@ function toggleSettings() {
 function openSettings() {
     elements.settingsMenu.classList.add('active');
     showSettingsSection('main');
-    
+
     // Prevent body scroll on mobile when settings are open
     if (isMobile) {
         document.body.style.overflow = 'hidden';
@@ -1402,7 +1402,7 @@ function openSettings() {
 
 function closeSettings() {
     elements.settingsMenu.classList.remove('active');
-    
+
     // Restore body scroll
     if (isMobile) {
         document.body.style.overflow = '';
@@ -1415,7 +1415,7 @@ function closeSettings() {
 
 function initThemeSystem() {
     const themeOptions = document.querySelectorAll('.theme-option');
-    
+
     themeOptions.forEach(option => {
         option.addEventListener('click', () => {
             const theme = option.getAttribute('data-theme');
@@ -1424,7 +1424,7 @@ function initThemeSystem() {
             }
         });
     });
-    
+
     // Load saved theme
     const savedTheme = localStorage.getItem('preferred-theme');
     if (savedTheme) {
@@ -1434,23 +1434,23 @@ function initThemeSystem() {
 
 function setTheme(themeName) {
     document.body.setAttribute('data-theme', themeName);
-    
+
     try {
         localStorage.setItem('preferred-theme', themeName);
     } catch (e) {
         console.warn('Failed to save theme preference:', e);
     }
-    
+
     // Update active theme option
     document.querySelectorAll('.theme-option').forEach(option => {
         option.classList.remove('active');
     });
-    
+
     const selectedOption = document.querySelector(`[data-theme="${themeName}"]`);
     if (selectedOption) {
         selectedOption.classList.add('active');
     }
-    
+
     // Clear custom theme if switching to preset
     if (themeName !== 'custom') {
         try {
@@ -1467,9 +1467,9 @@ function setTheme(themeName) {
 
 function initCustomThemeMaker() {
     if (!elements.primaryColorPicker || !elements.accentColorPicker || !elements.applyCustomThemeBtn) return;
-    
+
     elements.applyCustomThemeBtn.addEventListener('click', applyCustomTheme);
-    
+
     // Load saved custom theme
     try {
         const savedCustomTheme = localStorage.getItem('custom-theme');
@@ -1486,13 +1486,13 @@ function initCustomThemeMaker() {
 function applyCustomTheme() {
     const primaryColor = elements.primaryColorPicker.value;
     const accentColor = elements.accentColorPicker.value;
-    
+
     // Generate custom theme CSS variables
     const customTheme = generateCustomTheme(primaryColor, accentColor);
-    
+
     // Apply custom theme
     applyThemeVariables(customTheme);
-    
+
     // Save custom theme
     try {
         localStorage.setItem('custom-theme', JSON.stringify({
@@ -1502,21 +1502,21 @@ function applyCustomTheme() {
     } catch (e) {
         console.warn('Failed to save custom theme:', e);
     }
-    
+
     // Update theme selection
     document.querySelectorAll('.theme-option').forEach(option => {
         option.classList.remove('active');
     });
-    
+
     // Add custom theme to body
     document.body.setAttribute('data-theme', 'custom');
-    
+
     try {
         localStorage.setItem('preferred-theme', 'custom');
     } catch (e) {
         console.warn('Failed to save theme preference:', e);
     }
-    
+
     // Visual feedback
     elements.applyCustomThemeBtn.textContent = 'Applied!';
     setTimeout(() => {
@@ -1528,17 +1528,17 @@ function generateCustomTheme(primaryColor, accentColor) {
     // Convert hex to RGB for calculations
     const primaryRGB = hexToRgb(primaryColor);
     const accentRGB = hexToRgb(accentColor);
-    
+
     // Generate color variations
     const secondaryColor = darkenColor(primaryColor, 0.1);
     const tertiaryColor = lightenColor(primaryColor, 0.1);
     const quaternaryColor = lightenColor(primaryColor, 0.2);
-    
+
     // Calculate appropriate text colors
     const primaryTextColor = getContrastColor(primaryColor);
     const secondaryTextColor = blendColors(primaryTextColor, accentColor, 0.7);
     const tertiaryTextColor = blendColors(primaryTextColor, accentColor, 0.4);
-    
+
     return {
         '--primary-bg': primaryColor,
         '--secondary-bg': secondaryColor,
@@ -1581,7 +1581,7 @@ function rgbToHex(r, g, b) {
 function darkenColor(hex, factor) {
     const rgb = hexToRgb(hex);
     if (!rgb) return hex;
-    
+
     return rgbToHex(
         Math.round(rgb.r * (1 - factor)),
         Math.round(rgb.g * (1 - factor)),
@@ -1592,7 +1592,7 @@ function darkenColor(hex, factor) {
 function lightenColor(hex, factor) {
     const rgb = hexToRgb(hex);
     if (!rgb) return hex;
-    
+
     return rgbToHex(
         Math.round(rgb.r + (255 - rgb.r) * factor),
         Math.round(rgb.g + (255 - rgb.g) * factor),
@@ -1603,7 +1603,7 @@ function lightenColor(hex, factor) {
 function getContrastColor(hex) {
     const rgb = hexToRgb(hex);
     if (!rgb) return '#ffffff';
-    
+
     const brightness = (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
     return brightness > 128 ? '#000000' : '#ffffff';
 }
@@ -1611,9 +1611,9 @@ function getContrastColor(hex) {
 function blendColors(color1, color2, ratio) {
     const rgb1 = hexToRgb(color1);
     const rgb2 = hexToRgb(color2);
-    
+
     if (!rgb1 || !rgb2) return color1;
-    
+
     return rgbToHex(
         Math.round(rgb1.r * ratio + rgb2.r * (1 - ratio)),
         Math.round(rgb1.g * ratio + rgb2.g * (1 - ratio)),
@@ -1631,23 +1631,23 @@ function initAudioControls() {
     if (elements.prevBtn) elements.prevBtn.addEventListener('click', prevTrack);
     if (elements.progressBar) {
         elements.progressBar.addEventListener('click', seekTo);
-        
+
         // Add touch support for mobile
         if (isTouch) {
             elements.progressBar.addEventListener('touchend', seekTo);
         }
     }
-    
+
     // Enhanced volume slider handling
     if (elements.volumeSlider) {
         elements.volumeSlider.addEventListener('input', (e) => {
             setVolume(parseFloat(e.target.value));
         });
-        
+
         elements.volumeSlider.addEventListener('change', (e) => {
             setVolume(parseFloat(e.target.value));
         });
-        
+
         // Touch support
         if (isTouch) {
             elements.volumeSlider.addEventListener('touchmove', (e) => {
@@ -1660,7 +1660,7 @@ function initAudioControls() {
             });
         }
     }
-    
+
     // Playlist item clicks with enhanced mobile support
     document.querySelectorAll('.playlist-item').forEach((item) => {
         const clickHandler = () => {
@@ -1669,9 +1669,9 @@ function initAudioControls() {
                 loadTrack(index);
             }
         };
-        
+
         item.addEventListener('click', clickHandler);
-        
+
         // Touch support
         if (isTouch) {
             item.addEventListener('touchend', (e) => {
@@ -1691,7 +1691,7 @@ function throttle(func, delay) {
     let lastExecTime = 0;
     return function (...args) {
         const currentTime = Date.now();
-        
+
         if (currentTime - lastExecTime > delay) {
             func.apply(this, args);
             lastExecTime = currentTime;
@@ -1715,21 +1715,21 @@ function debounce(func, delay) {
 
 function disableHeavyAnimations() {
     const heavyAnimationElements = document.querySelectorAll('.floating-element');
-    
+
     heavyAnimationElements.forEach(el => {
         el.style.animation = 'none';
         el.style.display = 'none';
     });
-    
+
     // Reduce animation durations globally
     document.documentElement.style.setProperty('--animation-duration', '0.1s');
-    
+
     // Update settings state
     settings.misc.showFloatingElements = false;
     settings.misc.showParticles = false;
     settings.misc.showCodeSnippets = false;
     settings.misc.showGeometricShapes = false;
-    
+
     updateFloatingElementsVisibility();
 }
 
@@ -1763,7 +1763,7 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('keydown', (e) => {
     // Don't interfere with form inputs
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-    
+
     switch (e.code) {
         case 'Space':
             e.preventDefault();
@@ -1814,23 +1814,23 @@ document.addEventListener('keydown', (e) => {
 function handleResize() {
     const width = window.innerWidth;
     const height = window.innerHeight;
-    
+
     // Close mobile menu on resize to desktop
     if (width >= 768) {
         closeMobileMenu();
     }
-    
+
     // Adjust settings menu on resize
     if (width < 768 && elements.settingsMenu.classList.contains('active')) {
         // Keep settings open but adjust position
         showSettingsSection(currentSettingsSection);
     }
-    
+
     // Handle orientation change on mobile
     if (isMobile) {
         // Adjust viewport height for mobile browsers
         document.documentElement.style.setProperty('--vh', `${height * 0.01}px`);
-        
+
         // Recalculate settings menu position
         if (elements.settingsMenu.classList.contains('active')) {
             setTimeout(() => {
@@ -1838,7 +1838,7 @@ function handleResize() {
             }, 100);
         }
     }
-    
+
     // Update floating elements based on new screen size
     updateFloatingElementsVisibility();
 }
@@ -1861,7 +1861,7 @@ document.addEventListener('focusin', (e) => {
     if (!e.target.matches('a, button, input, select, textarea, [tabindex]')) {
         return;
     }
-    
+
     // Add focus indicator for keyboard navigation
     e.target.style.outline = '2px solid var(--accent-color)';
     e.target.style.outlineOffset = '2px';
@@ -1904,7 +1904,7 @@ document.body.appendChild(skipLink);
 
 window.addEventListener('error', (e) => {
     console.error('JavaScript error:', e.error);
-    
+
     // Graceful degradation for specific components
     if (e.error && e.error.message) {
         if (e.error.message.includes('audioPlayer')) {
@@ -1940,22 +1940,22 @@ if ('serviceWorker' in navigator && !isMobile) {
 window.addEventListener('beforeunload', () => {
     // Save settings before unloading
     saveSettings();
-    
+
     // Remove all event listeners to prevent memory leaks
     window.removeEventListener('scroll', handleScroll);
     window.removeEventListener('resize', handleResize);
-    
+
     // Pause and cleanup audio
     if (elements.audioPlayer) {
         elements.audioPlayer.pause();
         elements.audioPlayer.src = '';
         elements.audioPlayer.load();
     }
-    
+
     // Clear any running intervals and timeouts
     clearInterval();
     clearTimeout();
-    
+
     // Disconnect observers
     if (globalObserver) {
         globalObserver.disconnect();
@@ -1969,7 +1969,7 @@ document.addEventListener('visibilitychange', () => {
         if (isPlaying && elements.audioPlayer) {
             elements.audioPlayer.pause();
         }
-        
+
         // Reduce CPU usage by pausing animations
         if (settings.misc.showFloatingElements) {
             const animatedElements = document.querySelectorAll('.floating-element');

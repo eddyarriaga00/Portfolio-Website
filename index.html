@@ -10,13 +10,13 @@
         rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/style.css">
-    
+
     <!-- Mobile Performance Optimizations -->
     <meta name="theme-color" content="#000000">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
+
     <!-- Preload critical resources -->
     <link rel="preload" href="css/style.css" as="style">
     <link rel="preload" href="js/script.js" as="script">
@@ -25,7 +25,7 @@
 <body data-theme="default" class="font-inter overflow-x-hidden">
     <!-- Mobile Touch Indicator -->
     <div class="mobile-touch-indicator"></div>
-    
+
     <!-- Custom Cursors (Now mobile-enabled) -->
     <div class="custom-cursor"></div>
     <div class="cursor-follower"></div>
@@ -238,11 +238,14 @@
                             <div class="mockup-header"></div>
                             <div class="mockup-dots">● ● ●</div>
                             <div class="project-code-preview">
-                                class SecurePass {
-                                encrypt(data) {
-                                return AES.encrypt(data);
-                                }
-                                }</div>
+                                <pre><code class="language-java">
+public class SecurePass {
+    public String encrypt(String data) {
+        return AES.encrypt(data);
+    }
+}
+</code></pre>
+                            </div>
                         </div>
                         <div class="project-overlay"></div>
                     </div>
@@ -265,13 +268,15 @@
                             <div class="mockup-header"></div>
                             <div class="mockup-dots">● ● ●</div>
                             <div class="project-code-preview">
-                                const Portfolio = () => {
-                                return (
-                                &lt;div className="hero"&gt;
-                                &lt;h1&gt;Eddy Arriaga&lt;/h1&gt;
-                                &lt;/div&gt;
-                                );
-                                };</div>
+                                <pre><code class="language-jsx">
+const Portfolio = () => (
+    &lt;section className="hero"&gt;
+        &lt;h1&gt;Hi, I’m Eddy&lt;/h1&gt;
+        &lt;p&gt;CS Student & Dev&lt;/p&gt;
+    &lt;/section&gt;
+);
+</code></pre>
+                            </div>
                         </div>
                         <div class="project-overlay"></div>
                     </div>
@@ -294,13 +299,14 @@
                             <div class="mockup-header"></div>
                             <div class="mockup-dots">● ● ●</div>
                             <div class="project-code-preview">
-                                const TaskApp = () => {
-                                const [tasks, setTasks] = useState([]);
+                                <pre><code class="language-js">
+const [stats, setStats] = useState([]);
 
-                                const addTask = (task) => {
-                                setTasks([...tasks, task]);
-                                };
-                                };</div>
+useEffect(() => {
+    fetchNBAData().then(setStats);
+}, []);
+</code></pre>
+                            </div>
                         </div>
                         <div class="project-overlay"></div>
                     </div>
@@ -542,7 +548,7 @@
                             </div>
                             <div class="theme-option" data-theme="github">
                                 <div class="theme-preview github-preview"></div>
-                                GitHub 
+                                GitHub
                             </div>
                             <div class="theme-option" data-theme="discord">
                                 <div class="theme-preview discord-preview"></div>
@@ -558,7 +564,7 @@
                             </div>
                             <div class="theme-option" data-theme="ocean">
                                 <div class="theme-preview ocean-preview"></div>
-                                Ocean 
+                                Ocean
                             </div>
                         </div>
 

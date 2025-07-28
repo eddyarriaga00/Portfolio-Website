@@ -1,15 +1,12 @@
-# 🚀 Eddy Arriaga - Modern Tailwind Portfolio
+# 🚀 Eddy Arriaga - Portfolio
 
-> A sleek, interactive portfolio powered by Tailwind CSS with dynamic themes and real audio
+> A sleek, interactive portfolio
 
 ## Features
 
 **🎵 Music Player** – Custom audio controls  
 **🎨 Themes** – GitHub, Discord, Spotify, VS Code, Ocean, Default  
 **⚙️ Settings Panel** – Cursor, theme maker, preferences  
-**🖱️ Animated Cursor** – Custom follower (desktop)  
-**📱 Responsive** – Mobile, tablet, desktop friendly  
-**💫 Animations** – Smooth scroll, 3D hover cards
 
 ## 🛠️ Tech Stack
 
