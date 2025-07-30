@@ -396,8 +396,8 @@ function loadSettings() {
     // Apply device-specific defaults
     if (isMobile) {
         settings.cursor.enabled = false;
-        settings.misc.showFloatingElements = false;
-        settings.misc.showParticles = false;
+        settings.misc.showFloatingElements = true;
+        settings.misc.showParticles = true;
         settings.misc.parallaxIntensity = 0;
     }
 
