@@ -280,8 +280,17 @@ function createFloatingEmojis() {
             emoji.style.zIndex = '1';
             
             container.appendChild(emoji);
+
+            // Boost visibility on mobile
+if (isMobile) {
+    emoji.style.fontSize = (Math.random() * 0.5 + 1.5) + 'rem';
+    emoji.style.opacity = Math.random() * 0.2 + 0.7;
+}
+
         }
     });
+
+    
 }
 
 function updateFloatingEmojis() {
