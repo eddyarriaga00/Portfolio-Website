@@ -697,15 +697,10 @@ body.mobile-device * {
     height: 100%;
     overflow: hidden;
     z-index: 1;
-    display: none;
+    display: block !important; /* Always show */
     /* Hidden on mobile by default */
 }
 
-@media (min-width: 768px) {
-    .floating-elements {
-        display: block;
-    }
-}
 
 .hero-content {
     max-width: 1000px;
@@ -1111,21 +1106,19 @@ body.mobile-device * {
 
 .floating-emoji {
     position: absolute;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     animation-name: float-emoji;
     animation-duration: calc(var(--animation-speed) * 35s);
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     pointer-events: none;
-    opacity: 0.6;
+    opacity: 0.9;
     filter: blur(0.5px);
+    z-index: 10;
+
 }
 
-@media (min-width: 768px) {
-    .floating-emoji {
-        font-size: 1.5rem;
-    }
-}
+
 
 /* Default theme emojis */
 .floating-emoji.default-1 { top: 8%; left: 12%; animation-delay: 0s; }
