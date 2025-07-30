@@ -818,7 +818,11 @@ body.mobile-device * {
     animation-timing-function: linear;
     animation-iteration-count: infinite;
 }
-
+@media (min-width: 768px) {
+    .floating-elements {
+        display: block !important; /* Show on larger screens */
+    }
+}
 .floating-code {
     position: absolute;
     font-family: 'JetBrains Mono', monospace;
@@ -1116,7 +1120,11 @@ body.mobile-device * {
     filter: blur(0.5px);
 
 }
-
+@media (min-width: 768px) {
+    .floating-emoji {
+        font-size: 1.5rem;
+    }
+}
 
 
 /* Default theme emojis */
