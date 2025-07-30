@@ -78,6 +78,17 @@ let settings = {
     }
 };
 
+// Enhanced floating emoji data for different themes
+const themeEmojis = {
+    default: ['💻', '⚡', '🚀', '🔥', '✨', '💡', '🎯', '🌟', '⭐', '🎨'],
+    github: ['🐙', '🔀', '📝', '🔧', '⚙️', '📊', '🎯', '✅', '🚀', '🌟'],
+    discord: ['🎮', '🎯', '💬', '🔊', '🎵', '⚡', '🌟', '🎪', '🎭', '🎨'],
+    spotify: ['🎵', '🎶', '🎧', '🎤', '🎸', '🥁', '🎹', '🎺', '🎻', '🎪'],
+    vscode: ['💻', '⌨️', '🖥️', '📱', '⚡', '🔧', '⚙️', '🎯', '📊', '🚀'],
+    ocean: ['🌊', '🐠', '🐙', '🦈', '🐢', '🌺', '🏝️', '⛵', '🌴', '🦑'],
+    jojos: ['🎀', '🎀', '🎀', '🎀', '🎀', '🎀', '🎀', '🎀', '🎀', '🎀', '🎀', '🎀', '🎀', '🎀', '🎀'] // Only pink bow for JoJo's theme
+};
+
 // ===========================
 // INITIALIZATION
 // ===========================
@@ -110,6 +121,7 @@ function initializeApp() {
     initBackToTop();
     initAdvancedSettings();
     initMobileOptimizations();
+    initFloatingEmojis();
 
     // Performance optimization
     if (isLowEndDevice || prefersReducedMotion || settings.misc.reducedMotion) {
@@ -189,6 +201,108 @@ function cacheElements() {
     elements.parallaxIntensity = document.getElementById('parallaxIntensity');
     elements.parallaxIntensityValue = document.getElementById('parallaxIntensityValue');
     elements.resetSettings = document.getElementById('resetSettings');
+}
+
+// ===========================
+// FLOATING EMOJIS SYSTEM
+// ===========================
+
+function initFloatingEmojis() {
+    if (isMobile || prefersReducedMotion || !settings.misc.showFloatingElements) {
+        return;
+    }
+
+    createFloatingEmojis();
+    
+    // Update emojis when theme changes
+    document.addEventListener('themeChanged', updateFloatingEmojis);
+}
+
+function createFloatingEmojis() {
+    // Remove existing emoji elements
+    document.querySelectorAll('.floating-emoji').forEach(el => el.remove());
+
+    const currentTheme = document.body.getAttribute('data-theme') || 'default';
+    const emojis = themeEmojis[currentTheme] || themeEmojis.default;
+    
+    // Create emoji containers for each section
+    const sections = [
+        { selector: '.hero-section', container: '.floating-elements' },
+        { selector: '.about-section', container: null },
+        { selector: '.skills-section', container: null },
+        { selector: '.projects-section', container: null },
+        { selector: '.contact-section', container: null }
+    ];
+
+    sections.forEach((section, sectionIndex) => {
+        const sectionElement = document.querySelector(section.selector);
+        if (!sectionElement) return;
+
+        let container;
+        if (section.container) {
+            container = sectionElement.querySelector(section.container);
+        } else {
+            // Create floating container for sections without one
+            container = document.createElement('div');
+            container.className = 'floating-elements';
+            container.style.position = 'absolute';
+            container.style.top = '0';
+            container.style.left = '0';
+            container.style.width = '100%';
+            container.style.height = '100%';
+            container.style.overflow = 'hidden';
+            container.style.pointerEvents = 'none';
+            container.style.zIndex = '1';
+            sectionElement.style.position = 'relative';
+            sectionElement.appendChild(container);
+        }
+
+        if (!container) return;
+
+        // Number of emojis per section
+        const emojiCount = currentTheme === 'jojos' ? 15 : 10;
+        
+        for (let i = 0; i < emojiCount; i++) {
+            const emoji = document.createElement('div');
+            emoji.className = `floating-emoji ${currentTheme}-${i + 1}`;
+            emoji.textContent = emojis[i % emojis.length];
+            
+            // Random positioning
+            emoji.style.position = 'absolute';
+            emoji.style.left = Math.random() * 90 + '%';
+            emoji.style.top = Math.random() * 90 + '%';
+            emoji.style.fontSize = (Math.random() * 0.5 + 1) + 'rem';
+            emoji.style.animationDelay = Math.random() * 25 + 's';
+            emoji.style.animationDuration = (Math.random() * 10 + 25) + 's';
+            emoji.style.opacity = Math.random() * 0.4 + 0.3;
+            emoji.style.pointerEvents = 'none';
+            emoji.style.userSelect = 'none';
+            emoji.style.zIndex = '1';
+            
+            container.appendChild(emoji);
+        }
+    });
+}
+
+function updateFloatingEmojis() {
+    if (!settings.misc.showFloatingElements || isMobile) {
+        return;
+    }
+    
+    // Smooth transition: fade out old emojis, create new ones
+    const existingEmojis = document.querySelectorAll('.floating-emoji');
+    existingEmojis.forEach(emoji => {
+        emoji.style.transition = 'opacity 0.5s ease-out';
+        emoji.style.opacity = '0';
+    });
+    
+    setTimeout(() => {
+        createFloatingEmojis();
+    }, 500);
+}
+
+function removeFloatingEmojis() {
+    document.querySelectorAll('.floating-emoji').forEach(el => el.remove());
 }
 
 // ===========================
@@ -334,9 +448,15 @@ function updateFloatingElementsVisibility() {
     const codeSnippets = document.querySelectorAll('.floating-code');
     const geometricShapes = document.querySelectorAll('.geometric-shape');
     const particles = document.querySelectorAll('.floating-tech-icon, .floating-symbols, .floating-contact-icons');
+    const emojis = document.querySelectorAll('.floating-emoji');
 
     // Show/hide all floating elements
     floatingElements.forEach(el => {
+        el.style.display = settings.misc.showFloatingElements ? '' : 'none';
+    });
+
+    // Show/hide emojis
+    emojis.forEach(el => {
         el.style.display = settings.misc.showFloatingElements ? '' : 'none';
     });
 
@@ -362,7 +482,7 @@ function updateAnimationSpeed() {
     root.style.setProperty('--animation-speed', speed);
 
     // Update individual animation durations
-    const animatedElements = document.querySelectorAll('.floating-element');
+    const animatedElements = document.querySelectorAll('.floating-element, .floating-emoji');
     animatedElements.forEach(el => {
         if (el.style.animationDuration) {
             const baseDuration = parseFloat(el.style.animationDuration) || 25;
@@ -563,6 +683,13 @@ function initEnhancedMiscSettings() {
         elements.showFloatingElements.addEventListener('change', (e) => {
             settings.misc.showFloatingElements = e.target.checked;
             updateFloatingElementsVisibility();
+            
+            if (e.target.checked) {
+                initFloatingEmojis();
+            } else {
+                removeFloatingEmojis();
+            }
+            
             saveSettings();
         });
     }
@@ -692,7 +819,7 @@ function populateSettingsValues() {
 }
 
 function enableHeavyAnimations() {
-    const heavyAnimationElements = document.querySelectorAll('.floating-element');
+    const heavyAnimationElements = document.querySelectorAll('.floating-element, .floating-emoji');
 
     heavyAnimationElements.forEach(el => {
         el.style.animation = '';
@@ -703,6 +830,11 @@ function enableHeavyAnimations() {
 
     // Reset animation durations
     document.documentElement.style.removeProperty('--animation-duration');
+    
+    // Re-initialize emojis if floating elements are enabled
+    if (settings.misc.showFloatingElements) {
+        initFloatingEmojis();
+    }
 }
 
 // ===========================
@@ -1410,7 +1542,7 @@ function closeSettings() {
 }
 
 // ===========================
-// THEME SYSTEM (ENHANCED)
+// THEME SYSTEM (ENHANCED WITH JOJOS)
 // ===========================
 
 function initThemeSystem() {
@@ -1433,6 +1565,7 @@ function initThemeSystem() {
 }
 
 function setTheme(themeName) {
+    const previousTheme = document.body.getAttribute('data-theme');
     document.body.setAttribute('data-theme', themeName);
 
     try {
@@ -1459,6 +1592,14 @@ function setTheme(themeName) {
             console.warn('Failed to remove custom theme:', e);
         }
     }
+
+    // Update floating emojis if theme changed and they're visible
+    if (previousTheme !== themeName && settings.misc.showFloatingElements && !isMobile) {
+        updateFloatingEmojis();
+    }
+
+    // Dispatch theme change event
+    document.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme: themeName, previousTheme } }));
 }
 
 // ===========================
@@ -1714,7 +1855,7 @@ function debounce(func, delay) {
 }
 
 function disableHeavyAnimations() {
-    const heavyAnimationElements = document.querySelectorAll('.floating-element');
+    const heavyAnimationElements = document.querySelectorAll('.floating-element, .floating-emoji');
 
     heavyAnimationElements.forEach(el => {
         el.style.animation = 'none';
@@ -1731,6 +1872,7 @@ function disableHeavyAnimations() {
     settings.misc.showGeometricShapes = false;
 
     updateFloatingElementsVisibility();
+    removeFloatingEmojis();
 }
 
 // ===========================
@@ -1841,6 +1983,11 @@ function handleResize() {
 
     // Update floating elements based on new screen size
     updateFloatingElementsVisibility();
+    
+    // Recreate emojis on significant size changes
+    if (settings.misc.showFloatingElements && !isMobile) {
+        setTimeout(createFloatingEmojis, 250);
+    }
 }
 
 window.addEventListener('resize', debounce(handleResize, 250));
@@ -1960,6 +2107,9 @@ window.addEventListener('beforeunload', () => {
     if (globalObserver) {
         globalObserver.disconnect();
     }
+
+    // Clean up floating emojis
+    removeFloatingEmojis();
 });
 
 // Cleanup on page hide (for mobile)
@@ -1972,7 +2122,7 @@ document.addEventListener('visibilitychange', () => {
 
         // Reduce CPU usage by pausing animations
         if (settings.misc.showFloatingElements) {
-            const animatedElements = document.querySelectorAll('.floating-element');
+            const animatedElements = document.querySelectorAll('.floating-element, .floating-emoji');
             animatedElements.forEach(el => {
                 el.style.animationPlayState = 'paused';
             });
@@ -1980,7 +2130,7 @@ document.addEventListener('visibilitychange', () => {
     } else {
         // Resume animations when page is visible again
         if (settings.misc.showFloatingElements && !settings.misc.reducedMotion) {
-            const animatedElements = document.querySelectorAll('.floating-element');
+            const animatedElements = document.querySelectorAll('.floating-element, .floating-emoji');
             animatedElements.forEach(el => {
                 el.style.animationPlayState = 'running';
             });
@@ -2022,3 +2172,4 @@ if (window.performance && window.performance.measure) {
 console.log('🚀 Enhanced mobile-optimized portfolio script loaded successfully!');
 console.log('📱 Device optimizations active for:', deviceType);
 console.log('⚡ Performance mode:', isLowEndDevice ? 'Low-end device detected' : 'Standard performance');
+console.log('🎀 JoJo\'s theme with enhanced floating emojis ready!');

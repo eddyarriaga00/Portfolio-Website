@@ -26,7 +26,7 @@
     <!-- Mobile Touch Indicator -->
     <div class="mobile-touch-indicator"></div>
 
-    <!-- Custom Cursors (Now mobile-enabled) -->
+    <!-- Custom Cursors -->
     <div class="custom-cursor"></div>
     <div class="cursor-follower"></div>
 
@@ -37,7 +37,7 @@
     <div id="loadingScreen" class="loading-screen">
         <div class="loading-container">
             <div class="loading-logo">EA</div>
-            <div class="loading-text">LOADING</div>
+            <div class="loading-text">INITIALIZING</div>
             <div class="loading-progress">
                 <div class="loading-bar"></div>
             </div>
@@ -85,7 +85,7 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Initializing Section -->
     <section class="hero-section">
         <div class="floating-elements">
             <div class="floating-code floating-element">console.log('hello');</div>
@@ -128,12 +128,12 @@
             </h2>
             <div class="about-content">
                 <div class="about-text animate-on-scroll">
-                    <h3>I build things with code.</h3>
-                    <p>I'm a passionate Computer Science student with a love for creating innovative solutions
+                    <h3>I build things with code</h3>
+                    <p>I'm a passionate Computer Science student at UNCG with a love for creating innovative solutions
                         through code. With experience as an Apple Specialist, I bring both technical expertise and
                         strong communication skills to every project.</p>
 
-                    <h3>My Belief</h3>
+                    <h3>My belief</h3>
                     <p>As a Senior CS student at UNCG, with an Associate of Science degree, I am passionate about using
                         technology to solve problems. I hope to produce results. I am bilingual in English and Spanish.
                     </p>
@@ -150,13 +150,13 @@
                         <div class="stat-icon">💻</div>
                         <span class="stat-number" data-target="12">0</span>
                         <span class="stat-label">Projects Built</span>
-                        <div class="stat-description">Attempts to Attempts</div>
+                        <div class="stat-description">Attempts on Attempts</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-icon">⚡</div>
                         <span class="stat-number" data-target="4">0</span>
                         <span class="stat-label">Tech Stacks</span>
-                        <div class="stat-description">Learning Always...</div>
+                        <div class="stat-description">Learning always...</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-icon">🔥</div>
@@ -257,8 +257,7 @@
                     </div>
                     <div class="project-content">
                         <h3 class="project-title">Java-DSA-Helper</h3>
-                        <p class="project-desc">From beginner to intermediate to advanced, covers all topics of CSC230
-                            and more
+                        <p class="project-desc">From beginner to intermediate to advanced, covers all topics of CSC230 and more 
                         </p>
                         <div class="project-tech">
                             <span class="tech-tag">Java</span>
@@ -314,17 +313,11 @@
                             <div class="mockup-dots">● ● ●</div>
                             <div class="project-code-preview">
                                 <pre><code class="language-js">
-import Sidebar from '../components/Sidebar';
-import StatsSummary from '../components/StatsSummary';
-import WeekNavigator from '../components/WeekNavigator';
-import GameCard from '../components/GameCard';
-import DarkModeToggle from '../components/DarkModeToggle';
-import SettingsModal from '../components/SettingsModal';
-import TopPlayers from '../components/TopPlayers';
+const [stats, setStats] = useState([]);
 
-import { useEffect, useState } from 'react';
-
-
+useEffect(() => {
+    fetchNBAData().then(setStats);
+}, []);
 </code></pre>
                             </div>
                         </div>
@@ -332,8 +325,7 @@ import { useEffect, useState } from 'react';
                     </div>
                     <div class="project-content">
                         <h3 class="project-title">NBA-Tracker-STATS-APP</h3>
-                        <p class="project-desc">A clean, mobile-first NBA game tracker that displays live scores,
-                            scheduled games, and top player stats.</p>
+                        <p class="project-desc">A clean, mobile-first NBA game tracker that displays live scores, scheduled games, and top player stats.</p>
                         <div class="project-tech">
                             <span class="tech-tag">React Native</span>
                             <span class="tech-tag">Firebase</span>
@@ -362,9 +354,7 @@ import { useEffect, useState } from 'react';
                         <div class="timeline-date">Nov. 2024 - Mar. 2025</div>
                         <h3 class="timeline-title">Apple Specialist</h3>
                         <div class="timeline-company">Apple</div>
-                        <p class="timeline-desc">Assist customers with purchasing Apple products, including iPhones,
-                            iPads, MacBooks, and accessories, by providing personalized solutions based on their needs.
-                            </p>
+                        <p class="timeline-desc">Assist customers with purchasing Apple products, including iPhones, iPads, MacBooks, and accessories, by providing personalized solutions based on their needs.</p>
                     </div>
                 </div>
                 <div class="timeline-item animate-on-scroll">
@@ -407,7 +397,7 @@ import { useEffect, useState } from 'react';
             <div class="contact-content">
                 <div class="contact-terminal">$ contact --interactive</div>
                 <p class="contact-text animate-on-scroll">
-                    I'm always interested in new opportunities and collaborations in projects.
+                    I'm always interested in new opportunities and collaborations.
                     Whether you're looking for a developer, have a project in mind,
                     or just want to connect, I'd love to hear from you.
                 </p>
@@ -431,7 +421,7 @@ import { useEffect, useState } from 'react';
 
     <!-- Footer -->
     <footer class="footer">
-        <p class="footer-text">© 2024 Eddy Arriaga-B. All rights reserved.</p>
+        <p class="footer-text">© 2024 Eddy Arriaga. All rights reserved.</p>
 
         <!-- Back to Top Button -->
         <button class="back-to-top" id="backToTop" title="Back to top" aria-label="Back to top">
@@ -567,9 +557,9 @@ import { useEffect, useState } from 'react';
                                 <div class="theme-preview default-preview"></div>
                                 Default
                             </div>
-                            <div class="theme-option" data-theme="github">
-                                <div class="theme-preview github-preview"></div>
-                                GitHub
+                            <div class="theme-option" data-theme="jojos">
+                                <div class="theme-preview jojos-preview"></div>
+                                JoJo's
                             </div>
                             <div class="theme-option" data-theme="discord">
                                 <div class="theme-preview discord-preview"></div>
@@ -620,8 +610,7 @@ import { useEffect, useState } from 'react';
                     <div class="settings-content">
                         <div class="music-player">
                             <div id="audioError" class="audio-error hidden">
-                                Music files not found. Make sure to add your audio files to the /music folder or reload
-                                the page and try again.
+                                Music files not found. Make sure to add your audio files to the /music folder or reload the page and try again.
                             </div>
 
                             <div class="player-info">
