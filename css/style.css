@@ -6391,3 +6391,479 @@ body.mobile-device * {
         padding: 0;
     }
 }
+
+/* ===========================
+   EMOJI FONT FIXES FOR MOBILE
+   =========================== */
+
+/* Enhanced emoji font stack for better mobile support */
+.emoji-text,
+.stat-icon,
+.skill-icon,
+.timeline-icon,
+.category-icon,
+.playlist-icon,
+.floating-contact-icons,
+.floating-tech-icon,
+.contact-icon,
+.mobile-emoji {
+    font-family: 
+        "Apple Color Emoji",      /* iOS */
+        "Segoe UI Emoji",         /* Windows */
+        "Segoe UI Symbol",        /* Windows fallback */
+        "Noto Color Emoji",       /* Android/Chrome */
+        "Android Emoji",          /* Android fallback */
+        "EmojiSymbols",          /* Firefox */
+        "EmojiOne Mozilla",       /* Firefox fallback */
+        sans-serif;
+    font-style: normal !important;
+    font-variant: normal !important;
+    text-rendering: optimizeQuality;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===========================
+   MOBILE EMOJI VISIBILITY FIXES
+   =========================== */
+
+/* Make floating elements visible on mobile but optimized */
+@media (max-width: 767px) {
+    .floating-elements {
+        display: block !important;
+        opacity: 0.6;
+        pointer-events: none;
+    }
+
+    /* Reduce animation complexity but keep emojis visible */
+    .floating-code,
+    .floating-tech-icon,
+    .floating-symbols,
+    .floating-contact-icons {
+        animation-duration: 60s !important;
+        animation-iteration-count: infinite;
+        font-size: 1rem !important;
+        opacity: 0.4 !important;
+    }
+
+    /* Geometric shapes - keep minimal */
+    .geometric-shape {
+        animation-duration: 80s !important;
+        opacity: 0.2 !important;
+    }
+}
+
+/* ===========================
+   ENHANCED MOBILE EMOJI SECTIONS
+   =========================== */
+
+/* Stats section emojis - make them prominent on mobile */
+@media (max-width: 767px) {
+    .stat-icon {
+        font-size: 2rem !important;
+        margin-bottom: 1rem !important;
+        filter: none !important;
+        display: block !important;
+        line-height: 1;
+        text-align: center;
+    }
+    
+    .stat-item:hover .stat-icon,
+    .stat-item:active .stat-icon {
+        filter: none !important;
+        transform: scale(1.1);
+    }
+}
+
+/* Skill section emojis - enhance for mobile */
+@media (max-width: 767px) {
+    .skill-icon {
+        font-size: 2.5rem !important;
+        margin-bottom: 1.5rem !important;
+        filter: none !important;
+        display: block !important;
+        line-height: 1;
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+    
+    .skill-card:hover .skill-icon,
+    .skill-card:active .skill-icon {
+        filter: none !important;
+        transform: scale(1.2);
+    }
+}
+
+/* Timeline emojis - make them visible and prominent */
+@media (max-width: 767px) {
+    .timeline-icon {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        transform: none;
+        font-size: 1.5rem !important;
+        color: var(--accent-color) !important;
+        background: var(--primary-bg);
+        padding: 0.5rem;
+        border-radius: 50%;
+        border: 2px solid var(--accent-color);
+        line-height: 1;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+/* Settings panel emojis - ensure visibility */
+@media (max-width: 767px) {
+    .category-icon {
+        font-size: 1.5rem !important;
+        margin-right: 1rem !important;
+        flex-shrink: 0;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .playlist-icon {
+        font-size: 1.2rem !important;
+        line-height: 1;
+    }
+}
+
+/* ===========================
+   NEW MOBILE EMOJI ENHANCEMENTS
+   =========================== */
+
+/* Add emoji backgrounds to sections on mobile */
+@media (max-width: 767px) {
+    .about-section::after {
+        content: "👨‍💻 🚀 💡 ⚡";
+        position: absolute;
+        top: 2rem;
+        right: 1rem;
+        font-size: 1.2rem;
+        opacity: 0.3;
+        letter-spacing: 0.5rem;
+        pointer-events: none;
+        z-index: 1;
+    }
+    
+    .skills-section::after {
+        content: "💻 ⚙️ 🛠️ 📱";
+        position: absolute;
+        top: 2rem;
+        left: 1rem;
+        font-size: 1.2rem;
+        opacity: 0.3;
+        letter-spacing: 0.5rem;
+        pointer-events: none;
+        z-index: 1;
+    }
+    
+    .projects-section::after {
+        content: "🎯 💼 🚀 ✨";
+        position: absolute;
+        top: 2rem;
+        right: 1rem;
+        font-size: 1.2rem;
+        opacity: 0.3;
+        letter-spacing: 0.5rem;
+        pointer-events: none;
+        z-index: 1;
+    }
+    
+    .contact-section::after {
+        content: "📧 💬 🔗 📱";
+        position: absolute;
+        top: 2rem;
+        left: 1rem;
+        font-size: 1.2rem;
+        opacity: 0.3;
+        letter-spacing: 0.5rem;
+        pointer-events: none;
+        z-index: 1;
+    }
+}
+
+/* Mobile hero section emoji enhancement */
+@media (max-width: 767px) {
+    .hero-section::after {
+        content: "💻";
+        position: absolute;
+        top: 15%;
+        right: 10%;
+        font-size: 3rem;
+        opacity: 0.1;
+        z-index: 1;
+        pointer-events: none;
+        animation: float-mobile-hero 8s ease-in-out infinite;
+    }
+    
+    .hero-section::before {
+        content: "🚀";
+        position: absolute;
+        bottom: 20%;
+        left: 15%;
+        font-size: 2.5rem;
+        opacity: 0.15;
+        z-index: 1;
+        pointer-events: none;
+        animation: float-mobile-hero 10s ease-in-out infinite reverse;
+    }
+}
+
+/* ===========================
+   MOBILE NAVIGATION EMOJI ADDITIONS
+   =========================== */
+
+/* Add emojis to mobile navigation */
+@media (max-width: 767px) {
+    .mobile-nav-link[href="#about"]::before {
+        content: "👨‍💻 ";
+        margin-right: 0.5rem;
+    }
+    
+    .mobile-nav-link[href="#skills"]::before {
+        content: "⚡ ";
+        margin-right: 0.5rem;
+    }
+    
+    .mobile-nav-link[href="#projects"]::before {
+        content: "🚀 ";
+        margin-right: 0.5rem;
+    }
+    
+    .mobile-nav-link[href="#experience"]::before {
+        content: "💼 ";
+        margin-right: 0.5rem;
+    }
+    
+    .mobile-nav-link[href="#contact"]::before {
+        content: "📧 ";
+        margin-right: 0.5rem;
+    }
+}
+
+/* ===========================
+   MOBILE SETTINGS ENHANCEMENTS
+   =========================== */
+
+/* Add more emojis to settings on mobile */
+@media (max-width: 767px) {
+    .settings-main-title::before {
+        content: "⚙️ ";
+        margin-right: 0.5rem;
+    }
+    
+    .custom-theme-title::before {
+        content: "🎨 ";
+        margin-right: 0.5rem;
+    }
+    
+    /* Theme option emojis */
+    .theme-option[data-theme="default"]::before {
+        content: "🌟 ";
+        margin-right: 0.3rem;
+    }
+    
+    .theme-option[data-theme="github"]::before {
+        content: "🐙 ";
+        margin-right: 0.3rem;
+    }
+    
+    .theme-option[data-theme="discord"]::before {
+        content: "🎮 ";
+        margin-right: 0.3rem;
+    }
+    
+    .theme-option[data-theme="spotify"]::before {
+        content: "🎵 ";
+        margin-right: 0.3rem;
+    }
+    
+    .theme-option[data-theme="vscode"]::before {
+        content: "💻 ";
+        margin-right: 0.3rem;
+    }
+    
+    .theme-option[data-theme="ocean"]::before {
+        content: "🌊 ";
+        margin-right: 0.3rem;
+    }
+}
+
+/* ===========================
+   MOBILE PROJECT CARD EMOJIS
+   =========================== */
+
+@media (max-width: 767px) {
+    .project-title::after {
+        margin-left: 0.5rem;
+        opacity: 0.7;
+    }
+    
+    /* Add specific emojis based on project content */
+    .project-card:nth-child(1) .project-title::after {
+        content: "🔐";
+    }
+    
+    .project-card:nth-child(2) .project-title::after {
+        content: "🌐";
+    }
+    
+    .project-card:nth-child(3) .project-title::after {
+        content: "📱";
+    }
+}
+
+/* ===========================
+   MOBILE CONTACT SECTION ENHANCEMENTS
+   =========================== */
+
+@media (max-width: 767px) {
+    .contact-link[href^="mailto"]::before {
+        content: "📧 ";
+        margin-right: 0.5rem;
+    }
+    
+    .contact-link[href*="github"]::before {
+        content: "🐙 ";
+        margin-right: 0.5rem;
+    }
+    
+    .contact-link[href*="linkedin"]::before {
+        content: "💼 ";
+        margin-right: 0.5rem;
+    }
+}
+
+/* ===========================
+   MOBILE BACK TO TOP ENHANCEMENT
+   =========================== */
+
+@media (max-width: 767px) {
+    .back-to-top-icon {
+        font-size: 1.2rem;
+    }
+    
+    .back-to-top::before {
+        content: "🚀";
+        position: absolute;
+        top: -25px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 0.8rem;
+        opacity: 0;
+        transition: all 0.3s ease;
+        pointer-events: none;
+    }
+    
+    .back-to-top:hover::before,
+    .back-to-top:active::before {
+        opacity: 1;
+        top: -30px;
+    }
+}
+
+/* ===========================
+   MOBILE LOADING SCREEN EMOJI
+   =========================== */
+
+@media (max-width: 767px) {
+    .loading-text::after {
+        content: " 🚀";
+        font-size: 1rem;
+        animation: rocket-bounce 1s ease-in-out infinite;
+    }
+}
+
+/* ===========================
+   ADDITIONAL MOBILE ANIMATIONS
+   =========================== */
+
+@keyframes float-mobile-hero {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-20px) rotate(180deg);
+    }
+}
+
+@keyframes rocket-bounce {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* ===========================
+   EMOJI CONTRAST ENHANCEMENT
+   =========================== */
+
+/* Ensure emojis are visible in all themes */
+@media (max-width: 767px) {
+    .emoji-text,
+    .stat-icon,
+    .skill-icon,
+    .timeline-icon,
+    .category-icon,
+    .playlist-icon {
+        text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+        filter: contrast(1.2) saturate(1.3);
+    }
+}
+
+/* High contrast mode adjustments */
+@media (prefers-contrast: high) and (max-width: 767px) {
+    .emoji-text,
+    .stat-icon,
+    .skill-icon,
+    .timeline-icon,
+    .category-icon,
+    .playlist-icon {
+        filter: contrast(1.5) saturate(1.5);
+        text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    }
+}
+
+/* ===========================
+   MOBILE TOUCH FEEDBACK FOR EMOJIS
+   =========================== */
+
+@media (max-width: 767px) {
+    .stat-item:active .stat-icon,
+    .skill-card:active .skill-icon,
+    .settings-category:active .category-icon {
+        transform: scale(1.2);
+        filter: brightness(1.3);
+    }
+}
+
+/* ===========================
+   ACCESSIBILITY IMPROVEMENTS
+   =========================== */
+
+/* Ensure emojis don't interfere with screen readers */
+.emoji-decorative::before,
+.emoji-decorative::after {
+    speak: none;
+    -webkit-user-select: none;
+    user-select: none;
+    pointer-events: none;
+}
+
+/* Provide text alternatives for important emojis */
+@media (max-width: 767px) {
+    .stat-icon[aria-label],
+    .skill-icon[aria-label],
+    .timeline-icon[aria-label] {
+        position: relative;
+    }
+}
