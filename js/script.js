@@ -26,14 +26,14 @@ const tracks = [
         src: "./music/sayslattsayskiLucki.mp3"
     },
     {
-        title: "Blank Song",
-        artist: "Blank Song Artist",
-        src: "music/blah.mp3"
+        title: "Limerence",
+        artist: "Lucki",
+        src: "./music/limerenceLucki.mp3"
     },
     {
-        title: "Blank Song",
-        artist: "Blank Song Artist",
-        src: "music/blah.mp3"
+        title: "Go Hard 2.0",
+        artist: "Juice WRLD",
+        src: "./music/gohardJuiceWRLD.mp3"
     }
 ];
 
