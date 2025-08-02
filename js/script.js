@@ -1,5 +1,5 @@
 /* ===========================
-   COMPLETE MOBILE-OPTIMIZED PORTFOLIO SCRIPT WITH ENHANCED SETTINGS
+   COMPLETE MOBILE-OPTIMIZED PORTFOLIO SCRIPT WITH BUG FIXES
    =========================== */
 
 'use strict';
@@ -17,23 +17,27 @@ const audioPlayer = document.getElementById('audioPlayer');
 let currentTrack = -1;
 let isPlaying = false;
 let volume = 0.7;
+let audioInitialized = false;
 
 // Updated track data with corrected file paths
 const tracks = [
     {
         title: "Say Slatt Say Ski",
         artist: "Lucki",
-        src: "./music/sayslattsayskiLucki.mp3"
+        src: "./music/sayslattsayskiLucki.mp3",
+        duration: "3:09"
     },
     {
         title: "Limerence",
         artist: "Lucki",
-        src: "./music/limerenceLucki.mp3"
+        src: "./music/limerenceLucki.mp3",
+        duration: "2:46"
     },
     {
         title: "Go Hard 2.0",
         artist: "Juice WRLD",
-        src: "./music/gohardJuiceWRLD.mp3"
+        src: "./music/gohardJuiceWRLD.mp3",
+        duration: "3:34"
     }
 ];
 
@@ -86,7 +90,7 @@ const themeEmojis = {
     spotify: ['🎵', '🎶', '🎧', '🎤', '🎸', '🥁', '🎹', '🎺', '🎻', '🎪'],
     vscode: ['💻', '⌨️', '🖥️', '📱', '⚡', '🔧', '⚙️', '🎯', '📊', '🚀'],
     ocean: ['🌊', '🐠', '🐙', '🦈', '🐢', '🌺', '🏝️', '⛵', '🌴', '🦑'],
-    jojos: ['🎀', '🎀', '🎀', '🎀', '🎀', '🎀', '🎀', '🎀', '🎀', '🎀', '🎀', '🎀', '🎀', '🎀', '🎀'] // Only pink bow for JoJo's theme
+    jojos: ['🎀', '🎀', '🎀', '🎀', '🎀', '🎀', '🎀', '🎀', '🎀', '🎀', '🎀', '🎀', '🎀', '🎀', '🎀']
 };
 
 // ===========================
@@ -140,6 +144,13 @@ function handleWindowLoad() {
     setTimeout(() => {
         isLoadingComplete = true;
         hideLoadingScreen();
+        
+        // Try autoplay after loading screen is hidden
+        if (settings.misc.autoplayMusic) {
+            setTimeout(() => {
+                tryAutoplay();
+            }, 1000);
+        }
     }, 4500);
 }
 
@@ -204,190 +215,283 @@ function cacheElements() {
 }
 
 // ===========================
-// FLOATING EMOJIS SYSTEM
+// AUDIO PLAYER FIXES
 // ===========================
 
-function initFloatingEmojis() {
-    // Always create floating emojis, just adjust for mobile
-    createFloatingEmojis();
-    
-    // Update emojis when theme changes
-    document.addEventListener('themeChanged', updateFloatingEmojis);
+function initAudioPlayer() {
+    if (!elements.audioPlayer) return;
+
+    elements.audioPlayer.volume = volume;
+    elements.audioPlayer.preload = 'metadata';
+    updateVolumeDisplay();
+
+    // Enhanced audio event listeners
+    elements.audioPlayer.addEventListener('loadedmetadata', handleMetadataLoaded);
+    elements.audioPlayer.addEventListener('timeupdate', throttle(handleTimeUpdate, 100));
+    elements.audioPlayer.addEventListener('ended', handleTrackEnded);
+    elements.audioPlayer.addEventListener('error', handleAudioError);
+    elements.audioPlayer.addEventListener('canplay', hideAudioError);
+    elements.audioPlayer.addEventListener('play', () => setPlayButtonState(true));
+    elements.audioPlayer.addEventListener('pause', () => setPlayButtonState(false));
+    elements.audioPlayer.addEventListener('loadstart', () => console.log('Audio loading started...'));
+    elements.audioPlayer.addEventListener('canplaythrough', () => {
+        console.log('Audio can play through');
+        hideAudioError();
+        audioInitialized = true;
+    });
+
+    // Handle user interaction for autoplay
+    document.addEventListener('click', enableAudioContext, { once: true });
+    document.addEventListener('touchstart', enableAudioContext, { once: true });
+    document.addEventListener('keydown', enableAudioContext, { once: true });
 }
 
-function createFloatingEmojis() {
-    // Remove existing emoji elements
-    document.querySelectorAll('.floating-emoji').forEach(el => el.remove());
-
-    const currentTheme = document.body.getAttribute('data-theme') || 'default';
-    const emojis = themeEmojis[currentTheme] || themeEmojis.default;
-    
-    // Create emoji containers for each section
-    const sections = [
-        { selector: '.hero-section', container: '.floating-elements' },
-        { selector: '.about-section', container: null },
-        { selector: '.skills-section', container: null },
-        { selector: '.projects-section', container: null },
-        { selector: '.contact-section', container: null }
-    ];
-
-    sections.forEach((section, sectionIndex) => {
-        const sectionElement = document.querySelector(section.selector);
-        if (!sectionElement) return;
-
-        let container;
-        if (section.container) {
-            container = sectionElement.querySelector(section.container);
-        } else {
-            // Create floating container for sections without one
-            container = document.createElement('div');
-            container.className = 'floating-elements';
-            container.style.position = 'absolute';
-            container.style.top = '0';
-            container.style.left = '0';
-            container.style.width = '100%';
-            container.style.height = '100%';
-            container.style.overflow = 'hidden';
-            container.style.pointerEvents = 'none';
-            container.style.zIndex = '1';
-            container.style.display = 'block';
-            sectionElement.style.position = 'relative';
-            sectionElement.appendChild(container);
+function enableAudioContext() {
+    if (!audioInitialized) {
+        // Create a silent audio context to enable autoplay
+        if (elements.audioPlayer) {
+            elements.audioPlayer.load();
+            audioInitialized = true;
         }
+    }
+}
 
-        if (!container) return;
-
-        // Number of emojis per section - more for mobile visibility
-        const emojiCount = isMobile ? 
-            (currentTheme === 'jojos' ? 20 : 15) : 
-            (currentTheme === 'jojos' ? 15 : 10);
-        
-        for (let i = 0; i < emojiCount; i++) {
-            const emoji = document.createElement('div');
-            emoji.className = `floating-emoji ${currentTheme}-${i + 1}`;
-            emoji.textContent = emojis[i % emojis.length];
-            
-            // Random positioning
-            emoji.style.position = 'absolute';
-            emoji.style.left = Math.random() * 90 + '%';
-            emoji.style.top = Math.random() * 90 + '%';
-            emoji.style.animationDelay = Math.random() * 25 + 's';
-            emoji.style.animationDuration = (Math.random() * 10 + 25) + 's';
-            emoji.style.pointerEvents = 'none';
-            emoji.style.userSelect = 'none';
-            emoji.style.zIndex = '1';
-            
-            // Enhanced mobile visibility
-            if (isMobile) {
-                emoji.style.fontSize = (Math.random() * 0.8 + 1.5) + 'rem';
-                emoji.style.opacity = Math.random() * 0.3 + 0.8;
-                emoji.style.animationDuration = (Math.random() * 15 + 30) + 's';
-            } else {
-                emoji.style.fontSize = (Math.random() * 0.5 + 1) + 'rem';
-                emoji.style.opacity = Math.random() * 0.4 + 0.3;
+function tryAutoplay() {
+    if (settings.misc.autoplayMusic && audioInitialized) {
+        loadTrack(0);
+        setTimeout(() => {
+            const playPromise = elements.audioPlayer.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.log('Autoplay failed - user interaction required:', error);
+                    // Don't show error for autoplay failure, it's expected behavior
+                });
             }
-            
-            container.appendChild(emoji);
+        }, 500);
+    }
+}
+
+function handleMetadataLoaded() {
+    if (elements.duration && elements.audioPlayer.duration) {
+        elements.duration.textContent = formatTime(elements.audioPlayer.duration);
+    }
+    console.log('Metadata loaded successfully');
+}
+
+function handleTimeUpdate() {
+    if (elements.audioPlayer.duration && elements.progressFill && elements.currentTime) {
+        const progressPercent = (elements.audioPlayer.currentTime / elements.audioPlayer.duration) * 100;
+        elements.progressFill.style.width = progressPercent + '%';
+        elements.currentTime.textContent = formatTime(elements.audioPlayer.currentTime);
+    }
+}
+
+function handleTrackEnded() {
+    nextTrack();
+}
+
+function handleAudioError(e) {
+    const error = e.target.error;
+    let errorMessage = 'Audio file could not be loaded. ';
+
+    if (error) {
+        switch (error.code) {
+            case error.MEDIA_ERR_ABORTED:
+                errorMessage += 'Playback was aborted.';
+                break;
+            case error.MEDIA_ERR_NETWORK:
+                errorMessage += 'Network error occurred.';
+                break;
+            case error.MEDIA_ERR_DECODE:
+                errorMessage += 'Audio file format not supported.';
+                break;
+            case error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+                errorMessage += 'Audio file not found or format not supported.';
+                break;
+            default:
+                errorMessage += 'Unknown error occurred.';
+                break;
         }
+    }
+
+    console.error('Audio error:', errorMessage, 'Track:', currentTrack >= 0 ? tracks[currentTrack].src : 'none');
+    showAudioError(errorMessage);
+    setPlayButtonState(false);
+}
+
+function showAudioError(message = null) {
+    if (elements.audioError) {
+        if (message) {
+            elements.audioError.textContent = message;
+        }
+        elements.audioError.classList.remove('hidden');
+    }
+}
+
+function hideAudioError() {
+    if (elements.audioError) {
+        elements.audioError.classList.add('hidden');
+    }
+}
+
+function formatTime(seconds) {
+    if (isNaN(seconds) || !isFinite(seconds)) return '0:00';
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return mins + ':' + (secs < 10 ? '0' : '') + secs;
+}
+
+function setPlayButtonState(playing) {
+    if (elements.playPauseBtn) {
+        const playIcon = elements.playPauseBtn.querySelector('.play-icon');
+        const pauseIcon = elements.playPauseBtn.querySelector('.pause-icon');
+
+        if (playIcon && pauseIcon) {
+            if (playing) {
+                playIcon.classList.add('hidden');
+                pauseIcon.classList.remove('hidden');
+            } else {
+                playIcon.classList.remove('hidden');
+                pauseIcon.classList.add('hidden');
+            }
+        }
+    }
+    isPlaying = playing;
+}
+
+function loadTrack(trackIndex) {
+    if (trackIndex < 0 || trackIndex >= tracks.length) return;
+
+    currentTrack = trackIndex;
+    const track = tracks[trackIndex];
+
+    console.log('Loading track:', track.title, 'from:', track.src);
+
+    // Update UI
+    if (elements.currentTrackTitle) elements.currentTrackTitle.textContent = track.title;
+    if (elements.currentTrackArtist) elements.currentTrackArtist.textContent = track.artist;
+
+    // Update playlist active state
+    updatePlaylistActiveState(trackIndex);
+
+    // Load audio with better error handling
+    try {
+        elements.audioPlayer.src = track.src;
+        elements.audioPlayer.load();
+        hideAudioError();
+    } catch (error) {
+        console.error('Error loading track:', error);
+        showAudioError('Failed to load audio file: ' + track.title);
+    }
+
+    // Reset progress
+    resetProgressDisplay();
+}
+
+function updatePlaylistActiveState(activeIndex) {
+    const playlistItems = document.querySelectorAll('.playlist-item');
+    playlistItems.forEach((item, index) => {
+        item.classList.toggle('active', index === activeIndex);
     });
 }
 
-function updateFloatingEmojis() {
-    if (!settings.misc.showFloatingElements || isMobile) {
+function resetProgressDisplay() {
+    if (elements.progressFill) elements.progressFill.style.width = '0%';
+    if (elements.currentTime) elements.currentTime.textContent = '0:00';
+    if (elements.duration) elements.duration.textContent = '0:00';
+}
+
+function togglePlayPause() {
+    if (!audioInitialized) {
+        enableAudioContext();
+    }
+
+    if (currentTrack === -1) {
+        loadTrack(0);
         return;
     }
-    
-    // Smooth transition: fade out old emojis, create new ones
-    const existingEmojis = document.querySelectorAll('.floating-emoji');
-    existingEmojis.forEach(emoji => {
-        emoji.style.transition = 'opacity 0.5s ease-out';
-        emoji.style.opacity = '0';
-    });
-    
-    setTimeout(() => {
-        createFloatingEmojis();
-    }, 500);
-}
 
-function removeFloatingEmojis() {
-    document.querySelectorAll('.floating-emoji').forEach(el => el.remove());
-}
-
-// ===========================
-// DEVICE OPTIMIZATIONS
-// ===========================
-
-function setupDeviceOptimizations() {
-    // Add device-specific classes
-    document.body.classList.add(`device-${deviceType}`);
-
-    if (isMobile) {
-        document.body.classList.add('mobile-device');
-    }
-
-    if (isTouch) {
-        document.body.classList.add('touch-device');
-    }
-
-    if (isLowEndDevice) {
-        document.body.classList.add('low-end-device');
-    }
-}
-
-function initMobileOptimizations() {
-    if (isMobile) {
-        // Optimize viewport
-        const viewport = document.querySelector('meta[name="viewport"]');
-        if (viewport) {
-            viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
+    if (isPlaying) {
+        elements.audioPlayer.pause();
+    } else {
+        const playPromise = elements.audioPlayer.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(error => {
+                console.error('Play failed:', error);
+                showAudioError('Playback failed. Please check if the audio file exists.');
+            });
         }
-
-        // Prevent bounce scrolling on iOS
-        document.body.addEventListener('touchmove', (e) => {
-            if (e.target === document.body) {
-                e.preventDefault();
-            }
-        }, { passive: false });
-
-        // Optimize touch events
-        const passiveEvents = ['touchstart', 'touchmove', 'touchend'];
-        passiveEvents.forEach(event => {
-            document.addEventListener(event, () => { }, { passive: true });
-        });
-
-        // Prevent double-tap zoom
-        let lastTouchEnd = 0;
-        document.addEventListener('touchend', function (event) {
-            const now = (new Date()).getTime();
-            if (now - lastTouchEnd <= 300) {
-                event.preventDefault();
-            }
-            lastTouchEnd = now;
-        }, false);
-
-        // Add visual feedback for touch interactions
-        addTouchFeedback();
     }
 }
 
-function addTouchFeedback() {
-    const touchElements = document.querySelectorAll('button, .nav-link, .mobile-nav-link, .contact-link, .project-link, .settings-category, .theme-option, .playlist-item, .control-btn');
+function nextTrack() {
+    const nextIndex = (currentTrack + 1) % tracks.length;
+    loadTrack(nextIndex);
+    if (isPlaying) {
+        setTimeout(() => {
+            elements.audioPlayer.play().catch(e => {
+                console.error('Auto-play failed:', e);
+                showAudioError('Auto-play failed. Please try playing manually.');
+            });
+        }, 100);
+    }
+}
 
-    touchElements.forEach(element => {
-        element.addEventListener('touchstart', function () {
-            this.style.transform = 'scale(0.95)';
-        }, { passive: true });
+function prevTrack() {
+    const prevIndex = currentTrack === 0 ? tracks.length - 1 : currentTrack - 1;
+    loadTrack(prevIndex);
+    if (isPlaying) {
+        setTimeout(() => {
+            elements.audioPlayer.play().catch(e => {
+                console.error('Auto-play failed:', e);
+                showAudioError('Auto-play failed. Please try playing manually.');
+            });
+        }, 100);
+    }
+}
 
-        element.addEventListener('touchend', function () {
-            setTimeout(() => {
-                this.style.transform = '';
-            }, 150);
-        }, { passive: true });
-    });
+function seekTo(event) {
+    if (elements.audioPlayer.duration) {
+        const rect = elements.progressBar.getBoundingClientRect();
+        const clickX = event.clientX - rect.left;
+        const percentage = Math.max(0, Math.min(1, clickX / rect.width));
+        elements.audioPlayer.currentTime = elements.audioPlayer.duration * percentage;
+    }
+}
+
+function setVolume(value) {
+    volume = Math.max(0, Math.min(1, value / 100));
+    elements.audioPlayer.volume = volume;
+    updateVolumeDisplay();
+}
+
+function updateVolumeDisplay() {
+    if (elements.volumeSliderFill) {
+        elements.volumeSliderFill.style.width = (volume * 100) + '%';
+    }
+
+    if (elements.volumeSlider) {
+        elements.volumeSlider.value = volume * 100;
+    }
+
+    // Update volume icon based on level
+    const volumeIcon = document.querySelector('.volume-icon-container svg');
+    if (volumeIcon) {
+        const paths = volumeIcon.querySelectorAll('path');
+        paths.forEach(path => {
+            if (volume === 0) {
+                path.setAttribute('d', 'M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z');
+            } else if (volume < 0.5) {
+                path.setAttribute('d', 'M18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM5 9v6h4l5 5V4L9 9H5z');
+            } else {
+                path.setAttribute('d', 'M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z');
+            }
+        });
+    }
 }
 
 // ===========================
-// SETTINGS MANAGEMENT (ENHANCED)
+// SETTINGS SYSTEM FIXES
 // ===========================
 
 function loadSettings() {
@@ -505,40 +609,69 @@ function updateParallaxIntensity() {
     root.style.setProperty('--parallax-intensity', intensity);
 }
 
-function resetAllSettings() {
-    if (confirm('Are you sure you want to reset all settings to default? This action cannot be undone.')) {
-        localStorage.removeItem('portfolio-settings');
-        localStorage.removeItem('preferred-theme');
-        localStorage.removeItem('custom-theme');
+// ===========================
+// SETTINGS PANEL FIXES
+// ===========================
 
-        // Reset to defaults with device considerations
-        settings = {
-            cursor: {
-                enabled: !isMobile && !isTouch,
-                size: 12,
-                opacity: 100,
-                followerSize: 36
-            },
-            misc: {
-                reducedMotion: prefersReducedMotion || isLowEndDevice,
-                autoplayMusic: false,
-                showFloatingElements: !isMobile,
-                showParticles: !isMobile,
-                showCodeSnippets: !isMobile,
-                showGeometricShapes: !isMobile,
-                animationSpeed: isLowEndDevice ? 50 : 100,
-                parallaxIntensity: isMobile ? 0 : 100
-            }
-        };
+function initSettingsPanel() {
+    if (!elements.settingsBtn || !elements.settingsMenu) return;
 
-        // Reload page to apply all changes
-        location.reload();
+    elements.settingsBtn.addEventListener('click', toggleSettings);
+
+    // Click outside to close (but not on mobile)
+    document.addEventListener('click', (e) => {
+        if (!isMobile && !elements.settingsBtn.contains(e.target) && !elements.settingsMenu.contains(e.target)) {
+            closeSettings();
+        }
+    });
+
+    // Enhanced mobile handling
+    if (isMobile) {
+        // Add touch event handling
+        elements.settingsBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            toggleSettings();
+        });
+
+        // Prevent body scroll when settings open
+        elements.settingsMenu.addEventListener('touchmove', (e) => {
+            e.stopPropagation();
+        }, { passive: true });
     }
+
+    // Show main menu by default
+    showSettingsSection('main');
 }
 
-// ===========================
-// ENHANCED SETTINGS SYSTEM
-// ===========================
+function showSettingsSection(sectionName) {
+    // Hide all sections first
+    document.querySelectorAll('.settings-section-view').forEach(section => {
+        section.classList.remove('active');
+    });
+
+    if (sectionName === 'main') {
+        if (elements.settingsMainMenu) {
+            elements.settingsMainMenu.classList.add('active');
+        }
+    } else {
+        if (elements.settingsMainMenu) {
+            elements.settingsMainMenu.classList.remove('active');
+        }
+
+        const target = document.getElementById(sectionName + 'Section');
+        if (target) {
+            target.classList.add('active');
+        }
+    }
+
+    currentSettingsSection = sectionName;
+
+    // Scroll to top for better UX
+    const scrollContainer = document.querySelector('.settings-scroll-container');
+    if (scrollContainer) {
+        scrollContainer.scrollTop = 0;
+    }
+}
 
 function initAdvancedSettings() {
     initSettingsNavigation();
@@ -576,30 +709,93 @@ function initSettingsNavigation() {
     }
 }
 
-function showSettingsSection(sectionName) {
-    // Hide all sections
-    document.querySelectorAll('.settings-section-view').forEach(section => {
-        section.classList.remove('active');
+function initEnhancedMiscSettings() {
+    if (!elements.reducedMotion) return;
+
+    // Reduced motion toggle
+    elements.reducedMotion.addEventListener('change', (e) => {
+        settings.misc.reducedMotion = e.target.checked;
+
+        if (settings.misc.reducedMotion) {
+            disableHeavyAnimations();
+        } else {
+            enableHeavyAnimations();
+        }
+
+        saveSettings();
     });
 
-    // Toggle visibility based on what was clicked
-    if (sectionName === 'main') {
-        elements.settingsMainMenu.classList.add('active');
-    } else {
-        elements.settingsMainMenu.classList.remove('active');
-
-        const target = document.getElementById(sectionName + 'Section');
-        if (target) {
-            target.classList.add('active');
-        }
+    // Autoplay music toggle - FIX: Proper event handling
+    if (elements.autoplayMusic) {
+        elements.autoplayMusic.addEventListener('change', (e) => {
+            settings.misc.autoplayMusic = e.target.checked;
+            saveSettings();
+            
+            // If autoplay is enabled and no track is playing, try to start
+            if (settings.misc.autoplayMusic && currentTrack === -1 && audioInitialized) {
+                tryAutoplay();
+            }
+        });
     }
 
-    currentSettingsSection = sectionName;
+    // Show floating elements toggle
+    if (elements.showFloatingElements) {
+        elements.showFloatingElements.addEventListener('change', (e) => {
+            settings.misc.showFloatingElements = e.target.checked;
+            updateFloatingElementsVisibility();
+            
+            if (e.target.checked) {
+                initFloatingEmojis();
+            } else {
+                removeFloatingEmojis();
+            }
+            
+            saveSettings();
+        });
+    }
 
-    // Scroll to top for better UX
-    const scrollContainer = document.querySelector('.settings-scroll-container');
-    if (scrollContainer) {
-        scrollContainer.scrollTop = 0;
+    // Show particles toggle
+    if (elements.showParticles) {
+        elements.showParticles.addEventListener('change', (e) => {
+            settings.misc.showParticles = e.target.checked;
+            updateFloatingElementsVisibility();
+            saveSettings();
+        });
+    }
+
+    // Show code snippets toggle
+    if (elements.showCodeSnippets) {
+        elements.showCodeSnippets.addEventListener('change', (e) => {
+            settings.misc.showCodeSnippets = e.target.checked;
+            updateFloatingElementsVisibility();
+            saveSettings();
+        });
+    }
+
+    // Show geometric shapes toggle
+    if (elements.showGeometricShapes) {
+        elements.showGeometricShapes.addEventListener('change', (e) => {
+            settings.misc.showGeometricShapes = e.target.checked;
+            updateFloatingElementsVisibility();
+            saveSettings();
+        });
+    }
+
+    // Animation speed slider
+    if (elements.animationSpeed) {
+        elements.animationSpeed.addEventListener('input', (e) => {
+            settings.misc.animationSpeed = parseInt(e.target.value);
+            if (elements.animationSpeedValue) {
+                elements.animationSpeedValue.textContent = settings.misc.animationSpeed + '%';
+            }
+            updateAnimationSpeed();
+            saveSettings();
+        });
+    }
+
+    // Reset settings button
+    if (elements.resetSettings) {
+        elements.resetSettings.addEventListener('click', resetAllSettings);
     }
 }
 
@@ -659,103 +855,6 @@ function initCursorSettings() {
             updateCursorVariables();
             saveSettings();
         });
-    }
-}
-
-function initEnhancedMiscSettings() {
-    if (!elements.reducedMotion) return;
-
-    // Reduced motion toggle
-    elements.reducedMotion.addEventListener('change', (e) => {
-        settings.misc.reducedMotion = e.target.checked;
-
-        if (settings.misc.reducedMotion) {
-            disableHeavyAnimations();
-        } else {
-            enableHeavyAnimations();
-        }
-
-        saveSettings();
-    });
-
-    // Autoplay music toggle
-    if (elements.autoplayMusic) {
-        elements.autoplayMusic.addEventListener('change', (e) => {
-            settings.misc.autoplayMusic = e.target.checked;
-            saveSettings();
-        });
-    }
-
-    // Show floating elements toggle
-    if (elements.showFloatingElements) {
-        elements.showFloatingElements.addEventListener('change', (e) => {
-            settings.misc.showFloatingElements = e.target.checked;
-            updateFloatingElementsVisibility();
-            
-            if (e.target.checked) {
-                initFloatingEmojis();
-            } else {
-                removeFloatingEmojis();
-            }
-            
-            saveSettings();
-        });
-    }
-
-    // Show particles toggle
-    if (elements.showParticles) {
-        elements.showParticles.addEventListener('change', (e) => {
-            settings.misc.showParticles = e.target.checked;
-            updateFloatingElementsVisibility();
-            saveSettings();
-        });
-    }
-
-    // Show code snippets toggle
-    if (elements.showCodeSnippets) {
-        elements.showCodeSnippets.addEventListener('change', (e) => {
-            settings.misc.showCodeSnippets = e.target.checked;
-            updateFloatingElementsVisibility();
-            saveSettings();
-        });
-    }
-
-    // Show geometric shapes toggle
-    if (elements.showGeometricShapes) {
-        elements.showGeometricShapes.addEventListener('change', (e) => {
-            settings.misc.showGeometricShapes = e.target.checked;
-            updateFloatingElementsVisibility();
-            saveSettings();
-        });
-    }
-
-    // Animation speed slider
-    if (elements.animationSpeed) {
-        elements.animationSpeed.addEventListener('input', (e) => {
-            settings.misc.animationSpeed = parseInt(e.target.value);
-            if (elements.animationSpeedValue) {
-                elements.animationSpeedValue.textContent = settings.misc.animationSpeed + '%';
-            }
-            updateAnimationSpeed();
-            saveSettings();
-        });
-    }
-
-    // Parallax intensity slider
-    if (elements.parallaxIntensity) {
-        elements.parallaxIntensity.addEventListener('input', (e) => {
-            settings.misc.parallaxIntensity = parseInt(e.target.value);
-            if (elements.parallaxIntensityValue) {
-                elements.parallaxIntensityValue.textContent = settings.misc.parallaxIntensity + '%';
-            }
-            updateParallaxIntensity();
-            saveSettings();
-        });
-    }
-
-    // Reset settings button
-    if (elements.resetSettings) {
-        elements.resetSettings.addEventListener('click', resetAllSettings);
     }
 }
 
@@ -826,70 +925,313 @@ function populateSettingsValues() {
     }
 }
 
-function enableHeavyAnimations() {
-    const heavyAnimationElements = document.querySelectorAll('.floating-element, .floating-emoji');
+function resetAllSettings() {
+    if (confirm('Are you sure you want to reset all settings to default? This action cannot be undone.')) {
+        localStorage.removeItem('portfolio-settings');
+        localStorage.removeItem('preferred-theme');
+        localStorage.removeItem('custom-theme');
 
-    heavyAnimationElements.forEach(el => {
-        el.style.animation = '';
-    });
-
-    updateFloatingElementsVisibility();
-    updateAnimationSpeed();
-
-    // Reset animation durations
-    document.documentElement.style.removeProperty('--animation-duration');
-    
-    // Re-initialize emojis if floating elements are enabled
-    if (settings.misc.showFloatingElements) {
-        initFloatingEmojis();
-    }
-}
-
-// ===========================
-// LOADING SCREEN
-// ===========================
-
-function hideLoadingScreen() {
-    if (elements.loadingScreen) {
-        elements.loadingScreen.classList.add('fade-out');
-
-        // Remove from DOM after animation completes
-        setTimeout(() => {
-            if (elements.loadingScreen.parentNode) {
-                elements.loadingScreen.parentNode.removeChild(elements.loadingScreen);
+        // Reset to defaults with device considerations
+        settings = {
+            cursor: {
+                enabled: !isMobile && !isTouch,
+                size: 12,
+                opacity: 100,
+                followerSize: 36
+            },
+            misc: {
+                reducedMotion: prefersReducedMotion || isLowEndDevice,
+                autoplayMusic: false,
+                showFloatingElements: true,
+                showParticles: true,
+                showCodeSnippets: !isMobile,
+                showGeometricShapes: !isMobile,
+                animationSpeed: isLowEndDevice ? 50 : 100,
+                parallaxIntensity: isMobile ? 0 : 100
             }
-        }, 1000);
+        };
+
+        // Reload page to apply all changes
+        location.reload();
+    }
+}
+
+function toggleSettings() {
+    if (elements.settingsMenu.classList.contains('active')) {
+        closeSettings();
+    } else {
+        openSettings();
+    }
+}
+
+function openSettings() {
+    elements.settingsMenu.classList.add('active');
+    showSettingsSection('main');
+
+    // Prevent body scroll on mobile when settings are open
+    if (isMobile) {
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeSettings() {
+    elements.settingsMenu.classList.remove('active');
+
+    // Restore body scroll
+    if (isMobile) {
+        document.body.style.overflow = '';
     }
 }
 
 // ===========================
-// BACK TO TOP FUNCTIONALITY
+// AUDIO CONTROLS FIXES
 // ===========================
 
-function initBackToTop() {
-    if (!elements.backToTop) return;
+function initAudioControls() {
+    if (elements.playPauseBtn) elements.playPauseBtn.addEventListener('click', togglePlayPause);
+    if (elements.nextBtn) elements.nextBtn.addEventListener('click', nextTrack);
+    if (elements.prevBtn) elements.prevBtn.addEventListener('click', prevTrack);
+    
+    if (elements.progressBar) {
+        elements.progressBar.addEventListener('click', seekTo);
 
-    // Show/hide button based on scroll position
-    window.addEventListener('scroll', throttle(() => {
-        if (window.pageYOffset > 300) {
-            elements.backToTop.classList.add('show');
-        } else {
-            elements.backToTop.classList.remove('show');
+        // Add touch support for mobile
+        if (isTouch) {
+            elements.progressBar.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                seekTo(e.changedTouches[0]);
+            });
         }
-    }, 100), { passive: true });
+    }
 
-    // Smooth scroll to top when clicked
-    elements.backToTop.addEventListener('click', () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
+    // Enhanced volume slider handling
+    if (elements.volumeSlider) {
+        elements.volumeSlider.addEventListener('input', (e) => {
+            setVolume(parseFloat(e.target.value));
         });
+
+        elements.volumeSlider.addEventListener('change', (e) => {
+            setVolume(parseFloat(e.target.value));
+        });
+
+        // Touch support
+        if (isTouch) {
+            elements.volumeSlider.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const rect = elements.volumeSlider.getBoundingClientRect();
+                const percentage = Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width));
+                const value = percentage * 100;
+                setVolume(value);
+            });
+        }
+    }
+
+    // Playlist item clicks with enhanced mobile support
+    document.querySelectorAll('.playlist-item').forEach((item) => {
+        const clickHandler = () => {
+            const index = parseInt(item.getAttribute('data-index'));
+            if (!isNaN(index)) {
+                loadTrack(index);
+            }
+        };
+
+        item.addEventListener('click', clickHandler);
+
+        // Touch support
+        if (isTouch) {
+            item.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                clickHandler();
+            });
+        }
     });
 }
 
 // ===========================
-// MOBILE OPTIMIZATIONS
+// FLOATING EMOJIS SYSTEM FIXES
 // ===========================
+
+function initFloatingEmojis() {
+    // Always create floating emojis, just adjust for mobile
+    createFloatingEmojis();
+    
+    // Update emojis when theme changes
+    document.addEventListener('themeChanged', updateFloatingEmojis);
+}
+
+function createFloatingEmojis() {
+    // Remove existing emoji elements
+    document.querySelectorAll('.floating-emoji').forEach(el => el.remove());
+
+    if (!settings.misc.showFloatingElements) return;
+
+    const currentTheme = document.body.getAttribute('data-theme') || 'default';
+    const emojis = themeEmojis[currentTheme] || themeEmojis.default;
+    
+    // Create emoji containers for each section
+    const sections = [
+        { selector: '.hero-section', container: '.floating-elements' },
+        { selector: '.about-section', container: null },
+        { selector: '.skills-section', container: null },
+        { selector: '.projects-section', container: null },
+        { selector: '.contact-section', container: null }
+    ];
+
+    sections.forEach((section, sectionIndex) => {
+        const sectionElement = document.querySelector(section.selector);
+        if (!sectionElement) return;
+
+        let container;
+        if (section.container) {
+            container = sectionElement.querySelector(section.container);
+        } else {
+            // Create floating container for sections without one
+            container = document.createElement('div');
+            container.className = 'floating-elements';
+            container.style.position = 'absolute';
+            container.style.top = '0';
+            container.style.left = '0';
+            container.style.width = '100%';
+            container.style.height = '100%';
+            container.style.overflow = 'hidden';
+            container.style.pointerEvents = 'none';
+            container.style.zIndex = '1';
+            container.style.display = 'block';
+            sectionElement.style.position = 'relative';
+            sectionElement.appendChild(container);
+        }
+
+        if (!container) return;
+
+        // Number of emojis per section - more for mobile visibility
+        const emojiCount = isMobile ? 
+            (currentTheme === 'jojos' ? 20 : 15) : 
+            (currentTheme === 'jojos' ? 15 : 10);
+        
+        for (let i = 0; i < emojiCount; i++) {
+            const emoji = document.createElement('div');
+            emoji.className = `floating-emoji ${currentTheme}-${i + 1}`;
+            emoji.textContent = emojis[i % emojis.length];
+            
+            // Random positioning
+            emoji.style.position = 'absolute';
+            emoji.style.left = Math.random() * 90 + '%';
+            emoji.style.top = Math.random() * 90 + '%';
+            emoji.style.animationDelay = Math.random() * 25 + 's';
+            emoji.style.animationDuration = (Math.random() * 10 + 25) + 's';
+            emoji.style.pointerEvents = 'none';
+            emoji.style.userSelect = 'none';
+            emoji.style.zIndex = '1';
+            
+            // Enhanced mobile visibility
+            if (isMobile) {
+                emoji.style.fontSize = (Math.random() * 0.8 + 1.5) + 'rem';
+                emoji.style.opacity = Math.random() * 0.3 + 0.8;
+                emoji.style.animationDuration = (Math.random() * 15 + 30) + 's';
+            } else {
+                emoji.style.fontSize = (Math.random() * 0.5 + 1) + 'rem';
+                emoji.style.opacity = Math.random() * 0.4 + 0.3;
+            }
+            
+            container.appendChild(emoji);
+        }
+    });
+}
+
+function updateFloatingEmojis() {
+    if (!settings.misc.showFloatingElements) {
+        return;
+    }
+    
+    // Smooth transition: fade out old emojis, create new ones
+    const existingEmojis = document.querySelectorAll('.floating-emoji');
+    existingEmojis.forEach(emoji => {
+        emoji.style.transition = 'opacity 0.5s ease-out';
+        emoji.style.opacity = '0';
+    });
+    
+    setTimeout(() => {
+        createFloatingEmojis();
+    }, 500);
+}
+
+function removeFloatingEmojis() {
+    document.querySelectorAll('.floating-emoji').forEach(el => el.remove());
+}
+
+// ===========================
+// DEVICE OPTIMIZATIONS
+// ===========================
+
+function setupDeviceOptimizations() {
+    // Add device-specific classes
+    document.body.classList.add(`device-${deviceType}`);
+
+    if (isMobile) {
+        document.body.classList.add('mobile-device');
+    }
+
+    if (isTouch) {
+        document.body.classList.add('touch-device');
+    }
+
+    if (isLowEndDevice) {
+        document.body.classList.add('low-end-device');
+    }
+}
+
+function initMobileOptimizations() {
+    if (isMobile) {
+        // Optimize viewport
+        const viewport = document.querySelector('meta[name="viewport"]');
+        if (viewport) {
+            viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
+        }
+
+        // Prevent bounce scrolling on iOS
+        document.body.addEventListener('touchmove', (e) => {
+            if (e.target === document.body) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        // Optimize touch events
+        const passiveEvents = ['touchstart', 'touchmove', 'touchend'];
+        passiveEvents.forEach(event => {
+            document.addEventListener(event, () => { }, { passive: true });
+        });
+
+        // Prevent double-tap zoom
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+
+        // Add visual feedback for touch interactions
+        addTouchFeedback();
+    }
+}
+
+function addTouchFeedback() {
+    const touchElements = document.querySelectorAll('button, .nav-link, .mobile-nav-link, .contact-link, .project-link, .settings-category, .theme-option, .playlist-item, .control-btn');
+
+    touchElements.forEach(element => {
+        element.addEventListener('touchstart', function () {
+            this.style.transform = 'scale(0.95)';
+        }, { passive: true });
+
+        element.addEventListener('touchend', function () {
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 150);
+        }, { passive: true });
+    });
+}
 
 function optimizeForMobile() {
     // Disable cursor on mobile
@@ -927,303 +1269,19 @@ function optimizeForMobile() {
 }
 
 // ===========================
-// MOBILE MENU (ENHANCED)
+// LOADING SCREEN
 // ===========================
 
-function initMobileMenu() {
-    if (!elements.mobileMenuBtn || !elements.mobileMenu) return;
+function hideLoadingScreen() {
+    if (elements.loadingScreen) {
+        elements.loadingScreen.classList.add('fade-out');
 
-    elements.mobileMenuBtn.addEventListener('click', toggleMobileMenu);
-
-    // Close mobile menu when clicking nav links
-    const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
-    mobileNavLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            closeMobileMenu();
-        });
-    });
-
-    // Close mobile menu when clicking outside
-    elements.mobileMenu.addEventListener('click', (e) => {
-        if (e.target === elements.mobileMenu) {
-            closeMobileMenu();
-        }
-    });
-
-    // Handle escape key
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && elements.mobileMenu.classList.contains('active')) {
-            closeMobileMenu();
-        }
-    });
-}
-
-function toggleMobileMenu() {
-    const isActive = elements.mobileMenu.classList.contains('active');
-
-    if (isActive) {
-        closeMobileMenu();
-    } else {
-        openMobileMenu();
-    }
-}
-
-function openMobileMenu() {
-    elements.mobileMenuBtn.classList.add('active');
-    elements.mobileMenu.classList.add('active');
-    document.body.style.overflow = 'hidden';
-
-    // Focus management for accessibility
-    elements.mobileMenu.focus();
-}
-
-function closeMobileMenu() {
-    elements.mobileMenuBtn.classList.remove('active');
-    elements.mobileMenu.classList.remove('active');
-    document.body.style.overflow = '';
-}
-
-// ===========================
-// AUDIO PLAYER FUNCTIONS (ENHANCED)
-// ===========================
-
-function initAudioPlayer() {
-    if (!elements.audioPlayer) return;
-
-    elements.audioPlayer.volume = volume;
-    updateVolumeDisplay();
-
-    // Audio event listeners with optimized handling
-    elements.audioPlayer.addEventListener('loadedmetadata', handleMetadataLoaded);
-    elements.audioPlayer.addEventListener('timeupdate', throttle(handleTimeUpdate, 100));
-    elements.audioPlayer.addEventListener('ended', handleTrackEnded);
-    elements.audioPlayer.addEventListener('error', handleAudioError);
-    elements.audioPlayer.addEventListener('canplay', hideAudioError);
-    elements.audioPlayer.addEventListener('play', () => setPlayButtonState(true));
-    elements.audioPlayer.addEventListener('pause', () => setPlayButtonState(false));
-
-    // Better error handling for load failures
-    elements.audioPlayer.addEventListener('loadstart', () => {
-        console.log('Audio loading started...');
-    });
-
-    elements.audioPlayer.addEventListener('canplaythrough', () => {
-        console.log('Audio can play through');
-        hideAudioError();
-    });
-}
-
-function handleMetadataLoaded() {
-    if (elements.duration) {
-        elements.duration.textContent = formatTime(elements.audioPlayer.duration);
-    }
-    console.log('Metadata loaded successfully');
-}
-
-function handleTimeUpdate() {
-    if (elements.audioPlayer.duration && elements.progressFill && elements.currentTime) {
-        const progressPercent = (elements.audioPlayer.currentTime / elements.audioPlayer.duration) * 100;
-        elements.progressFill.style.width = progressPercent + '%';
-        elements.currentTime.textContent = formatTime(elements.audioPlayer.currentTime);
-    }
-}
-
-function handleTrackEnded() {
-    nextTrack();
-}
-
-function handleAudioError(e) {
-    const error = e.target.error;
-    let errorMessage = 'Audio file could not be loaded. ';
-
-    if (error) {
-        switch (error.code) {
-            case error.MEDIA_ERR_ABORTED:
-                errorMessage += 'Playback was aborted.';
-                break;
-            case error.MEDIA_ERR_NETWORK:
-                errorMessage += 'Network error occurred.';
-                break;
-            case error.MEDIA_ERR_DECODE:
-                errorMessage += 'Audio file format not supported.';
-                break;
-            case error.MEDIA_ERR_SRC_NOT_SUPPORTED:
-                errorMessage += 'Audio file not found or format not supported.';
-                break;
-            default:
-                errorMessage += 'Unknown error occurred.';
-                break;
-        }
-    }
-
-    console.error('Audio error:', errorMessage, 'Track:', currentTrack >= 0 ? tracks[currentTrack].src : 'none');
-    showAudioError(errorMessage);
-    setPlayButtonState(false);
-}
-
-function showAudioError(message = null) {
-    if (elements.audioError) {
-        if (message) {
-            elements.audioError.textContent = message;
-        }
-        elements.audioError.classList.remove('hidden');
-    }
-}
-
-function hideAudioError() {
-    if (elements.audioError) {
-        elements.audioError.classList.add('hidden');
-    }
-}
-
-function formatTime(seconds) {
-    if (isNaN(seconds)) return '0:00';
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return mins + ':' + (secs < 10 ? '0' : '') + secs;
-}
-
-function setPlayButtonState(playing) {
-    if (elements.playPauseBtn) {
-        const playIcon = elements.playPauseBtn.querySelector('.play-icon');
-        const pauseIcon = elements.playPauseBtn.querySelector('.pause-icon');
-
-        if (playIcon && pauseIcon) {
-            if (playing) {
-                playIcon.classList.add('hidden');
-                pauseIcon.classList.remove('hidden');
-            } else {
-                playIcon.classList.remove('hidden');
-                pauseIcon.classList.add('hidden');
-            }
-        }
-    }
-    isPlaying = playing;
-}
-
-function loadTrack(trackIndex) {
-    if (trackIndex < 0 || trackIndex >= tracks.length) return;
-
-    currentTrack = trackIndex;
-    const track = tracks[trackIndex];
-
-    console.log('Loading track:', track.title, 'from:', track.src);
-
-    // Update UI
-    if (elements.currentTrackTitle) elements.currentTrackTitle.textContent = track.title;
-    if (elements.currentTrackArtist) elements.currentTrackArtist.textContent = track.artist;
-
-    // Update playlist active state
-    updatePlaylistActiveState(trackIndex);
-
-    // Load audio with better error handling
-    try {
-        elements.audioPlayer.src = track.src;
-        elements.audioPlayer.load();
-        hideAudioError();
-    } catch (error) {
-        console.error('Error loading track:', error);
-        showAudioError('Failed to load audio file: ' + track.title);
-    }
-
-    // Reset progress
-    resetProgressDisplay();
-}
-
-function updatePlaylistActiveState(activeIndex) {
-    document.querySelectorAll('.playlist-item').forEach((item, index) => {
-        item.classList.toggle('active', index === activeIndex);
-    });
-}
-
-function resetProgressDisplay() {
-    if (elements.progressFill) elements.progressFill.style.width = '0%';
-    if (elements.currentTime) elements.currentTime.textContent = '0:00';
-    if (elements.duration) elements.duration.textContent = '0:00';
-}
-
-function togglePlayPause() {
-    if (currentTrack === -1) {
-        loadTrack(0);
-        return;
-    }
-
-    if (isPlaying) {
-        elements.audioPlayer.pause();
-    } else {
-        const playPromise = elements.audioPlayer.play();
-        if (playPromise !== undefined) {
-            playPromise.catch(error => {
-                console.error('Play failed:', error);
-                showAudioError('Playback failed. Please check if the audio file exists.');
-            });
-        }
-    }
-}
-
-function nextTrack() {
-    const nextIndex = (currentTrack + 1) % tracks.length;
-    loadTrack(nextIndex);
-    if (isPlaying) {
+        // Remove from DOM after animation completes
         setTimeout(() => {
-            elements.audioPlayer.play().catch(e => {
-                console.error('Auto-play failed:', e);
-                showAudioError('Auto-play failed. Please try playing manually.');
-            });
-        }, 100);
-    }
-}
-
-function prevTrack() {
-    const prevIndex = currentTrack === 0 ? tracks.length - 1 : currentTrack - 1;
-    loadTrack(prevIndex);
-    if (isPlaying) {
-        setTimeout(() => {
-            elements.audioPlayer.play().catch(e => {
-                console.error('Auto-play failed:', e);
-                showAudioError('Auto-play failed. Please try playing manually.');
-            });
-        }, 100);
-    }
-}
-
-function seekTo(event) {
-    if (elements.audioPlayer.duration) {
-        const rect = elements.progressBar.getBoundingClientRect();
-        const clickX = event.clientX - rect.left;
-        const percentage = clickX / rect.width;
-        elements.audioPlayer.currentTime = elements.audioPlayer.duration * percentage;
-    }
-}
-
-function setVolume(value) {
-    volume = Math.max(0, Math.min(1, value / 100));
-    elements.audioPlayer.volume = volume;
-    updateVolumeDisplay();
-}
-
-function updateVolumeDisplay() {
-    if (elements.volumeSliderFill) {
-        elements.volumeSliderFill.style.width = (volume * 100) + '%';
-    }
-
-    if (elements.volumeSlider) {
-        elements.volumeSlider.value = volume * 100;
-    }
-
-    // Update volume icon based on level
-    const volumeIcon = document.querySelector('.volume-icon-container svg');
-    if (volumeIcon) {
-        const paths = volumeIcon.querySelectorAll('path');
-        paths.forEach(path => {
-            if (volume === 0) {
-                path.setAttribute('d', 'M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z');
-            } else if (volume < 0.5) {
-                path.setAttribute('d', 'M18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM5 9v6h4l5 5V4L9 9H5z');
-            } else {
-                path.setAttribute('d', 'M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z');
+            if (elements.loadingScreen.parentNode) {
+                elements.loadingScreen.parentNode.removeChild(elements.loadingScreen);
             }
-        });
+        }, 1000);
     }
 }
 
@@ -1489,64 +1547,85 @@ function resetTilt() {
 }
 
 // ===========================
-// SETTINGS PANEL (ENHANCED MOBILE SUPPORT)
+// MOBILE MENU (ENHANCED)
 // ===========================
 
-function initSettingsPanel() {
-    if (!elements.settingsBtn || !elements.settingsMenu) return;
+function initMobileMenu() {
+    if (!elements.mobileMenuBtn || !elements.mobileMenu) return;
 
-    elements.settingsBtn.addEventListener('click', toggleSettings);
+    elements.mobileMenuBtn.addEventListener('click', toggleMobileMenu);
 
-    // Click outside to close (but not on mobile)
-    document.addEventListener('click', (e) => {
-        if (!isMobile && !elements.settingsBtn.contains(e.target) && !elements.settingsMenu.contains(e.target)) {
-            closeSettings();
+    // Close mobile menu when clicking nav links
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+    mobileNavLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            closeMobileMenu();
+        });
+    });
+
+    // Close mobile menu when clicking outside
+    elements.mobileMenu.addEventListener('click', (e) => {
+        if (e.target === elements.mobileMenu) {
+            closeMobileMenu();
         }
     });
 
-    // Enhanced mobile handling
-    if (isMobile) {
-        // Add touch event handling
-        elements.settingsBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            toggleSettings();
-        });
-
-        // Prevent body scroll when settings open
-        elements.settingsMenu.addEventListener('touchmove', (e) => {
-            e.stopPropagation();
-        }, { passive: true });
-    }
-
-    // Show main menu by default
-    showSettingsSection('main');
+    // Handle escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && elements.mobileMenu.classList.contains('active')) {
+            closeMobileMenu();
+        }
+    });
 }
 
-function toggleSettings() {
-    if (elements.settingsMenu.classList.contains('active')) {
-        closeSettings();
+function toggleMobileMenu() {
+    const isActive = elements.mobileMenu.classList.contains('active');
+
+    if (isActive) {
+        closeMobileMenu();
     } else {
-        openSettings();
+        openMobileMenu();
     }
 }
 
-function openSettings() {
-    elements.settingsMenu.classList.add('active');
-    showSettingsSection('main');
+function openMobileMenu() {
+    elements.mobileMenuBtn.classList.add('active');
+    elements.mobileMenu.classList.add('active');
+    document.body.style.overflow = 'hidden';
 
-    // Prevent body scroll on mobile when settings are open
-    if (isMobile) {
-        document.body.style.overflow = 'hidden';
-    }
+    // Focus management for accessibility
+    elements.mobileMenu.focus();
 }
 
-function closeSettings() {
-    elements.settingsMenu.classList.remove('active');
+function closeMobileMenu() {
+    elements.mobileMenuBtn.classList.remove('active');
+    elements.mobileMenu.classList.remove('active');
+    document.body.style.overflow = '';
+}
 
-    // Restore body scroll
-    if (isMobile) {
-        document.body.style.overflow = '';
-    }
+// ===========================
+// BACK TO TOP FUNCTIONALITY
+// ===========================
+
+function initBackToTop() {
+    if (!elements.backToTop) return;
+
+    // Show/hide button based on scroll position
+    window.addEventListener('scroll', throttle(() => {
+        if (window.pageYOffset > 300) {
+            elements.backToTop.classList.add('show');
+        } else {
+            elements.backToTop.classList.remove('show');
+        }
+    }, 100), { passive: true });
+
+    // Smooth scroll to top when clicked
+    elements.backToTop.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
 }
 
 // ===========================
@@ -1602,7 +1681,7 @@ function setTheme(themeName) {
     }
 
     // Update floating emojis if theme changed and they're visible
-    if (previousTheme !== themeName && settings.misc.showFloatingElements && !isMobile) {
+    if (previousTheme !== themeName && settings.misc.showFloatingElements) {
         updateFloatingEmojis();
     }
 
@@ -1697,10 +1776,10 @@ function generateCustomTheme(primaryColor, accentColor) {
         '--secondary-text': secondaryTextColor,
         '--tertiary-text': tertiaryTextColor,
         '--accent-color': accentColor,
-        '--border-color': `${accentColor}33`, // 20% opacity
-        '--hover-bg': `${accentColor}1A`, // 10% opacity
-        '--shadow-light': `${accentColor}4D`, // 30% opacity
-        '--shadow-dark': `${primaryColor}CC`, // 80% opacity
+        '--border-color': `${accentColor}33`,
+        '--hover-bg': `${accentColor}1A`,
+        '--shadow-light': `${accentColor}4D`,
+        '--shadow-dark': `${primaryColor}CC`,
         '--gradient-primary': `linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%)`,
         '--gradient-secondary': `linear-gradient(135deg, ${secondaryColor} 0%, ${tertiaryColor} 100%)`,
         '--gradient-accent': `linear-gradient(135deg, ${accentColor} 0%, ${lightenColor(accentColor, 0.1)} 100%)`
@@ -1771,67 +1850,6 @@ function blendColors(color1, color2, ratio) {
 }
 
 // ===========================
-// AUDIO CONTROLS (ENHANCED)
-// ===========================
-
-function initAudioControls() {
-    if (elements.playPauseBtn) elements.playPauseBtn.addEventListener('click', togglePlayPause);
-    if (elements.nextBtn) elements.nextBtn.addEventListener('click', nextTrack);
-    if (elements.prevBtn) elements.prevBtn.addEventListener('click', prevTrack);
-    if (elements.progressBar) {
-        elements.progressBar.addEventListener('click', seekTo);
-
-        // Add touch support for mobile
-        if (isTouch) {
-            elements.progressBar.addEventListener('touchend', seekTo);
-        }
-    }
-
-    // Enhanced volume slider handling
-    if (elements.volumeSlider) {
-        elements.volumeSlider.addEventListener('input', (e) => {
-            setVolume(parseFloat(e.target.value));
-        });
-
-        elements.volumeSlider.addEventListener('change', (e) => {
-            setVolume(parseFloat(e.target.value));
-        });
-
-        // Touch support
-        if (isTouch) {
-            elements.volumeSlider.addEventListener('touchmove', (e) => {
-                e.preventDefault();
-                const touch = e.touches[0];
-                const rect = elements.volumeSlider.getBoundingClientRect();
-                const percentage = (touch.clientX - rect.left) / rect.width;
-                const value = Math.max(0, Math.min(100, percentage * 100));
-                setVolume(value);
-            });
-        }
-    }
-
-    // Playlist item clicks with enhanced mobile support
-    document.querySelectorAll('.playlist-item').forEach((item) => {
-        const clickHandler = () => {
-            const index = parseInt(item.getAttribute('data-index'));
-            if (!isNaN(index)) {
-                loadTrack(index);
-            }
-        };
-
-        item.addEventListener('click', clickHandler);
-
-        // Touch support
-        if (isTouch) {
-            item.addEventListener('touchend', (e) => {
-                e.preventDefault();
-                clickHandler();
-            });
-        }
-    });
-}
-
-// ===========================
 // PERFORMANCE OPTIMIZATIONS (ENHANCED)
 // ===========================
 
@@ -1883,27 +1901,25 @@ function disableHeavyAnimations() {
     removeFloatingEmojis();
 }
 
-// ===========================
-// INTERSECTION OBSERVER OPTIMIZATIONS
-// ===========================
+function enableHeavyAnimations() {
+    const heavyAnimationElements = document.querySelectorAll('.floating-element, .floating-emoji');
 
-// Use a single observer for better performance
-const globalObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('in-view');
-        }
+    heavyAnimationElements.forEach(el => {
+        el.style.animation = '';
+        el.style.display = '';
     });
-}, {
-    threshold: isMobile ? 0.05 : 0.1,
-    rootMargin: isMobile ? '20px' : '50px'
-});
 
-// Observe elements that need scroll animations
-document.addEventListener('DOMContentLoaded', () => {
-    const observeElements = document.querySelectorAll('.skill-card, .project-card, .timeline-item');
-    observeElements.forEach(el => globalObserver.observe(el));
-});
+    updateFloatingElementsVisibility();
+    updateAnimationSpeed();
+
+    // Reset animation durations
+    document.documentElement.style.removeProperty('--animation-duration');
+    
+    // Re-initialize emojis if floating elements are enabled
+    if (settings.misc.showFloatingElements) {
+        initFloatingEmojis();
+    }
+}
 
 // ===========================
 // KEYBOARD NAVIGATION (ENHANCED)
@@ -1993,7 +2009,7 @@ function handleResize() {
     updateFloatingElementsVisibility();
     
     // Recreate emojis on significant size changes
-    if (settings.misc.showFloatingElements && !isMobile) {
+    if (settings.misc.showFloatingElements) {
         setTimeout(createFloatingEmojis, 250);
     }
 }
@@ -2008,7 +2024,78 @@ window.addEventListener('orientationchange', () => {
 });
 
 // ===========================
-// ACCESSIBILITY IMPROVEMENTS (ENHANCED)
+// ERROR HANDLING & GRACEFUL DEGRADATION
+// ===========================
+
+window.addEventListener('error', (e) => {
+    console.error('JavaScript error:', e.error);
+
+    // Graceful degradation for specific components
+    if (e.error && e.error.message) {
+        if (e.error.message.includes('audioPlayer')) {
+            showAudioError('Audio player encountered an error. Please refresh the page.');
+        }
+    }
+});
+
+// Handle unhandled promise rejections
+window.addEventListener('unhandledrejection', (e) => {
+    console.error('Unhandled promise rejection:', e.reason);
+    e.preventDefault();
+});
+
+// ===========================
+// MEMORY MANAGEMENT (ENHANCED)
+// ===========================
+
+// Enhanced cleanup on page unload
+window.addEventListener('beforeunload', () => {
+    // Save settings before unloading
+    saveSettings();
+
+    // Remove all event listeners to prevent memory leaks
+    window.removeEventListener('scroll', handleScroll);
+    window.removeEventListener('resize', handleResize);
+
+    // Pause and cleanup audio
+    if (elements.audioPlayer) {
+        elements.audioPlayer.pause();
+        elements.audioPlayer.src = '';
+        elements.audioPlayer.load();
+    }
+
+    // Clean up floating emojis
+    removeFloatingEmojis();
+});
+
+// Cleanup on page hide (for mobile)
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        // Pause animations and audio when page is hidden
+        if (isPlaying && elements.audioPlayer) {
+            elements.audioPlayer.pause();
+        }
+
+        // Reduce CPU usage by pausing animations
+        if (settings.misc.showFloatingElements) {
+            const animatedElements = document.querySelectorAll('.floating-element, .floating-emoji');
+            animatedElements.forEach(el => {
+                el.style.animationPlayState = 'paused';
+            });
+        }
+    } else {
+        // Resume animations when page is visible again
+        if (settings.misc.showFloatingElements && !settings.misc.reducedMotion) {
+            const animatedElements = document.querySelectorAll('.floating-element, .floating-emoji');
+            animatedElements.forEach(el => {
+                el.style.animationPlayState = 'running';
+            });
+        }
+    }
+});
+
+// ===========================
+// ACCESSIBILITY IMPROVEMENTS
 // ===========================
 
 // Enhanced focus management for keyboard navigation
@@ -2054,99 +2141,6 @@ skipLink.addEventListener('blur', () => {
 document.body.appendChild(skipLink);
 
 // ===========================
-// ERROR HANDLING & GRACEFUL DEGRADATION (ENHANCED)
-// ===========================
-
-window.addEventListener('error', (e) => {
-    console.error('JavaScript error:', e.error);
-
-    // Graceful degradation for specific components
-    if (e.error && e.error.message) {
-        if (e.error.message.includes('audioPlayer')) {
-            showAudioError('Audio player encountered an error. Please refresh the page.');
-        }
-    }
-});
-
-// Handle unhandled promise rejections
-window.addEventListener('unhandledrejection', (e) => {
-    console.error('Unhandled promise rejection:', e.reason);
-    e.preventDefault();
-});
-
-// Service worker registration for PWA functionality (optional)
-if ('serviceWorker' in navigator && !isMobile) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-            .then((registration) => {
-                console.log('SW registered: ', registration);
-            })
-            .catch((registrationError) => {
-                console.log('SW registration failed: ', registrationError);
-            });
-    });
-}
-
-// ===========================
-// MEMORY MANAGEMENT (ENHANCED)
-// ===========================
-
-// Enhanced cleanup on page unload
-window.addEventListener('beforeunload', () => {
-    // Save settings before unloading
-    saveSettings();
-
-    // Remove all event listeners to prevent memory leaks
-    window.removeEventListener('scroll', handleScroll);
-    window.removeEventListener('resize', handleResize);
-
-    // Pause and cleanup audio
-    if (elements.audioPlayer) {
-        elements.audioPlayer.pause();
-        elements.audioPlayer.src = '';
-        elements.audioPlayer.load();
-    }
-
-    // Clear any running intervals and timeouts
-    clearInterval();
-    clearTimeout();
-
-    // Disconnect observers
-    if (globalObserver) {
-        globalObserver.disconnect();
-    }
-
-    // Clean up floating emojis
-    removeFloatingEmojis();
-});
-
-// Cleanup on page hide (for mobile)
-document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-        // Pause animations and audio when page is hidden
-        if (isPlaying && elements.audioPlayer) {
-            elements.audioPlayer.pause();
-        }
-
-        // Reduce CPU usage by pausing animations
-        if (settings.misc.showFloatingElements) {
-            const animatedElements = document.querySelectorAll('.floating-element, .floating-emoji');
-            animatedElements.forEach(el => {
-                el.style.animationPlayState = 'paused';
-            });
-        }
-    } else {
-        // Resume animations when page is visible again
-        if (settings.misc.showFloatingElements && !settings.misc.reducedMotion) {
-            const animatedElements = document.querySelectorAll('.floating-element, .floating-emoji');
-            animatedElements.forEach(el => {
-                el.style.animationPlayState = 'running';
-            });
-        }
-    }
-});
-
-// ===========================
 // FINAL INITIALIZATION CHECK
 // ===========================
 
@@ -2177,7 +2171,8 @@ if (window.performance && window.performance.measure) {
     });
 }
 
-console.log('🚀 Enhanced mobile-optimized portfolio script loaded successfully!');
+console.log('🚀 Enhanced mobile-optimized portfolio script with bug fixes loaded successfully!');
 console.log('📱 Device optimizations active for:', deviceType);
 console.log('⚡ Performance mode:', isLowEndDevice ? 'Low-end device detected' : 'Standard performance');
 console.log('🎀 JoJo\'s theme with enhanced floating emojis ready!');
+console.log('🎵 Audio system with autoplay fixes initialized!');
