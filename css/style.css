@@ -697,8 +697,17 @@ body.mobile-device * {
     height: 100%;
     overflow: hidden;
     z-index: 1;
-    display: block !important; /* Always show */
-    /* Hidden on mobile by default */
+    display: block !important;
+    opacity: 1;
+}
+
+/* Show floating elements on mobile with reduced intensity */
+@media (max-width: 767px) {
+    .floating-elements {
+        display: block !important;
+        opacity: 0.8;
+        pointer-events: none;
+    }
 }
 
 
@@ -818,9 +827,15 @@ body.mobile-device * {
     animation-timing-function: linear;
     animation-iteration-count: infinite;
 }
-@media (min-width: 768px) {
+/* Always show floating elements */
+.floating-elements {
+    display: block !important;
+}
+
+@media (max-width: 767px) {
     .floating-elements {
-        display: block !important; /* Show on larger screens */
+        display: block !important;
+        opacity: 0.6;
     }
 }
 .floating-code {
@@ -830,6 +845,15 @@ body.mobile-device * {
     font-size: 0.7rem;
     animation-name: float-code;
     pointer-events: none;
+    opacity: 0.4; /* Increase base opacity */
+}
+
+@media (max-width: 767px) {
+    .floating-code {
+        font-size: 0.8rem !important;
+        opacity: 0.6 !important;
+        animation-duration: 40s !important;
+    }
 }
 
 @media (min-width: 768px) {
@@ -891,6 +915,15 @@ body.mobile-device * {
     border: 1px solid var(--border-color);
     animation-name: float;
     animation-duration: calc(var(--animation-speed) * 35s);
+    opacity: 0.3; /* Increase base opacity */
+}
+
+@media (max-width: 767px) {
+    .geometric-shape {
+        opacity: 0.4 !important;
+        animation-duration: 50s !important;
+        border-width: 2px;
+    }
 }
 
 .shape-1 {
@@ -957,6 +990,15 @@ body.mobile-device * {
     animation-name: float-tech;
     animation-duration: calc(var(--animation-speed) * 20s);
     pointer-events: none;
+    opacity: 0.4; /* Increase base opacity */
+}
+
+@media (max-width: 767px) {
+    .floating-tech-icon {
+        font-size: 1.2rem !important;
+        opacity: 0.7 !important;
+        animation-duration: 30s !important;
+    }
 }
 
 @media (min-width: 768px) {
@@ -1219,6 +1261,70 @@ body.mobile-device * {
 /* ===========================
    SECTIONS (MOBILE OPTIMIZED)
    =========================== */
+/* ===========================
+   MOBILE FLOATING EMOJI ENHANCEMENTS
+   =========================== */
+
+@media (max-width: 767px) {
+    .floating-emoji {
+        font-size: 1.5rem !important;
+        opacity: 0.8 !important;
+        animation-duration: 35s !important;
+        will-change: transform;
+        backface-visibility: hidden;
+        transform: translateZ(0);
+    }
+    
+    /* Make JoJo's theme super visible on mobile */
+    [data-theme="jojos"] .floating-emoji {
+        font-size: 2rem !important;
+        opacity: 0.9 !important;
+        filter: drop-shadow(0 0 2px rgba(224, 145, 254, 0.6));
+    }
+    
+    /* Enhance other themes for mobile */
+    [data-theme="default"] .floating-emoji {
+        filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.3));
+    }
+    
+    [data-theme="ocean"] .floating-emoji {
+        filter: drop-shadow(0 0 1px rgba(0, 188, 212, 0.4));
+    }
+    
+    [data-theme="discord"] .floating-emoji {
+        filter: drop-shadow(0 0 1px rgba(88, 101, 242, 0.4));
+    }
+    
+    [data-theme="spotify"] .floating-emoji {
+        filter: drop-shadow(0 0 1px rgba(29, 185, 84, 0.4));
+    }
+    
+    [data-theme="vscode"] .floating-emoji {
+        filter: drop-shadow(0 0 1px rgba(0, 122, 204, 0.4));
+    }
+}
+
+/* Mobile floating elements container optimization */
+@media (max-width: 767px) {
+    .floating-elements {
+        transform: translateZ(0);
+        will-change: auto;
+    }
+    
+    .floating-code,
+    .floating-tech-icon,
+    .floating-symbols,
+    .floating-contact-icons {
+        animation-duration: 40s !important;
+        opacity: 0.6 !important;
+    }
+    
+    .geometric-shape {
+        animation-duration: 60s !important;
+        opacity: 0.3 !important;
+    }
+}
+
 
 .about-section {
     padding: 4rem 0;

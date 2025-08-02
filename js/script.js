@@ -69,8 +69,8 @@ let settings = {
     misc: {
         reducedMotion: prefersReducedMotion || isLowEndDevice,
         autoplayMusic: false,
-        showFloatingElements: !isMobile,
-        showParticles: !isMobile,
+        showFloatingElements: true,
+        showParticles: true,
         showCodeSnippets: !isMobile,
         showGeometricShapes: !isMobile,
         animationSpeed: isLowEndDevice ? 50 : 100,
@@ -208,10 +208,7 @@ function cacheElements() {
 // ===========================
 
 function initFloatingEmojis() {
-    if (isMobile || prefersReducedMotion || !settings.misc.showFloatingElements) {
-        return;
-    }
-
+    // Always create floating emojis, just adjust for mobile
     createFloatingEmojis();
     
     // Update emojis when theme changes
@@ -253,14 +250,17 @@ function createFloatingEmojis() {
             container.style.overflow = 'hidden';
             container.style.pointerEvents = 'none';
             container.style.zIndex = '1';
+            container.style.display = 'block';
             sectionElement.style.position = 'relative';
             sectionElement.appendChild(container);
         }
 
         if (!container) return;
 
-        // Number of emojis per section
-        const emojiCount = currentTheme === 'jojos' ? 15 : 10;
+        // Number of emojis per section - more for mobile visibility
+        const emojiCount = isMobile ? 
+            (currentTheme === 'jojos' ? 20 : 15) : 
+            (currentTheme === 'jojos' ? 15 : 10);
         
         for (let i = 0; i < emojiCount; i++) {
             const emoji = document.createElement('div');
@@ -271,26 +271,25 @@ function createFloatingEmojis() {
             emoji.style.position = 'absolute';
             emoji.style.left = Math.random() * 90 + '%';
             emoji.style.top = Math.random() * 90 + '%';
-            emoji.style.fontSize = (Math.random() * 0.5 + 1) + 'rem';
             emoji.style.animationDelay = Math.random() * 25 + 's';
             emoji.style.animationDuration = (Math.random() * 10 + 25) + 's';
-            emoji.style.opacity = Math.random() * 0.4 + 0.3;
             emoji.style.pointerEvents = 'none';
             emoji.style.userSelect = 'none';
             emoji.style.zIndex = '1';
             
+            // Enhanced mobile visibility
+            if (isMobile) {
+                emoji.style.fontSize = (Math.random() * 0.8 + 1.5) + 'rem';
+                emoji.style.opacity = Math.random() * 0.3 + 0.8;
+                emoji.style.animationDuration = (Math.random() * 15 + 30) + 's';
+            } else {
+                emoji.style.fontSize = (Math.random() * 0.5 + 1) + 'rem';
+                emoji.style.opacity = Math.random() * 0.4 + 0.3;
+            }
+            
             container.appendChild(emoji);
-
-            // Boost visibility on mobile
-if (isMobile) {
-    emoji.style.fontSize = (Math.random() * 0.5 + 1.5) + 'rem';
-    emoji.style.opacity = Math.random() * 0.2 + 0.7;
-}
-
         }
     });
-
-    
 }
 
 function updateFloatingEmojis() {
@@ -917,12 +916,12 @@ function optimizeForMobile() {
         lastTouchEnd = now;
     }, false);
 
-    // Disable floating elements on mobile for performance
-    settings.misc.showFloatingElements = false;
-    settings.misc.showParticles = false;
-    settings.misc.showCodeSnippets = false;
-    settings.misc.showGeometricShapes = false;
-    settings.misc.parallaxIntensity = 0;
+    // Keep floating elements on mobile but optimized
+    settings.misc.showFloatingElements = true;
+    settings.misc.showParticles = true;
+    settings.misc.showCodeSnippets = true;
+    settings.misc.showGeometricShapes = true;
+    settings.misc.parallaxIntensity = 0; // Still disable parallax
 
     updateFloatingElementsVisibility();
 }
