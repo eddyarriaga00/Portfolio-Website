@@ -65,7 +65,7 @@ let isLoadingComplete = false;
 let currentSettingsSection = 'main';
 let settings = {
     cursor: {
-        enabled: !isMobile && !isTouch,
+        enabled: true,
         size: 12,
         opacity: 100,
         followerSize: 36
@@ -75,10 +75,13 @@ let settings = {
         autoplayMusic: false,
         showFloatingElements: true,
         showParticles: true,
-        showCodeSnippets: !isMobile,
-        showGeometricShapes: !isMobile,
+        showCodeSnippets: true,
+        showGeometricShapes: true,
         animationSpeed: isLowEndDevice ? 50 : 100,
-        parallaxIntensity: isMobile ? 0 : 100
+        parallaxIntensity: isMobile ? 0 : 100,
+        smoothScrolling: true,
+        screenShake: true,
+        typewriterSpeed: 100
     }
 };
 
@@ -124,8 +127,10 @@ function initializeApp() {
     initMobileMenu();
     initBackToTop();
     initAdvancedSettings();
+    fixMobileEventHandlers();
     initMobileOptimizations();
     initFloatingEmojis();
+    debugSettings();
 
     // Performance optimization
     if (isLowEndDevice || prefersReducedMotion || settings.misc.reducedMotion) {
@@ -144,7 +149,7 @@ function handleWindowLoad() {
     setTimeout(() => {
         isLoadingComplete = true;
         hideLoadingScreen();
-        
+
         // Try autoplay after loading screen is hidden
         if (settings.misc.autoplayMusic) {
             setTimeout(() => {
@@ -184,6 +189,12 @@ function cacheElements() {
     elements.accentColorPicker = document.getElementById('accentColor');
     elements.applyCustomThemeBtn = document.getElementById('applyCustomTheme');
     elements.backToTop = document.getElementById('backToTop');
+    elements.parallaxIntensity = document.getElementById('parallaxIntensity');
+    elements.parallaxIntensityValue = document.getElementById('parallaxIntensityValue');
+    elements.smoothScrolling = document.getElementById('smoothScrolling');
+    elements.screenShake = document.getElementById('screenShake');
+    elements.typewriterSpeed = document.getElementById('typewriterSpeed');
+    elements.typewriterSpeedValue = document.getElementById('typewriterSpeedValue');
 
     // Settings elements
     elements.mouseSection = document.getElementById('mouseSection');
@@ -616,57 +627,95 @@ function updateParallaxIntensity() {
 function initSettingsPanel() {
     if (!elements.settingsBtn || !elements.settingsMenu) return;
 
-    elements.settingsBtn.addEventListener('click', toggleSettings);
+    const handleSettingsClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleSettings();
+    };
 
-    // Click outside to close (but not on mobile)
+    elements.settingsBtn.addEventListener('click', handleSettingsClick);
+
+    if (isTouch) {
+        elements.settingsBtn.addEventListener('touchend', handleSettingsClick);
+    }
+
     document.addEventListener('click', (e) => {
         if (!isMobile && !elements.settingsBtn.contains(e.target) && !elements.settingsMenu.contains(e.target)) {
             closeSettings();
         }
     });
 
-    // Enhanced mobile handling
     if (isMobile) {
-        // Add touch event handling
-        elements.settingsBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            toggleSettings();
-        });
-
-        // Prevent body scroll when settings open
         elements.settingsMenu.addEventListener('touchmove', (e) => {
             e.stopPropagation();
         }, { passive: true });
     }
 
-    // Show main menu by default
     showSettingsSection('main');
 }
 
+function fixMobileEventHandlers() {
+    const mobileElements = document.querySelectorAll('.settings-category, .theme-option, .toggle-switch, .setting-slider, .reset-settings-btn, .playlist-item, .control-btn');
+
+    mobileElements.forEach(element => {
+        const handleInteraction = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (element.classList.contains('settings-category')) {
+                const section = element.getAttribute('data-section');
+                if (section) showSettingsSection(section);
+            }
+
+            if (element.classList.contains('theme-option')) {
+                const theme = element.getAttribute('data-theme');
+                if (theme) setTheme(theme);
+            }
+
+            if (element.classList.contains('reset-settings-btn')) {
+                resetAllSettings();
+            }
+        };
+
+        element.addEventListener('click', handleInteraction);
+
+        if (isTouch) {
+            element.addEventListener('touchend', handleInteraction);
+        }
+    });
+}
+
+
 function showSettingsSection(sectionName) {
-    // Hide all sections first
+    console.log('Showing section:', sectionName);
+    
     document.querySelectorAll('.settings-section-view').forEach(section => {
         section.classList.remove('active');
+        section.style.display = 'none';
     });
 
     if (sectionName === 'main') {
         if (elements.settingsMainMenu) {
             elements.settingsMainMenu.classList.add('active');
+            elements.settingsMainMenu.style.display = 'block';
         }
     } else {
         if (elements.settingsMainMenu) {
             elements.settingsMainMenu.classList.remove('active');
+            elements.settingsMainMenu.style.display = 'none';
         }
 
         const target = document.getElementById(sectionName + 'Section');
         if (target) {
             target.classList.add('active');
+            target.style.display = 'block';
+        } else {
+            console.error('Section not found:', sectionName + 'Section');
         }
     }
 
     currentSettingsSection = sectionName;
 
-    // Scroll to top for better UX
     const scrollContainer = document.querySelector('.settings-scroll-container');
     if (scrollContainer) {
         scrollContainer.scrollTop = 0;
@@ -681,121 +730,146 @@ function initAdvancedSettings() {
 }
 
 function initSettingsNavigation() {
-    // Category navigation
     const settingsCategories = document.querySelectorAll('.settings-category');
     settingsCategories.forEach(category => {
-        category.addEventListener('click', () => {
+        const handleCategoryClick = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
             const section = category.getAttribute('data-section');
+            console.log('Category clicked:', section);
             if (section) {
                 showSettingsSection(section);
             }
-        });
+        };
+
+        category.addEventListener('click', handleCategoryClick);
+        if (isTouch) {
+            category.addEventListener('touchend', handleCategoryClick);
+        }
     });
 
-    // Back buttons
     const backButtons = document.querySelectorAll('.settings-back-btn');
     backButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const target = btn.getAttribute('data-back');
-            if (target === 'main') {
-                showSettingsSection('main');
-            }
-        });
+        const handleBackClick = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            showSettingsSection('main');
+        };
+
+        btn.addEventListener('click', handleBackClick);
+        if (isTouch) {
+            btn.addEventListener('touchend', handleBackClick);
+        }
     });
 
-    // Close button for mobile
     if (elements.settingsCloseBtn) {
-        elements.settingsCloseBtn.addEventListener('click', closeSettings);
+        const handleCloseClick = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            closeSettings();
+        };
+
+        elements.settingsCloseBtn.addEventListener('click', handleCloseClick);
+        if (isTouch) {
+            elements.settingsCloseBtn.addEventListener('touchend', handleCloseClick);
+        }
     }
 }
 
 function initEnhancedMiscSettings() {
-    if (!elements.reducedMotion) return;
+    const setupToggle = (element, settingPath, callback) => {
+        if (!element) return;
 
-    // Reduced motion toggle
-    elements.reducedMotion.addEventListener('change', (e) => {
-        settings.misc.reducedMotion = e.target.checked;
+        const handleToggle = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
 
-        if (settings.misc.reducedMotion) {
+            const isChecked = !element.checked;
+            element.checked = isChecked;
+
+            const keys = settingPath.split('.');
+            let current = settings;
+            for (let i = 0; i < keys.length - 1; i++) {
+                current = current[keys[i]];
+            }
+            current[keys[keys.length - 1]] = isChecked;
+
+            if (callback) callback(isChecked);
+            saveSettings();
+        };
+
+        element.addEventListener('change', handleToggle);
+
+        if (isTouch) {
+            const toggleSwitch = element.closest('.toggle-switch');
+            if (toggleSwitch) {
+                toggleSwitch.addEventListener('touchend', handleToggle);
+            }
+        }
+    };
+
+    setupToggle(elements.reducedMotion, 'misc.reducedMotion', (checked) => {
+        if (checked) {
             disableHeavyAnimations();
         } else {
             enableHeavyAnimations();
         }
-
-        saveSettings();
     });
 
-    // Autoplay music toggle - FIX: Proper event handling
-    if (elements.autoplayMusic) {
-        elements.autoplayMusic.addEventListener('change', (e) => {
-            settings.misc.autoplayMusic = e.target.checked;
-            saveSettings();
-            
-            // If autoplay is enabled and no track is playing, try to start
-            if (settings.misc.autoplayMusic && currentTrack === -1 && audioInitialized) {
-                tryAutoplay();
-            }
-        });
-    }
+    setupToggle(elements.autoplayMusic, 'misc.autoplayMusic');
 
-    // Show floating elements toggle
-    if (elements.showFloatingElements) {
-        elements.showFloatingElements.addEventListener('change', (e) => {
-            settings.misc.showFloatingElements = e.target.checked;
-            updateFloatingElementsVisibility();
-            
-            if (e.target.checked) {
-                initFloatingEmojis();
-            } else {
-                removeFloatingEmojis();
-            }
-            
-            saveSettings();
-        });
-    }
+    setupToggle(elements.showFloatingElements, 'misc.showFloatingElements', (checked) => {
+        updateFloatingElementsVisibility();
+        if (checked) {
+            initFloatingEmojis();
+        } else {
+            removeFloatingEmojis();
+        }
+    });
 
-    // Show particles toggle
-    if (elements.showParticles) {
-        elements.showParticles.addEventListener('change', (e) => {
-            settings.misc.showParticles = e.target.checked;
-            updateFloatingElementsVisibility();
-            saveSettings();
-        });
-    }
+    setupToggle(elements.showParticles, 'misc.showParticles', () => {
+        updateFloatingElementsVisibility();
+    });
 
-    // Show code snippets toggle
-    if (elements.showCodeSnippets) {
-        elements.showCodeSnippets.addEventListener('change', (e) => {
-            settings.misc.showCodeSnippets = e.target.checked;
-            updateFloatingElementsVisibility();
-            saveSettings();
-        });
-    }
+    setupToggle(elements.showCodeSnippets, 'misc.showCodeSnippets', () => {
+        updateFloatingElementsVisibility();
+    });
 
-    // Show geometric shapes toggle
-    if (elements.showGeometricShapes) {
-        elements.showGeometricShapes.addEventListener('change', (e) => {
-            settings.misc.showGeometricShapes = e.target.checked;
-            updateFloatingElementsVisibility();
-            saveSettings();
-        });
-    }
+    setupToggle(elements.showGeometricShapes, 'misc.showGeometricShapes', () => {
+        updateFloatingElementsVisibility();
+    });
 
-    // Animation speed slider
     if (elements.animationSpeed) {
-        elements.animationSpeed.addEventListener('input', (e) => {
-            settings.misc.animationSpeed = parseInt(e.target.value);
+        const handleSpeedChange = (e) => {
+            const value = parseInt(e.target.value);
+            settings.misc.animationSpeed = value;
             if (elements.animationSpeedValue) {
-                elements.animationSpeedValue.textContent = settings.misc.animationSpeed + '%';
+                elements.animationSpeedValue.textContent = value + '%';
             }
             updateAnimationSpeed();
             saveSettings();
-        });
+        };
+
+        elements.animationSpeed.addEventListener('input', handleSpeedChange);
+        elements.animationSpeed.addEventListener('change', handleSpeedChange);
+
+        if (isTouch) {
+            elements.animationSpeed.addEventListener('touchmove', handleSpeedChange);
+        }
     }
 
-    // Reset settings button
     if (elements.resetSettings) {
-        elements.resetSettings.addEventListener('click', resetAllSettings);
+        const handleReset = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            resetAllSettings();
+        };
+
+        elements.resetSettings.addEventListener('click', handleReset);
+
+        if (isTouch) {
+            elements.resetSettings.addEventListener('touchend', handleReset);
+        }
     }
 }
 
@@ -991,7 +1065,7 @@ function initAudioControls() {
     if (elements.playPauseBtn) elements.playPauseBtn.addEventListener('click', togglePlayPause);
     if (elements.nextBtn) elements.nextBtn.addEventListener('click', nextTrack);
     if (elements.prevBtn) elements.prevBtn.addEventListener('click', prevTrack);
-    
+
     if (elements.progressBar) {
         elements.progressBar.addEventListener('click', seekTo);
 
@@ -1055,7 +1129,7 @@ function initAudioControls() {
 function initFloatingEmojis() {
     // Always create floating emojis, just adjust for mobile
     createFloatingEmojis();
-    
+
     // Update emojis when theme changes
     document.addEventListener('themeChanged', updateFloatingEmojis);
 }
@@ -1068,7 +1142,7 @@ function createFloatingEmojis() {
 
     const currentTheme = document.body.getAttribute('data-theme') || 'default';
     const emojis = themeEmojis[currentTheme] || themeEmojis.default;
-    
+
     // Create emoji containers for each section
     const sections = [
         { selector: '.hero-section', container: '.floating-elements' },
@@ -1105,15 +1179,15 @@ function createFloatingEmojis() {
         if (!container) return;
 
         // Number of emojis per section - more for mobile visibility
-        const emojiCount = isMobile ? 
-            (currentTheme === 'jojos' ? 20 : 15) : 
+        const emojiCount = isMobile ?
+            (currentTheme === 'jojos' ? 20 : 15) :
             (currentTheme === 'jojos' ? 15 : 10);
-        
+
         for (let i = 0; i < emojiCount; i++) {
             const emoji = document.createElement('div');
             emoji.className = `floating-emoji ${currentTheme}-${i + 1}`;
             emoji.textContent = emojis[i % emojis.length];
-            
+
             // Random positioning
             emoji.style.position = 'absolute';
             emoji.style.left = Math.random() * 90 + '%';
@@ -1123,7 +1197,7 @@ function createFloatingEmojis() {
             emoji.style.pointerEvents = 'none';
             emoji.style.userSelect = 'none';
             emoji.style.zIndex = '1';
-            
+
             // Enhanced mobile visibility
             if (isMobile) {
                 emoji.style.fontSize = (Math.random() * 0.8 + 1.5) + 'rem';
@@ -1133,7 +1207,7 @@ function createFloatingEmojis() {
                 emoji.style.fontSize = (Math.random() * 0.5 + 1) + 'rem';
                 emoji.style.opacity = Math.random() * 0.4 + 0.3;
             }
-            
+
             container.appendChild(emoji);
         }
     });
@@ -1143,14 +1217,14 @@ function updateFloatingEmojis() {
     if (!settings.misc.showFloatingElements) {
         return;
     }
-    
+
     // Smooth transition: fade out old emojis, create new ones
     const existingEmojis = document.querySelectorAll('.floating-emoji');
     existingEmojis.forEach(emoji => {
         emoji.style.transition = 'opacity 0.5s ease-out';
         emoji.style.opacity = '0';
     });
-    
+
     setTimeout(() => {
         createFloatingEmojis();
     }, 500);
@@ -1914,7 +1988,7 @@ function enableHeavyAnimations() {
 
     // Reset animation durations
     document.documentElement.style.removeProperty('--animation-duration');
-    
+
     // Re-initialize emojis if floating elements are enabled
     if (settings.misc.showFloatingElements) {
         initFloatingEmojis();
@@ -2007,7 +2081,7 @@ function handleResize() {
 
     // Update floating elements based on new screen size
     updateFloatingElementsVisibility();
-    
+
     // Recreate emojis on significant size changes
     if (settings.misc.showFloatingElements) {
         setTimeout(createFloatingEmojis, 250);
@@ -2168,6 +2242,21 @@ if (window.performance && window.performance.measure) {
             console.log(`📊 Page Load Complete: ${perfData.loadEventEnd - perfData.loadEventStart}ms`);
             console.log(`📊 Total Load Time: ${perfData.loadEventEnd - perfData.fetchStart}ms`);
         }, 1000);
+    });
+}
+
+function debugSettings() {
+    console.log('Settings elements check:');
+    console.log('settingsBtn:', !!elements.settingsBtn);
+    console.log('settingsMenu:', !!elements.settingsMenu);
+    console.log('settingsMainMenu:', !!elements.settingsMainMenu);
+    console.log('mouseSection:', !!document.getElementById('mouseSection'));
+    console.log('themeSection:', !!document.getElementById('themeSection'));
+    console.log('musicSection:', !!document.getElementById('musicSection'));
+    console.log('miscSection:', !!document.getElementById('miscSection'));
+    
+    document.querySelectorAll('.settings-category').forEach((cat, i) => {
+        console.log(`Category ${i}:`, cat.getAttribute('data-section'));
     });
 }
 
