@@ -1563,6 +1563,489 @@ function handleParallax() {
     });
 }
 
+
+// ===========================
+// FIXED SETTINGS SYSTEM JAVASCRIPT
+// ===========================
+
+function initSettingsPanel() {
+    if (!elements.settingsBtn || !elements.settingsMenu) return;
+
+    // Settings button click handler
+    const handleSettingsClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleSettings();
+    };
+
+    elements.settingsBtn.addEventListener('click', handleSettingsClick);
+
+    if (isTouch) {
+        elements.settingsBtn.addEventListener('touchend', handleSettingsClick);
+    }
+
+    // Close settings when clicking outside (desktop only)
+    document.addEventListener('click', (e) => {
+        if (!isMobile && 
+            !elements.settingsBtn.contains(e.target) && 
+            !elements.settingsMenu.contains(e.target)) {
+            closeSettings();
+        }
+    });
+
+    // Mobile touch handling
+    if (isMobile) {
+        elements.settingsMenu.addEventListener('touchmove', (e) => {
+            e.stopPropagation();
+        }, { passive: true });
+    }
+
+    // Initialize navigation
+    initSettingsNavigation();
+    
+    // Show main menu by default
+    showSettingsSection('main');
+}
+
+function initSettingsNavigation() {
+    // Category navigation
+    const settingsCategories = document.querySelectorAll('.settings-category');
+    settingsCategories.forEach(category => {
+        const handleCategoryClick = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const section = category.getAttribute('data-section');
+            console.log('Category clicked:', section);
+            if (section) {
+                showSettingsSection(section);
+            }
+        };
+
+        category.addEventListener('click', handleCategoryClick);
+        if (isTouch) {
+            category.addEventListener('touchend', handleCategoryClick);
+        }
+    });
+
+    // Back buttons
+    const backButtons = document.querySelectorAll('.settings-back-btn');
+    backButtons.forEach(btn => {
+        const handleBackClick = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const target = btn.getAttribute('data-back');
+            if (target === 'main') {
+                showSettingsSection('main');
+            }
+        };
+
+        btn.addEventListener('click', handleBackClick);
+        if (isTouch) {
+            btn.addEventListener('touchend', handleBackClick);
+        }
+    });
+
+    // Close button for mobile
+    if (elements.settingsCloseBtn) {
+        const handleCloseClick = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            closeSettings();
+        };
+
+        elements.settingsCloseBtn.addEventListener('click', handleCloseClick);
+        if (isTouch) {
+            elements.settingsCloseBtn.addEventListener('touchend', handleCloseClick);
+        }
+    }
+}
+
+function showSettingsSection(sectionName) {
+    console.log('Showing section:', sectionName);
+    
+    // Hide all sections first
+    document.querySelectorAll('.settings-section-view').forEach(section => {
+        section.classList.remove('active');
+        section.style.display = 'none';
+    });
+
+    // Handle main menu
+    if (sectionName === 'main') {
+        if (elements.settingsMainMenu) {
+            elements.settingsMainMenu.classList.add('active');
+            elements.settingsMainMenu.style.display = 'block';
+        }
+    } else {
+        // Hide main menu
+        if (elements.settingsMainMenu) {
+            elements.settingsMainMenu.classList.remove('active');
+            elements.settingsMainMenu.style.display = 'none';
+        }
+
+        // Show target section
+        const targetSection = document.getElementById(sectionName + 'Section');
+        if (targetSection) {
+            targetSection.classList.add('active');
+            targetSection.style.display = 'block';
+        } else {
+            console.error('Section not found:', sectionName + 'Section');
+        }
+    }
+
+    currentSettingsSection = sectionName;
+
+    // Scroll to top for better UX
+    const scrollContainer = document.querySelector('.settings-scroll-container');
+    if (scrollContainer) {
+        scrollContainer.scrollTop = 0;
+    }
+}
+
+function toggleSettings() {
+    if (elements.settingsMenu.classList.contains('active')) {
+        closeSettings();
+    } else {
+        openSettings();
+    }
+}
+
+function openSettings() {
+    elements.settingsMenu.classList.add('active');
+    showSettingsSection('main');
+
+    // Prevent body scroll on mobile when settings are open
+    if (isMobile) {
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeSettings() {
+    elements.settingsMenu.classList.remove('active');
+
+    // Restore body scroll
+    if (isMobile) {
+        document.body.style.overflow = '';
+    }
+}
+
+// ===========================
+// ENHANCED AUDIO CONTROLS WITH PROPER EVENT HANDLING
+// ===========================
+
+function initAudioControls() {
+    // Play/Pause button
+    if (elements.playPauseBtn) {
+        const handlePlayPause = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            togglePlayPause();
+        };
+
+        elements.playPauseBtn.addEventListener('click', handlePlayPause);
+        if (isTouch) {
+            elements.playPauseBtn.addEventListener('touchend', handlePlayPause);
+        }
+    }
+
+    // Next button
+    if (elements.nextBtn) {
+        const handleNext = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            nextTrack();
+        };
+
+        elements.nextBtn.addEventListener('click', handleNext);
+        if (isTouch) {
+            elements.nextBtn.addEventListener('touchend', handleNext);
+        }
+    }
+
+    // Previous button
+    if (elements.prevBtn) {
+        const handlePrev = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            prevTrack();
+        };
+
+        elements.prevBtn.addEventListener('click', handlePrev);
+        if (isTouch) {
+            elements.prevBtn.addEventListener('touchend', handlePrev);
+        }
+    }
+
+    // Progress bar
+    if (elements.progressBar) {
+        const handleSeek = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            seekTo(e);
+        };
+
+        elements.progressBar.addEventListener('click', handleSeek);
+
+        if (isTouch) {
+            elements.progressBar.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const touch = e.changedTouches[0];
+                const rect = elements.progressBar.getBoundingClientRect();
+                const clickX = touch.clientX - rect.left;
+                const percentage = Math.max(0, Math.min(1, clickX / rect.width));
+                if (elements.audioPlayer.duration) {
+                    elements.audioPlayer.currentTime = elements.audioPlayer.duration * percentage;
+                }
+            });
+        }
+    }
+
+    // Volume slider
+    if (elements.volumeSlider) {
+        const handleVolumeChange = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setVolume(parseFloat(e.target.value));
+        };
+
+        elements.volumeSlider.addEventListener('input', handleVolumeChange);
+        elements.volumeSlider.addEventListener('change', handleVolumeChange);
+
+        if (isTouch) {
+            elements.volumeSlider.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const touch = e.touches[0];
+                const rect = elements.volumeSlider.getBoundingClientRect();
+                const percentage = Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width));
+                const value = percentage * 100;
+                setVolume(value);
+            });
+        }
+    }
+
+    // Playlist items
+    initPlaylistControls();
+}
+
+function initPlaylistControls() {
+    document.querySelectorAll('.playlist-item').forEach((item) => {
+        const handlePlaylistClick = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            // Mark user interaction
+            hasUserInteracted = true;
+
+            const index = parseInt(item.getAttribute('data-index'));
+            if (!isNaN(index)) {
+                loadTrack(index);
+
+                // Auto-play the selected track
+                setTimeout(() => {
+                    const playPromise = elements.audioPlayer.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(error => {
+                            console.error('Play failed:', error);
+                            showAudioError('Playback failed. Please try again.');
+                        });
+                    }
+                }, 200);
+            }
+        };
+
+        // Remove existing listeners to prevent duplicates
+        item.removeEventListener('click', handlePlaylistClick);
+        item.removeEventListener('touchend', handlePlaylistClick);
+
+        // Add fresh listeners
+        item.addEventListener('click', handlePlaylistClick);
+
+        if (isTouch) {
+            item.addEventListener('touchend', handlePlaylistClick);
+        }
+    });
+}
+
+// ===========================
+// MOBILE TOUCH FEEDBACK SYSTEM
+// ===========================
+
+function addTouchFeedback() {
+    const touchElements = document.querySelectorAll(`
+        button, 
+        .nav-link, 
+        .mobile-nav-link, 
+        .contact-link, 
+        .project-link, 
+        .settings-category, 
+        .theme-option, 
+        .playlist-item, 
+        .control-btn,
+        .toggle-switch,
+        .settings-back-btn,
+        .mobile-close-btn
+    `);
+
+    touchElements.forEach(element => {
+        // Touch start - scale down
+        element.addEventListener('touchstart', function(e) {
+            if (!this.classList.contains('no-touch-feedback')) {
+                this.style.transform = 'scale(0.95)';
+                this.style.transition = 'transform 0.1s ease';
+            }
+        }, { passive: true });
+
+        // Touch end - scale back
+        element.addEventListener('touchend', function(e) {
+            if (!this.classList.contains('no-touch-feedback')) {
+                setTimeout(() => {
+                    this.style.transform = '';
+                    this.style.transition = '';
+                }, 150);
+            }
+        }, { passive: true });
+
+        // Touch cancel - reset
+        element.addEventListener('touchcancel', function(e) {
+            if (!this.classList.contains('no-touch-feedback')) {
+                this.style.transform = '';
+                this.style.transition = '';
+            }
+        }, { passive: true });
+    });
+}
+
+// ===========================
+// ENHANCED MOBILE OPTIMIZATIONS
+// ===========================
+
+function initMobileOptimizations() {
+    if (!isMobile) return;
+
+    // Optimize viewport
+    const viewport = document.querySelector('meta[name="viewport"]');
+    if (viewport) {
+        viewport.setAttribute('content', 
+            'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover'
+        );
+    }
+
+    // Prevent bounce scrolling on iOS
+    document.body.addEventListener('touchmove', (e) => {
+        if (e.target === document.body) {
+            e.preventDefault();
+        }
+    }, { passive: false });
+
+    // Add visual feedback for touch interactions
+    addTouchFeedback();
+
+    // Handle orientation changes
+    window.addEventListener('orientationchange', () => {
+        setTimeout(() => {
+            // Recalculate settings position if open
+            if (elements.settingsMenu.classList.contains('active')) {
+                showSettingsSection(currentSettingsSection);
+            }
+        }, 100);
+    });
+
+    // Prevent double-tap zoom
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function(event) {
+        const now = (new Date()).getTime();
+        if (now - lastTouchEnd <= 300) {
+            event.preventDefault();
+        }
+        lastTouchEnd = now;
+    }, false);
+
+    // Add mobile-specific classes
+    document.body.classList.add('mobile-optimized');
+}
+
+// ===========================
+// KEYBOARD NAVIGATION ENHANCEMENTS
+// ===========================
+
+document.addEventListener('keydown', (e) => {
+    // Don't interfere with form inputs
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+    // Mark user interaction
+    hasUserInteracted = true;
+
+    switch (e.code) {
+        case 'Space':
+            e.preventDefault();
+            togglePlayPause();
+            break;
+        case 'ArrowRight':
+            if (e.ctrlKey) {
+                e.preventDefault();
+                nextTrack();
+            }
+            break;
+        case 'ArrowLeft':
+            if (e.ctrlKey) {
+                e.preventDefault();
+                prevTrack();
+            }
+            break;
+        case 'Escape':
+            e.preventDefault();
+            closeSettings();
+            closeMobileMenu();
+            break;
+        case 'Home':
+            if (e.ctrlKey) {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+            break;
+        case 'KeyS':
+            if (e.ctrlKey || e.metaKey) {
+                e.preventDefault();
+                toggleSettings();
+            }
+            break;
+        case 'KeyM':
+            if (e.ctrlKey || e.metaKey) {
+                e.preventDefault();
+                toggleMobileMenu();
+            }
+            break;
+    }
+});
+
+// ===========================
+// ERROR HANDLING & DEBUGGING
+// ===========================
+
+function debugSettings() {
+    console.log('=== SETTINGS DEBUG ===');
+    console.log('settingsBtn:', !!elements.settingsBtn);
+    console.log('settingsMenu:', !!elements.settingsMenu);
+    console.log('settingsMainMenu:', !!elements.settingsMainMenu);
+    
+    const sections = ['mouse', 'theme', 'music', 'misc'];
+    sections.forEach(section => {
+        const element = document.getElementById(section + 'Section');
+        console.log(`${section}Section:`, !!element);
+    });
+    
+    document.querySelectorAll('.settings-category').forEach((cat, i) => {
+        console.log(`Category ${i}:`, cat.getAttribute('data-section'));
+    });
+    
+    console.log('Current section:', currentSettingsSection);
+    console.log('=====================');
+}
+
+// Call debug function after initialization
+setTimeout(debugSettings, 1000);
+
 // ===========================
 // TYPING ANIMATION (ENHANCED)
 // ===========================
