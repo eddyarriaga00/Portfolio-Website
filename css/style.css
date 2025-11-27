@@ -167,7 +167,7 @@
 html {
     scroll-behavior: smooth;
     overflow-x: hidden;
-    font-size: 16px;
+    font-size: 15px;
     /* Base font size for rem calculations */
 }
 
@@ -175,12 +175,14 @@ body {
     font-family: 'Inter', sans-serif;
     background: var(--primary-bg);
     color: var(--primary-text);
-    line-height: 1.6;
+    line-height: 1.55;
     overflow-x: hidden;
     cursor: none;
     transition: all 0.3s ease;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'liga', 'clig', 'kern';
 }
 
 /* Mobile device optimization */
@@ -410,7 +412,7 @@ body.mobile-device * {
     right: 0;
     z-index: 1000;
     padding: 0.8rem 0;
-    background: rgba(var(--primary-bg-rgb), 0.95);
+    background: rgba(var(--primary-bg-rgb), 0.82);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border-color);
     transition: all 0.3s ease;
@@ -423,7 +425,7 @@ body.mobile-device * {
 }
 
 .nav-bar.scrolled {
-    background: rgba(var(--primary-bg-rgb), 0.98);
+    background: rgba(var(--primary-bg-rgb), 0.9);
     padding: 0.6rem 0;
     box-shadow: 0 4px 20px var(--shadow-dark);
     backdrop-filter: blur(40px);
