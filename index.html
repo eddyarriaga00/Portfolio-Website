@@ -3,37 +3,42 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Eddy Arriaga | Software Developer</title>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <title>Eddy Arriaga-Barrientos | Technical Specialist</title>
+    <meta name="description"
+        content="Portfolio of Eddy Arriaga-Barrientos, Technical Specialist at Apple and Computer Science student at UNCG.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap"
         rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/style.css">
 
-    <!-- Mobile Performance Optimizations -->
+    
     <meta name="theme-color" content="#000000">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-    <!-- Preload critical resources -->
+    
     <link rel="preload" href="css/style.css" as="style">
     <link rel="preload" href="js/script.js" as="script">
 </head>
 
-<body data-theme="default" class="font-inter overflow-x-hidden">
-    <!-- Mobile Touch Indicator -->
+<body id="top" data-theme="default" class="font-inter overflow-x-hidden">
+    
     <div class="mobile-touch-indicator"></div>
 
-    <!-- Custom Cursors -->
+    
     <div class="custom-cursor"></div>
     <div class="cursor-follower"></div>
 
-    <!-- Audio Player (Hidden) -->
-    <audio id="audioPlayer" preload="metadata" crossorigin="anonymous" class="hidden"></audio>
+    
+    <audio id="audioPlayer" preload="metadata" playsinline class="hidden"></audio>
 
-    <!-- Loading Screen -->
+    
     <div id="loadingScreen" class="loading-screen">
         <div class="loading-container">
             <div class="loading-logo">EA</div>
@@ -51,10 +56,10 @@
         </div>
     </div>
 
-    <!-- Navigation -->
-    <nav id="navbar" class="nav-bar">
+    
+    <nav id="navbar" class="nav-bar" aria-label="Primary">
         <div class="nav-container">
-            <a href="#" class="logo-container">
+            <a href="#top" class="logo-container" aria-label="Back to top">
                 <span class="logo-text">EA</span>
             </a>
             <ul class="nav-links">
@@ -65,16 +70,17 @@
                 <li><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
 
-            <!-- Mobile Menu Button -->
-            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle mobile menu">
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle mobile menu"
+                aria-controls="mobileMenu" aria-expanded="false">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
         </div>
 
-        <!-- Mobile Menu -->
-        <div class="mobile-menu" id="mobileMenu">
+        
+        <div class="mobile-menu" id="mobileMenu" aria-hidden="true" tabindex="-1">
             <ul class="mobile-nav-links">
                 <li><a href="#about" class="mobile-nav-link">About</a></li>
                 <li><a href="#skills" class="mobile-nav-link">Skills</a></li>
@@ -85,7 +91,7 @@
         </div>
     </nav>
 
-    <!-- Initializing Section -->
+    
     <section class="hero-section">
         <div class="floating-elements">
             <div class="floating-code floating-element">console.log('hello');</div>
@@ -103,17 +109,36 @@
         </div>
         <div class="hero-content">
             <h1 class="hero-title">
-                Eddy <span class="name-spacing"></span> Arriaga
+                Eddy <span class="name-spacing"></span> Arriaga-Barrientos
             </h1>
-            <p class="hero-subtitle">Software Developer | Digital Creator</p>
+            <p class="hero-subtitle">Technical Specialist @ Apple | Computer Science Student @ UNCG</p>
             <a href="#about" class="hero-cta">
                 <span class="cta-shimmer"></span>
                 <span class="relative">Explore My Work</span>
             </a>
+            <div class="hero-meta">
+                <div class="tech-stack-row">
+                    <span class="tech-stack-label">Featured Tech Stack</span>
+                    <div class="tech-stack-tags">
+                        <span class="tech-tag">React</span>
+                        <span class="tech-tag">JavaScript</span>
+                        <span class="tech-tag">Node.js</span>
+                        <span class="tech-tag">Tailwind CSS</span>
+                        <span class="tech-tag">Firebase</span>
+                    </div>
+                </div>
+                <div class="hero-socials" aria-label="Social links">
+                    <a href="mailto:eddyarriaga06@gmail.com" class="hero-social-link">Email</a>
+                    <a href="https://github.com/eddyarriaga00" class="hero-social-link" target="_blank"
+                        rel="noopener noreferrer">GitHub</a>
+                    <a href="https://www.linkedin.com/in/eddy-arriaga/" class="hero-social-link" target="_blank"
+                        rel="noopener noreferrer">LinkedIn</a>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- About Section -->
+    
     <section id="about" class="about-section">
         <div class="floating-tech-icon tech-1 floating-element">&lt;/&gt;</div>
         <div class="floating-tech-icon tech-2 floating-element">{ }</div>
@@ -129,14 +154,15 @@
             <div class="about-content">
                 <div class="about-text animate-on-scroll">
                     <h3>I build things with code</h3>
-                    <p>I'm a passionate Computer Science student at UNCG with a love for creating innovative solutions
-                        through code. With experience as an Apple Specialist, I bring both technical expertise and
-                        strong communication skills to every project.</p>
+                    <p>I'm a senior Computer Science student at UNCG and a Technical Specialist at Apple, focused on
+                        solving problems with thoughtful software and human-centered support. Based in Greensboro, NC,
+                        I hold an Associate of Science degree and bring strong customer support, communication, and
+                        technical skills to every project.</p>
 
                     <h3>My belief</h3>
-                    <p>As a Senior CS student at UNCG, with an Associate of Science degree, I am passionate about using
-                        technology to solve problems. I hope to produce results. I am bilingual in English and Spanish.
-                    </p>
+                    <p>I'm bilingual in English and Spanish and open to volunteering in Education, Science, and
+                        Technology initiatives. I enjoy building practical, reliable experiences that make people's
+                        lives easier.</p>
                 </div>
 
                 <div class="stats-grid animate-on-scroll">
@@ -169,7 +195,7 @@
         </div>
     </section>
 
-    <!-- Skills Section -->
+    
     <section id="skills" class="skills-section">
         <div class="floating-symbols symbol-1 floating-element">;</div>
         <div class="floating-symbols symbol-2 floating-element">=&gt;</div>
@@ -188,7 +214,7 @@
                     <span class="skill-shimmer"></span>
                     <span class="skill-icon">💻</span>
                     <h3 class="skill-title">Frontend Development</h3>
-                    <p class="skill-desc">React, JavaScript, HTML/CSS, and more</p>
+                    <p class="skill-desc">React, JavaScript, HTML, CSS, and responsive UI</p>
                     <div class="skill-progress-container">
                         <div class="skill-progress frontend"></div>
                     </div>
@@ -197,7 +223,7 @@
                     <span class="skill-shimmer"></span>
                     <span class="skill-icon">⚙️</span>
                     <h3 class="skill-title">Backend Development</h3>
-                    <p class="skill-desc">Node.js, Python, Java, database design, API development and more</p>
+                    <p class="skill-desc">Java, Node.js, Python, database design, API development</p>
                     <div class="skill-progress-container">
                         <div class="skill-progress backend"></div>
                     </div>
@@ -206,7 +232,7 @@
                     <span class="skill-shimmer"></span>
                     <span class="skill-icon">🛠️</span>
                     <h3 class="skill-title">Development Tools</h3>
-                    <p class="skill-desc">Git, VS Code, Linux, Docker, and more</p>
+                    <p class="skill-desc">Git, VS Code, Linux, Docker, and workflow automation</p>
                     <div class="skill-progress-container">
                         <div class="skill-progress tools"></div>
                     </div>
@@ -215,16 +241,33 @@
                     <span class="skill-shimmer"></span>
                     <span class="skill-icon">📱</span>
                     <h3 class="skill-title">Mobile Development</h3>
-                    <p class="skill-desc">React Native, and more</p>
+                    <p class="skill-desc">React Native, mobile-first UI, and app UX</p>
                     <div class="skill-progress-container">
                         <div class="skill-progress mobile"></div>
                     </div>
                 </div>
             </div>
+            <div class="skills-highlight animate-on-scroll">
+                <div class="skills-highlight-title">Top Skills</div>
+                <div class="skills-highlight-tags">
+                    <span class="tech-tag">Spanish Translation</span>
+                    <span class="tech-tag">Customer Support</span>
+                    <span class="tech-tag">Java</span>
+                    <span class="tech-tag">JavaScript</span>
+                    <span class="tech-tag">HTML</span>
+                </div>
+            </div>
+            <div class="skills-credentials animate-on-scroll">
+                <div class="skills-credentials-title">Certifications</div>
+                <div class="skills-credentials-tags">
+                    <span class="tech-tag" title="Credential ID: 4ZMP3RRMLT6N">Google: Foundations of Cybersecurity</span>
+                    <span class="tech-tag" title="Credential ID: 3Q2JRWPYDTHB">Google: Play It Safe: Manage Security Risks</span>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- Projects Section -->
+    
     <section id="projects" class="projects-section">
         <div class="section-container">
             <h2 class="section-title animate-on-scroll">
@@ -338,11 +381,11 @@ useEffect(() => {
         </div>
     </section>
 
-    <!-- Experience Section -->
+    
     <section id="experience" class="experience-section">
         <div class="section-container">
             <h2 class="section-title animate-on-scroll">
-                Experience
+                Experience &amp; Education
                 <span class="section-decorator">{ }</span>
             </h2>
             <div class="timeline">
@@ -353,8 +396,12 @@ useEffect(() => {
                     <div class="timeline-content">
                         <div class="timeline-date">Oct 2025 - Present</div>
                         <h3 class="timeline-title">Technical Specialist</h3>
-                        <div class="timeline-company">Apple · Part-time · On-site · Greensboro, North Carolina</div>
-                        <p class="timeline-desc">Part-time, on-site support in Greensboro, NC focused on diagnosing device hardware and software issues, educating customers on repairs and AppleCare coverage, and partnering with store teammates so service stays fast and consistent.</p>
+                        <div class="timeline-company">Apple · Part-time · On-site · Greensboro, NC</div>
+                        <ul class="timeline-list">
+                            <li>Diagnose and resolve hardware, software, and connectivity issues across Apple devices</li>
+                            <li>Educate customers on device features, repairs, and AppleCare coverage options</li>
+                            <li>Collaborate with team members to keep service fast and consistent</li>
+                        </ul>
                     </div>
                 </div>
                 <div class="timeline-item animate-on-scroll">
@@ -362,36 +409,115 @@ useEffect(() => {
                     <div class="timeline-icon">🍎</div>
                     <div class="timeline-content">
                         <div class="timeline-date">Sep 2025 - Oct 2025</div>
-                        <h3 class="timeline-title">Seasonal Specialist</h3>
-                        <div class="timeline-company">Apple · Seasonal · Greensboro, North Carolina, United States</div>
-                        <p class="timeline-desc">Two-month seasonal sprint helping shoppers pick the right Macs, iPads, and accessories, staying on top of weekly Apple training drops, and keeping the in-store experience personable through proactive communication.</p>
+                        <h3 class="timeline-title">Specialist</h3>
+                        <div class="timeline-company">Apple · Part-time · Greensboro, NC</div>
+                        <ul class="timeline-list">
+                            <li>Assisted customers with iPhones, iPads, Macs, and accessories through tailored recommendations</li>
+                            <li>Completed ongoing Apple training to stay current on features and updates</li>
+                            <li>Built strong customer relationships through clear, proactive communication</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item animate-on-scroll">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-icon">🤝</div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">Feb 2025 - Present</div>
+                        <h3 class="timeline-title">Member</h3>
+                        <div class="timeline-company">Alpha Lambda Delta Honor Society</div>
+                        <ul class="timeline-list">
+                            <li>Active member supporting academic excellence and campus leadership initiatives</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item animate-on-scroll">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-icon">🍎</div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">Nov 2024 - Feb 2025</div>
+                        <h3 class="timeline-title">Specialist</h3>
+                        <div class="timeline-company">Apple · Part-time · Greensboro, NC</div>
+                        <ul class="timeline-list">
+                            <li>Helped customers choose the right Apple products with needs-based guidance</li>
+                            <li>Stayed current on Apple training and product updates</li>
+                            <li>Strengthened customer relationships through active listening and problem-solving</li>
+                        </ul>
                     </div>
                 </div>
                 <div class="timeline-item animate-on-scroll">
                     <div class="timeline-dot"></div>
                     <div class="timeline-icon">🎓</div>
                     <div class="timeline-content">
-                        <div class="timeline-date">Aug. 2024 - Present</div>
-                        <h3 class="timeline-title">Computer Science Student</h3>
-                        <div class="timeline-company">University of North Carolina at Greensboro (UNCG)</div>
-                        <p class="timeline-desc">Full-time CS senior balancing systems, algorithms, and UX electives while maintaining a strong GPA and contributing to campus tech initiatives.</p>
+                        <div class="timeline-date">Aug 2024 - May 2026</div>
+                        <h3 class="timeline-title">B.S. Computer Science</h3>
+                        <div class="timeline-company">University of North Carolina at Greensboro</div>
+                        <ul class="timeline-list">
+                            <li>Senior standing · Chancellor’s List (Fall 2024)</li>
+                            <li>Activities: Alpha Lambda Delta, Collegiate Entrepreneurship Organization</li>
+                        </ul>
                     </div>
                 </div>
                 <div class="timeline-item animate-on-scroll">
                     <div class="timeline-dot"></div>
-                    <div class="timeline-icon">💻</div>
+                    <div class="timeline-icon">📊</div>
                     <div class="timeline-content">
-                        <div class="timeline-date">2024 - Present</div>
-                        <h3 class="timeline-title">Freelance Developer</h3>
-                        <div class="timeline-company">Self-Employed</div>
-                        <p class="timeline-desc">Ship modern, responsive web apps for clients and personal projects with a focus on performant frontends, clean APIs, and thoughtful UX.</p>
+                        <div class="timeline-date">Jul 2024 - Aug 2024</div>
+                        <h3 class="timeline-title">Remote Market Research Interviewer</h3>
+                        <div class="timeline-company">Global Data Collection Company · Part-time · Remote</div>
+                        <ul class="timeline-list">
+                            <li>Conducted phone interviews to gather accurate survey data</li>
+                            <li>Used computer-assisted interviewing tools for efficient collection</li>
+                            <li>Provided feedback on survey scripts and procedures</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item animate-on-scroll">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-icon">🛡️</div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">Jun 2024 - Jul 2024</div>
+                        <h3 class="timeline-title">Cybersecurity Intro Bootcamp</h3>
+                        <div class="timeline-company">North Carolina State University</div>
+                        <ul class="timeline-list">
+                            <li>Covered security fundamentals, network defense, SSDLC, and incident response</li>
+                            <li>Completed hands-on labs in phishing simulations, system hardening, and data protection</li>
+                            <li>Earned a 98% final grade</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item animate-on-scroll">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-icon">🌐</div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">May 2024 - Jun 2024</div>
+                        <h3 class="timeline-title">Spanish Translator</h3>
+                        <div class="timeline-company">LanguageLine Solutions · Part-time · Remote</div>
+                        <ul class="timeline-list">
+                            <li>Delivered accurate, culturally appropriate translations across medical, legal, and service settings</li>
+                            <li>Facilitated clear communication between Spanish and English speakers</li>
+                            <li>Maintained confidentiality and handled sensitive information with discretion</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item animate-on-scroll">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-icon">🧱</div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">Jun 2021 - May 2024</div>
+                        <h3 class="timeline-title">Customer Service Representative &amp; Construction Assistant</h3>
+                        <div class="timeline-company">Phillips Drywall · Part-time · Lancaster, PA</div>
+                        <ul class="timeline-list">
+                            <li>Worked on drywall projects, measurements, and finishing with precise material application</li>
+                            <li>Managed client communication, contracts, invoices, and project documentation</li>
+                            <li>Coordinated inbound/outbound calls and scheduling with a focus on customer care</li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Contact Section -->
+    
     <section id="contact" class="contact-section">
         <div class="floating-contact-icons contact-1 floating-element">📧</div>
         <div class="floating-contact-icons contact-2 floating-element">💬</div>
@@ -415,11 +541,13 @@ useEffect(() => {
                         <span class="contact-fill"></span>
                         <span class="relative">Email Me</span>
                     </a>
-                    <a href="https://github.com/eddyarriaga00" class="contact-link" target="_blank">
+                    <a href="https://github.com/eddyarriaga00" class="contact-link" target="_blank"
+                        rel="noopener noreferrer">
                         <span class="contact-fill"></span>
                         <span class="relative">GitHub</span>
                     </a>
-                    <a href="https://www.linkedin.com/in/eddy-arriaga/" class="contact-link" target="_blank">
+                    <a href="https://www.linkedin.com/in/eddy-arriaga/" class="contact-link" target="_blank"
+                        rel="noopener noreferrer">
                         <span class="contact-fill"></span>
                         <span class="relative">LinkedIn</span>
                     </a>
@@ -428,22 +556,23 @@ useEffect(() => {
         </div>
     </section>
 
-    <!-- Footer -->
+    
     <footer class="footer">
-        <p class="footer-text">© 2024 Eddy Arriaga. All rights reserved.</p>
+        <p class="footer-text">© 2024 Eddy Arriaga-Barrientos. All rights reserved.</p>
 
-        <!-- Back to Top Button -->
+        
         <button class="back-to-top" id="backToTop" title="Back to top" aria-label="Back to top">
             <div class="back-to-top-icon">↑</div>
         </button>
     </footer>
 
-    <!-- Settings Panel -->
+    
     <div class="settings-panel">
-        <button class="settings-button" id="settingsBtn" aria-label="Open settings">⚙️</button>
-        <div class="settings-menu" id="settingsMenu">
+        <button class="settings-button" id="settingsBtn" aria-label="Open settings" aria-controls="settingsMenu"
+            aria-expanded="false">⚙️</button>
+        <div class="settings-menu" id="settingsMenu" aria-hidden="true">
             <div class="settings-scroll-container">
-                <!-- Main Settings Menu -->
+                
                 <div class="settings-main-menu" id="settingsMainMenu">
                     <div class="settings-header">
                         <h3 class="settings-main-title">Settings</h3>
@@ -485,7 +614,7 @@ useEffect(() => {
                     </div>
                 </div>
 
-                <!-- Mouse Customization Section -->
+                
                 <div class="settings-section-view" id="mouseSection">
                     <div class="settings-header">
                         <button class="settings-back-btn" data-back="main" aria-label="Back to main menu">
@@ -544,7 +673,7 @@ useEffect(() => {
                     </div>
                 </div>
 
-                <!-- Theme Customization Section -->
+                
                 <div class="settings-section-view" id="themeSection">
                     <div class="settings-header">
                         <button class="settings-back-btn" data-back="main" aria-label="Back to main menu">
@@ -588,7 +717,7 @@ useEffect(() => {
                             </div>
                         </div>
 
-                        <!-- Custom Theme Maker -->
+                        
                         <div class="custom-theme-section">
                             <h4 class="custom-theme-title">Create Custom Theme</h4>
                             <div class="color-pickers">
@@ -606,7 +735,7 @@ useEffect(() => {
                     </div>
                 </div>
 
-                <!-- Music Player Section -->
+                
                 <div class="settings-section-view" id="musicSection">
                     <div class="settings-header">
                         <button class="settings-back-btn" data-back="main" aria-label="Back to main menu">
@@ -720,7 +849,7 @@ useEffect(() => {
                     </div>
                 </div>
 
-                <!-- Visual & Performance Section -->
+                
                 <div class="settings-section-view" id="miscSection">
                     <div class="settings-header">
                         <button class="settings-back-btn" data-back="main" aria-label="Back to main menu">

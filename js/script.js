@@ -35,7 +35,7 @@ const tracks = [
 const isLowEndDevice = navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4;
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-const isTablet = /iPad|Android(?=.*Mobile)/i.test(navigator.userAgent);
+const isTablet = /iPad|Android(?!.*Mobile)/i.test(navigator.userAgent);
 const isTouch = 'ontouchstart' in window;
 
 const deviceType = (() => {
@@ -393,6 +393,13 @@ function togglePlayPause() {
 
     if (currentTrack === -1) {
         loadTrack(0);
+        const playPromise = elements.audioPlayer.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(error => {
+                if (settings.misc.debugMode) console.error('Play failed:', error);
+                showAudioError('Playback failed. Please check if the audio file exists.');
+            });
+        }
         return;
     }
 
@@ -507,7 +514,10 @@ function applyLoadedSettings() {
     if (settings.cursor) {
         updateCursorVariables();
 
-        if (!settings.cursor.enabled || isMobile || isTouch) {
+        const cursorActive = settings.cursor.enabled && !isMobile && !isTouch;
+        document.body.classList.toggle('custom-cursor-active', cursorActive);
+
+        if (!cursorActive) {
             if (elements.cursor) elements.cursor.style.display = 'none';
             if (elements.follower) elements.follower.style.display = 'none';
             document.body.style.cursor = 'auto';
@@ -1060,6 +1070,7 @@ function initCursorSettings() {
 
     elements.cursorEnabled.addEventListener('change', (e) => {
         settings.cursor.enabled = e.target.checked;
+        document.body.classList.toggle('custom-cursor-active', settings.cursor.enabled && !isMobile && !isTouch);
 
         if (!isMobile && !isTouch) {
             if (settings.cursor.enabled) {
@@ -1261,6 +1272,8 @@ function toggleSettings() {
 
 function openSettings() {
     elements.settingsMenu.classList.add('active');
+    elements.settingsMenu.setAttribute('aria-hidden', 'false');
+    elements.settingsBtn.setAttribute('aria-expanded', 'true');
     showSettingsSection('main');
 
     if (isMobile) {
@@ -1270,6 +1283,8 @@ function openSettings() {
 
 function closeSettings() {
     elements.settingsMenu.classList.remove('active');
+    elements.settingsMenu.setAttribute('aria-hidden', 'true');
+    elements.settingsBtn.setAttribute('aria-expanded', 'false');
 
     if (isMobile) {
         document.body.style.overflow = '';
@@ -1403,6 +1418,7 @@ function initPlaylistControls() {
 
 function initFloatingEmojis() {
     createFloatingEmojis();
+    document.removeEventListener('themeChanged', updateFloatingEmojis);
     document.addEventListener('themeChanged', updateFloatingEmojis);
 }
 
@@ -1519,28 +1535,13 @@ function initMobileOptimizations() {
     if (isMobile) {
         const viewport = document.querySelector('meta[name="viewport"]');
         if (viewport) {
-            viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
+            viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover');
         }
-
-        document.body.addEventListener('touchmove', (e) => {
-            if (e.target === document.body) {
-                e.preventDefault();
-            }
-        }, { passive: false });
 
         const passiveEvents = ['touchstart', 'touchmove', 'touchend'];
         passiveEvents.forEach(event => {
             document.addEventListener(event, () => { }, { passive: true });
         });
-
-        let lastTouchEnd = 0;
-        document.addEventListener('touchend', function (event) {
-            const now = (new Date()).getTime();
-            if (now - lastTouchEnd <= 300) {
-                event.preventDefault();
-            }
-            lastTouchEnd = now;
-        }, false);
 
         addTouchFeedback();
     }
@@ -1592,6 +1593,7 @@ function optimizeForMobile() {
     if (elements.cursor) elements.cursor.style.display = 'none';
     if (elements.follower) elements.follower.style.display = 'none';
     document.body.style.cursor = 'auto';
+    document.body.classList.remove('custom-cursor-active');
 
     document.body.classList.add('mobile-device');
 
@@ -1599,15 +1601,6 @@ function optimizeForMobile() {
     document.addEventListener('touchstart', () => { }, passiveOptions);
     document.addEventListener('touchmove', () => { }, passiveOptions);
     document.addEventListener('touchend', () => { }, passiveOptions);
-
-    let lastTouchEnd = 0;
-    document.addEventListener('touchend', function (event) {
-        const now = (new Date()).getTime();
-        if (now - lastTouchEnd <= 300) {
-            event.preventDefault();
-        }
-        lastTouchEnd = now;
-    }, false);
 
     settings.performance.showFloatingElements = true;
     settings.performance.showParticles = true;
@@ -1634,6 +1627,8 @@ function initCustomCursor() {
     if (!elements.cursor || !elements.follower || isMobile || isTouch || !settings.cursor.enabled) {
         return;
     }
+
+    document.body.classList.add('custom-cursor-active');
 
     let mouseX = 0, mouseY = 0;
     let followerX = 0, followerY = 0;
@@ -1710,7 +1705,7 @@ function handleScroll() {
 
     const timeDelta = currentTime - lastScrollTime;
     const scrollDelta = Math.abs(currentScrollTop - lastScrollTop);
-    scrollSpeed = scrollDelta / timeDelta;
+    scrollSpeed = timeDelta > 0 ? scrollDelta / timeDelta : 0;
 
     lastScrollTime = currentTime;
     lastScrollTop = currentScrollTop;
@@ -1725,8 +1720,17 @@ function handleScroll() {
 }
 
 function handleAnchorClick(e) {
+    const href = this.getAttribute('href');
+    if (!href) {
+        return;
+    }
+    if (href === '#') {
+        e.preventDefault();
+        return;
+    }
+
     e.preventDefault();
-    const target = document.querySelector(this.getAttribute('href'));
+    const target = document.querySelector(href);
     if (target) {
         closeMobileMenu();
         closeSettings();
@@ -1896,6 +1900,8 @@ function toggleMobileMenu() {
 function openMobileMenu() {
     elements.mobileMenuBtn.classList.add('active');
     elements.mobileMenu.classList.add('active');
+    elements.mobileMenuBtn.setAttribute('aria-expanded', 'true');
+    elements.mobileMenu.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
 
     elements.mobileMenu.focus();
@@ -1904,6 +1910,8 @@ function openMobileMenu() {
 function closeMobileMenu() {
     elements.mobileMenuBtn.classList.remove('active');
     elements.mobileMenu.classList.remove('active');
+    elements.mobileMenuBtn.setAttribute('aria-expanded', 'false');
+    elements.mobileMenu.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
 }
 
