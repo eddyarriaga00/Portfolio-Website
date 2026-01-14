@@ -121,6 +121,7 @@ function initializeApp() {
 }
 
 function handleWindowLoad() {
+    const loadingDelay = isMobile ? 2500 : 4500;
     setTimeout(() => {
         isLoadingComplete = true;
         hideLoadingScreen();
@@ -130,7 +131,7 @@ function handleWindowLoad() {
                 tryAutoplay();
             }, 1000);
         }
-    }, 4500);
+    }, loadingDelay);
 }
 
 function cacheElements() {
@@ -661,7 +662,7 @@ function initSettingsPanel() {
 }
 
 function fixMobileEventHandlers() {
-    const mobileElements = document.querySelectorAll('.settings-category, .theme-option, .toggle-switch, .setting-slider, .reset-settings-btn, .playlist-item, .control-btn');
+    const mobileElements = document.querySelectorAll('.settings-category, .toggle-switch, .setting-slider, .reset-settings-btn, .playlist-item, .control-btn');
 
     mobileElements.forEach(element => {
         const handleInteraction = (e) => {
@@ -681,11 +682,6 @@ function fixMobileEventHandlers() {
             if (element.classList.contains('settings-category')) {
                 const section = element.getAttribute('data-section');
                 if (section) showSettingsSection(section);
-            }
-
-            if (element.classList.contains('theme-option')) {
-                const theme = element.getAttribute('data-theme');
-                if (theme) setTheme(theme);
             }
 
             if (element.classList.contains('reset-settings-btn')) {
@@ -1811,7 +1807,7 @@ function handleParallax() {
 }
 
 function initTypingAnimation() {
-    if (!elements.heroTitle || prefersReducedMotion || settings.accessibility.reducedMotion) return;
+    if (!elements.heroTitle || isMobile || prefersReducedMotion || settings.accessibility.reducedMotion) return;
 
     const titleText = elements.heroTitle.textContent.trim();
     elements.heroTitle.textContent = '';
@@ -1936,15 +1932,26 @@ function initBackToTop() {
 
 function initThemeSystem() {
     const themeOptions = document.querySelectorAll('.theme-option');
+    const themeGrid = document.querySelector('.theme-grid');
+    const handleThemeSelect = (event) => {
+        const option = event.target.closest('.theme-option');
+        if (!option) return;
+        event.preventDefault();
+        const theme = option.getAttribute('data-theme');
+        if (theme) {
+            setTheme(theme);
+        }
+    };
 
-    themeOptions.forEach(option => {
-        option.addEventListener('click', () => {
-            const theme = option.getAttribute('data-theme');
-            if (theme) {
-                setTheme(theme);
-            }
+    if (themeGrid && window.PointerEvent) {
+        themeGrid.addEventListener('pointerup', handleThemeSelect);
+    } else if (themeGrid) {
+        themeGrid.addEventListener('click', handleThemeSelect);
+    } else {
+        themeOptions.forEach(option => {
+            option.addEventListener('click', handleThemeSelect);
         });
-    });
+    }
 
     const savedTheme = localStorage.getItem('preferred-theme');
     if (savedTheme) {
