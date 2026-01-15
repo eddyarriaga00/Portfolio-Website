@@ -37,6 +37,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 const isTablet = /iPad|Android(?!.*Mobile)/i.test(navigator.userAgent);
 const isTouch = 'ontouchstart' in window;
+const mobileAnimationSpeed = 70;
 
 const deviceType = (() => {
     if (isMobile && !isTablet) return 'mobile';
@@ -57,16 +58,16 @@ let settings = {
         followerSize: 36
     },
     performance: {
-        showFloatingElements: true,
-        showParticles: true,
-        showCodeSnippets: true,
-        showGeometricShapes: true,
-        animationSpeed: isLowEndDevice ? 50 : 100,
+        showFloatingElements: !isMobile,
+        showParticles: !isMobile,
+        showCodeSnippets: !isMobile,
+        showGeometricShapes: !isMobile,
+        animationSpeed: isMobile ? mobileAnimationSpeed : (isLowEndDevice ? 50 : 100),
         parallaxIntensity: isMobile ? 0 : 100,
         batterySaver: false
     },
     accessibility: {
-        reducedMotion: prefersReducedMotion || isLowEndDevice,
+        reducedMotion: prefersReducedMotion || isLowEndDevice || isMobile,
         smoothScrolling: true,
         highContrast: false,
         focusVisible: true,
@@ -74,7 +75,7 @@ let settings = {
     },
     misc: {
         autoplayMusic: false,
-        screenShake: true,
+        screenShake: !isMobile,
         typewriterSpeed: 100,
         debugMode: false
     }
@@ -121,7 +122,7 @@ function initializeApp() {
 }
 
 function handleWindowLoad() {
-    const loadingDelay = isMobile ? 2500 : 4500;
+    const loadingDelay = isMobile ? 1200 : 4500;
     setTimeout(() => {
         isLoadingComplete = true;
         hideLoadingScreen();
@@ -495,9 +496,9 @@ function loadSettings() {
 
     if (isMobile) {
         settings.cursor.enabled = false;
-        settings.performance.showFloatingElements = true;
-        settings.performance.showParticles = true;
         settings.performance.parallaxIntensity = 0;
+        settings.performance.animationSpeed = Math.min(settings.performance.animationSpeed, mobileAnimationSpeed);
+        settings.misc.screenShake = false;
     }
 
     applyLoadedSettings();
@@ -1231,16 +1232,16 @@ function resetAllSettings() {
                 followerSize: 36
             },
             performance: {
-                showFloatingElements: true,
-                showParticles: true,
+                showFloatingElements: !isMobile,
+                showParticles: !isMobile,
                 showCodeSnippets: !isMobile,
                 showGeometricShapes: !isMobile,
-                animationSpeed: isLowEndDevice ? 50 : 100,
+                animationSpeed: isMobile ? mobileAnimationSpeed : (isLowEndDevice ? 50 : 100),
                 parallaxIntensity: isMobile ? 0 : 100,
                 batterySaver: false
             },
             accessibility: {
-                reducedMotion: prefersReducedMotion || isLowEndDevice,
+                reducedMotion: prefersReducedMotion || isLowEndDevice || isMobile,
                 smoothScrolling: true,
                 highContrast: false,
                 focusVisible: true,
@@ -1248,7 +1249,7 @@ function resetAllSettings() {
             },
             misc: {
                 autoplayMusic: false,
-                screenShake: true,
+                screenShake: !isMobile,
                 typewriterSpeed: 100,
                 debugMode: false
             }
@@ -1460,7 +1461,7 @@ function createFloatingEmojis() {
         if (!container) return;
 
         const emojiCount = isMobile ?
-            (currentTheme === 'jojos' ? 20 : 15) :
+            (currentTheme === 'jojos' ? 8 : 6) :
             (currentTheme === 'jojos' ? 15 : 10);
 
         for (let i = 0; i < emojiCount; i++) {
@@ -1598,13 +1599,14 @@ function optimizeForMobile() {
     document.addEventListener('touchmove', () => { }, passiveOptions);
     document.addEventListener('touchend', () => { }, passiveOptions);
 
-    settings.performance.showFloatingElements = true;
-    settings.performance.showParticles = true;
-    settings.performance.showCodeSnippets = true;
-    settings.performance.showGeometricShapes = true;
     settings.performance.parallaxIntensity = 0;
+    settings.misc.screenShake = false;
 
-    updateFloatingElementsVisibility();
+    if (settings.accessibility.reducedMotion || settings.performance.batterySaver) {
+        disableHeavyAnimations();
+    } else {
+        updateFloatingElementsVisibility();
+    }
 }
 
 function hideLoadingScreen() {
