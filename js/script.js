@@ -122,7 +122,7 @@ function initializeApp() {
 }
 
 function handleWindowLoad() {
-    const loadingDelay = isMobile ? 1200 : 4500;
+    const loadingDelay = isMobile ? 650 : 1900;
     setTimeout(() => {
         isLoadingComplete = true;
         hideLoadingScreen();
@@ -1617,7 +1617,7 @@ function hideLoadingScreen() {
             if (elements.loadingScreen.parentNode) {
                 elements.loadingScreen.parentNode.removeChild(elements.loadingScreen);
             }
-        }, 1000);
+        }, 450);
     }
 }
 
@@ -1916,20 +1916,46 @@ function closeMobileMenu() {
 function initBackToTop() {
     if (!elements.backToTop) return;
 
-    window.addEventListener('scroll', throttle(() => {
-        if (window.pageYOffset > 300) {
-            elements.backToTop.classList.add('show');
-        } else {
-            elements.backToTop.classList.remove('show');
+    const buttonIcon = elements.backToTop.querySelector('.back-to-top-icon');
+    const getScrollMetrics = () => {
+        const current = window.pageYOffset || document.documentElement.scrollTop || 0;
+        const max = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+        const progress = max > 0 ? current / max : 0;
+        return { current, max, progress };
+    };
+
+    const updateScrollButtonState = () => {
+        const { current, max, progress } = getScrollMetrics();
+        const isVisible = current > 300 && max > 0;
+        const shouldGoUp = progress >= 0.5;
+        const buttonLabel = shouldGoUp ? 'Back to top' : 'Go to bottom';
+
+        elements.backToTop.classList.toggle('show', isVisible);
+        elements.backToTop.dataset.direction = shouldGoUp ? 'up' : 'down';
+        elements.backToTop.setAttribute('title', buttonLabel);
+        elements.backToTop.setAttribute('aria-label', buttonLabel);
+
+        if (buttonIcon) {
+            buttonIcon.textContent = shouldGoUp ? '↑' : '↓';
         }
-    }, 100), { passive: true });
+    };
+
+    const throttledButtonUpdate = throttle(updateScrollButtonState, 100);
+    window.addEventListener('scroll', throttledButtonUpdate, { passive: true });
+    window.addEventListener('resize', throttledButtonUpdate, { passive: true });
 
     elements.backToTop.addEventListener('click', () => {
+        const { max, progress } = getScrollMetrics();
+        if (max <= 0) return;
+        const shouldGoUp = progress >= 0.5;
+
         window.scrollTo({
-            top: 0,
+            top: shouldGoUp ? 0 : max,
             behavior: 'smooth'
         });
     });
+
+    updateScrollButtonState();
 }
 
 function initThemeSystem() {
