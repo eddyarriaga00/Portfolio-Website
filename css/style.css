@@ -7830,3 +7830,89 @@ body.layout-revamp .back-to-top[data-direction="down"]:active .back-to-top-icon 
         flex: 1 1 100%;
     }
 }
+
+/* ============================================================
+   MOBILE TIMELINE EMOJI GUTTER FIX (HIGHEST PRIORITY)
+   ============================================================ */
+@media (max-width: 767px) {
+    body.layout-revamp .timeline {
+        padding-left: 0;
+    }
+
+    body.layout-revamp .timeline-item {
+        position: relative;
+        padding-left: 2.85rem;
+        margin-bottom: 0.85rem;
+    }
+
+    body.layout-revamp .timeline-line {
+        left: 1.2rem;
+    }
+
+    body.layout-revamp .timeline-dot {
+        left: 1.2rem;
+        transform: translate(-50%, 14px);
+    }
+
+    body.layout-revamp .timeline-icon,
+    body.layout-revamp .timeline-item:nth-child(even) .timeline-icon {
+        left: 1.2rem;
+        right: auto;
+        top: 0.95rem;
+        transform: translate(-50%, 0);
+        width: 1.9rem;
+        height: 1.9rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem !important;
+        line-height: 1;
+        background: rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        border-radius: 999px;
+        z-index: 6;
+        pointer-events: none;
+    }
+
+    body.layout-revamp .timeline-content,
+    body.layout-revamp .timeline-item:nth-child(even) .timeline-content {
+        margin: 0;
+        width: 100%;
+        padding: 0.92rem 0.88rem 0.9rem 0.95rem;
+    }
+
+    body.layout-revamp .timeline-title {
+        line-height: 1.25;
+    }
+
+    body.layout-revamp .timeline-company {
+        line-height: 1.45;
+    }
+
+    body.layout-revamp .timeline-list {
+        gap: 0.42rem;
+    }
+
+    body.layout-revamp .timeline-list li {
+        line-height: 1.55;
+    }
+}
+
+@media (max-width: 480px) {
+    body.layout-revamp .timeline-item {
+        padding-left: 2.65rem;
+    }
+
+    body.layout-revamp .timeline-line,
+    body.layout-revamp .timeline-dot,
+    body.layout-revamp .timeline-icon {
+        left: 1.08rem;
+    }
+
+    body.layout-revamp .timeline-icon,
+    body.layout-revamp .timeline-item:nth-child(even) .timeline-icon {
+        width: 1.8rem;
+        height: 1.8rem;
+        font-size: 0.95rem !important;
+    }
+}
