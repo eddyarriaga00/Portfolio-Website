@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Eddy Arriaga-Barrientos, Apple Technical Specialist and software developer in Greensboro, NC. Explore selected web apps and technical projects.">
-  <meta name="theme-color" content="#171815">
+  <meta name="theme-color" content="#080d1a">
   <meta property="og:title" content="Eddy Arriaga-Barrientos · Portfolio">
   <meta property="og:description" content="Selected software projects and technical support experience.">
   <meta property="og:url" content="https://eddyarriaga00.github.io/Portfolio-Website/">
@@ -37,10 +37,26 @@
           <a class="button" href="https://github.com/eddyarriaga00">GitHub <span aria-hidden="true">↗</span></a>
         </div>
       </div>
-      <a class="galaxy" href="https://eddyarriaga00.github.io/particle-mirror/" aria-label="Explore Pocket Galaxy, an interactive map of my GitHub work">
-        <img src="img/galaxy.webp" alt="" width="1100" height="810" fetchpriority="high">
-        <span class="galaxy-caption"><span><small>Interactive project</small><strong>Pocket Galaxy</strong><span>Explore my GitHub in 3D</span></span><b aria-hidden="true">↗</b></span>
-      </a>
+      <div class="showcase">
+        <div class="switcher" hidden role="group" aria-label="Choose project preview">
+          <button type="button" aria-pressed="true" data-preview="galaxy">Galaxy</button>
+          <button type="button" aria-pressed="false" data-preview="atlas">Atlas</button>
+          <button type="button" aria-pressed="false" data-preview="basketball">Basketball</button>
+        </div>
+        <div class="scene" aria-live="polite">
+          <img src="img/galaxy.webp" alt="" width="1100" height="810" fetchpriority="high">
+          <div class="scene-caption">
+            <h2>Pocket Galaxy</h2>
+            <p>A 3D star map of my projects and commits.</p>
+            <button class="button primary launch" type="button" hidden>Try it here ↗</button>
+            <a class="standalone" href="https://eddyarriaga00.github.io/particle-mirror/">Open project ↗</a>
+          </div>
+        </div>
+      </div>
+      <dialog class="demo-dialog" aria-labelledby="demo-title">
+        <div class="demo-bar"><h2 id="demo-title">Project preview</h2><button type="button" class="button close-demo">Close ✕</button></div>
+        <div class="demo-frame"></div>
+      </dialog>
     </section>
 
     <section id="projects" class="work" aria-labelledby="work-title">
