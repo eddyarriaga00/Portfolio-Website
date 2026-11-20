@@ -1,965 +1,178 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-    <title>Eddy Arriaga-Barrientos | Technical Specialist</title>
-    <meta name="description"
-        content="Portfolio of Eddy Arriaga-Barrientos, Technical Specialist at Apple and Computer Science student at UNCG.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload"
-        href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap"
-        as="style" fetchpriority="high" media="(max-width: 768px)">
-    <link rel="preload" href="https://cdn.tailwindcss.com" as="script" fetchpriority="high"
-        media="(max-width: 768px)" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap"
-        rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="css/style.css">
-
-    
-    <meta name="theme-color" content="#000000">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-    
-    <link rel="preload" href="css/style.css" as="style" fetchpriority="high">
-    <link rel="preload" href="js/script.js" as="script" fetchpriority="high">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Eddy Arriaga-Barrientos, Apple Technical Specialist and software developer in Greensboro, NC. Explore selected web apps and technical projects.">
+  <meta name="theme-color" content="#171815">
+  <meta property="og:title" content="Eddy Arriaga-Barrientos · Portfolio">
+  <meta property="og:description" content="Selected software projects and technical support experience.">
+  <meta property="og:url" content="https://eddyarriaga00.github.io/Portfolio-Website/">
+  <title>Eddy Arriaga-Barrientos · Portfolio</title>
+  <link rel="canonical" href="https://eddyarriaga00.github.io/Portfolio-Website/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/script.js" defer></script>
 </head>
-
-<body id="top" data-theme="default" class="font-inter overflow-x-hidden layout-revamp">
-    
-    <div class="mobile-touch-indicator"></div>
-
-    
-    <div class="custom-cursor"></div>
-    <div class="cursor-follower"></div>
-
-    
-    <audio id="audioPlayer" preload="metadata" playsinline class="hidden"></audio>
-
-    
-    <div id="loadingScreen" class="loading-screen">
-        <div class="loading-container">
-            <div class="loading-logo">EA</div>
-            <div class="loading-text">INITIALIZING</div>
-            <div class="loading-progress">
-                <div class="loading-bar"></div>
-            </div>
-        </div>
-        <div class="loading-dots">
-            <div class="loading-dot"></div>
-            <div class="loading-dot"></div>
-            <div class="loading-dot"></div>
-            <div class="loading-dot"></div>
-            <div class="loading-dot"></div>
-        </div>
-    </div>
-
-    
-    <nav id="navbar" class="nav-bar" aria-label="Primary">
-        <div class="nav-container">
-            <a href="#top" class="logo-container" aria-label="Back to top">
-                <span class="logo-text">EA</span>
-            </a>
-            <ul class="nav-links">
-                <li><a href="#about" class="nav-link">About</a></li>
-                <li><a href="#skills" class="nav-link">Skills</a></li>
-                <li><a href="#projects" class="nav-link">Projects</a></li>
-                <li><a href="#experience" class="nav-link">Experience</a></li>
-                <li><a href="#contact" class="nav-link">Contact</a></li>
-            </ul>
-
-            
-            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle mobile menu"
-                aria-controls="mobileMenu" aria-expanded="false">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
-
-        
-        <div class="mobile-menu" id="mobileMenu" aria-hidden="true" tabindex="-1">
-            <ul class="mobile-nav-links">
-                <li><a href="#about" class="mobile-nav-link">About</a></li>
-                <li><a href="#skills" class="mobile-nav-link">Skills</a></li>
-                <li><a href="#projects" class="mobile-nav-link">Projects</a></li>
-                <li><a href="#experience" class="mobile-nav-link">Experience</a></li>
-                <li><a href="#contact" class="mobile-nav-link">Contact</a></li>
-            </ul>
-        </div>
+<body id="top">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="wrap site-header">
+    <a class="brand" href="#top"><span aria-hidden="true">E<span class="accent">.</span></span> <span>Eddy Arriaga</span></a>
+    <nav aria-label="Main navigation">
+      <a href="#projects">Work</a>
+      <a href="#experience">Experience</a>
+      <a href="#contact">Contact <span aria-hidden="true">↗</span></a>
     </nav>
-
-    
-    <section class="hero-section">
-        <div class="floating-elements">
-            <div class="floating-code floating-element">console.log('hello');</div>
-            <div class="floating-code floating-element">function() { }</div>
-            <div class="floating-code floating-element">&lt;div className="app"&gt;</div>
-            <div class="floating-code floating-element">const data = [];</div>
-            <div class="floating-code floating-element">return &lt;Component /&gt;</div>
-            <div class="floating-code floating-element">npm install react</div>
-            <div class="floating-code floating-element">git commit -m "update"</div>
-            <div class="floating-code floating-element">async/await</div>
-            <div class="geometric-shape shape-1 floating-element"></div>
-            <div class="geometric-shape shape-2 floating-element"></div>
-            <div class="geometric-shape shape-3 floating-element"></div>
-            <div class="geometric-shape shape-4 floating-element"></div>
+  </header>
+  <main id="main">
+    <section class="wrap hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="signal"></span> Greensboro, NC</p>
+        <h1 id="hero-title">Eddy Arriaga<span class="accent">.</span></h1>
+        <p class="hero-lede">I build web apps and help people solve tough technical problems.</p>
+        <div class="links">
+          <a class="button primary" href="#projects">Explore my work <span aria-hidden="true">↓</span></a>
+          <a class="button" href="https://github.com/eddyarriaga00">GitHub <span aria-hidden="true">↗</span></a>
         </div>
-        <div class="hero-content">
-            <h1 class="hero-title">
-                Eddy <span class="name-spacing"></span> Arriaga-Barrientos
-            </h1>
-            <p class="hero-subtitle">Technical Specialist @ Apple | Computer Science Student @ UNCG</p>
-            <a href="#about" class="hero-cta">
-                <span class="cta-shimmer"></span>
-                <span class="relative">Explore My Work</span>
-            </a>
-            <div class="hero-meta">
-                <div class="tech-stack-row">
-                    <span class="tech-stack-label">Featured Tech Stack</span>
-                    <div class="tech-stack-tags">
-                        <span class="tech-tag">React</span>
-                        <span class="tech-tag">JavaScript</span>
-                        <span class="tech-tag">Node.js</span>
-                        <span class="tech-tag">Tailwind CSS</span>
-                        <span class="tech-tag">Firebase</span>
-                    </div>
-                </div>
-                <div class="hero-socials" aria-label="Social links">
-                    <a href="mailto:eddyarriaga06@gmail.com" class="hero-social-link">Email</a>
-                    <a href="https://github.com/eddyarriaga00" class="hero-social-link" target="_blank"
-                        rel="noopener noreferrer">GitHub</a>
-                    <a href="https://www.linkedin.com/in/eddy-arriaga/" class="hero-social-link" target="_blank"
-                        rel="noopener noreferrer">LinkedIn</a>
-                </div>
-            </div>
-        </div>
+      </div>
+      <aside class="profile" aria-label="Profile">
+        <p class="eyebrow">Technical support</p>
+        <p>Technical Specialist<br><span>Apple</span></p>
+        <p class="eyebrow">Education</p>
+        <p>Computer Science<br><span>UNC Greensboro</span></p>
+      </aside>
     </section>
 
-    
-    <section id="about" class="about-section">
-        <div class="floating-tech-icon tech-1 floating-element">&lt;/&gt;</div>
-        <div class="floating-tech-icon tech-2 floating-element">{ }</div>
-        <div class="floating-tech-icon tech-3 floating-element">[ ]</div>
-        <div class="floating-tech-icon tech-4 floating-element">( )</div>
-        <div class="floating-tech-icon tech-5 floating-element">===</div>
-        <div class="floating-tech-icon tech-6 floating-element">!=</div>
-        <div class="section-container">
-            <h2 class="section-title animate-on-scroll">
-                About Me
-                <span class="section-decorator">{ }</span>
-            </h2>
-            <div class="about-content">
-                <div class="about-text animate-on-scroll">
-                    <h3>I build things with code</h3>
-                    <p>I'm a senior Computer Science student at UNCG and a Technical Specialist at Apple, focused on
-                        solving problems with thoughtful software and human-centered support. Based in Greensboro, NC,
-                        I hold an Associate of Science degree and bring strong customer support, communication, and
-                        technical skills to every project.</p>
-
-                    <h3>My belief</h3>
-                    <p>I'm bilingual in English and Spanish and open to volunteering in Education, Science, and
-                        Technology initiatives. I enjoy building practical, reliable experiences that make people's
-                        lives easier.</p>
-                </div>
-
-                <div class="stats-grid animate-on-scroll">
-                    <div class="stat-item">
-                        <div class="stat-icon">🚀</div>
-                        <span class="stat-number" data-target="2">0</span>
-                        <span class="stat-label">Years of Coding</span>
-                        <div class="stat-description">Always learning...</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-icon">💻</div>
-                        <span class="stat-number" data-target="12">0</span>
-                        <span class="stat-label">Projects Built</span>
-                        <div class="stat-description">Attempts on Attempts</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-icon">⚡</div>
-                        <span class="stat-number" data-target="4">0</span>
-                        <span class="stat-label">Tech Stacks</span>
-                        <div class="stat-description">Learning always...</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-icon">🔥</div>
-                        <span class="stat-number">∞</span>
-                        <span class="stat-label">Lines of Code</span>
-                        <div class="stat-description">Endless possibilities</div>
-                    </div>
-                </div>
+    <section id="projects" class="work" aria-labelledby="work-title">
+      <div class="wrap">
+        <header class="section-header">
+          <h2 id="work-title">Selected work<span class="accent">.</span></h2>
+          <a class="text-link" href="https://github.com/eddyarriaga00?tab=repositories">All repositories <span aria-hidden="true">↗</span></a>
+        </header>
+        <div class="project-grid">
+          <article class="project featured">
+            <div class="project-copy">
+              <p class="eyebrow">Sports data</p>
+              <h3>NBA &amp; NFL Tracker</h3>
+              <p>Follow live scores and dig into box scores, team standings, and player leaders in one place.</p>
+              <p class="stack">React / Vite</p>
+              <div class="links">
+                <a class="button primary" href="https://eddyarriaga00.github.io/NBA-Tracker-STATS-APP/">Live demo<span aria-hidden="true">↗</span><span class="sr-only"> of NBA &amp; NFL Tracker</span></a>
+                <a class="text-link" href="https://github.com/eddyarriaga00/NBA-Tracker-STATS-APP">Source<span class="sr-only"> for NBA &amp; NFL Tracker</span> <span aria-hidden="true">↗</span></a>
+              </div>
             </div>
+            <div class="project-media sports"><img src="img/sports.jpg" width="1200" height="780" alt="The NBA tracker dashboard with its scoreboard and navigation"></div>
+          </article>
+          <article class="project">
+            <div class="project-media atlas"><img src="img/atlas.jpg" width="1200" height="780" loading="lazy" alt="The CS Course Atlas home page and course navigation"></div>
+            <div class="project-copy">
+              <p class="eyebrow">Computer science education</p>
+              <h3>CS Course Atlas</h3>
+              <p>An interactive computer science guide with in-browser practice, from first steps in Python to algorithms, databases, and networks.</p>
+              <div class="links">
+                <a class="text-link" href="https://eddyarriaga00.github.io/CS-Course-Atlas/">Live demo<span class="sr-only"> of CS Course Atlas</span> <span aria-hidden="true">↗</span></a>
+                <a class="text-link" href="https://github.com/eddyarriaga00/CS-Course-Atlas">Source<span class="sr-only"> for CS Course Atlas</span> <span aria-hidden="true">↗</span></a>
+              </div>
+            </div>
+          </article>
+          <article class="project">
+            <div class="project-media basketball"><img src="img/basketball.jpg" width="1200" height="780" loading="lazy" alt="Pocket Basketball’s main menu with career and quick game modes"></div>
+            <div class="project-copy">
+              <p class="eyebrow">Browser game</p>
+              <h3>Pocket Basketball</h3>
+              <p>A portrait-mode 5-on-5 game for phones, with a 3D arena and a career that starts on draft night.</p>
+              <div class="links">
+                <a class="text-link" href="https://eddyarriaga00.github.io/pocket-basketball/">Play Pocket Basketball <span aria-hidden="true">↗</span></a>
+                <a class="text-link" href="https://github.com/eddyarriaga00/pocket-basketball">Source<span class="sr-only"> for Pocket Basketball</span> <span aria-hidden="true">↗</span></a>
+              </div>
+            </div>
+          </article>
+          <article class="project compact">
+            <div class="project-copy">
+              <p class="eyebrow">Support automation</p>
+              <h3>IT Triage API</h3>
+              <p>A FastAPI service that sorts help desk tickets by urgency and category and suggests first troubleshooting steps.</p>
+              <a class="text-link" href="https://github.com/eddyarriaga00/IT-Triage-APi">View source <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+          <article class="project compact">
+            <div class="project-copy">
+              <p class="eyebrow">Media discovery</p>
+              <h3>AniTrack</h3>
+              <p>Browse anime, check what’s airing, and track your episodes with MyAnimeList sync.</p>
+              <div class="links">
+                <a class="text-link" href="https://eddyarriaga00.github.io/anitrack/">Live demo<span class="sr-only"> of AniTrack</span> <span aria-hidden="true">↗</span></a>
+                <a class="text-link" href="https://github.com/eddyarriaga00/anitrack">Source<span class="sr-only"> for AniTrack</span> <span aria-hidden="true">↗</span></a>
+              </div>
+            </div>
+          </article>
         </div>
+      </div>
     </section>
 
-    
-    <section id="skills" class="skills-section">
-        <div class="floating-symbols symbol-1 floating-element">;</div>
-        <div class="floating-symbols symbol-2 floating-element">=&gt;</div>
-        <div class="floating-symbols symbol-3 floating-element">&&</div>
-        <div class="floating-symbols symbol-4 floating-element">||</div>
-        <div class="floating-symbols symbol-5 floating-element">++</div>
-        <div class="floating-symbols symbol-6 floating-element">--</div>
-        <div class="floating-symbols symbol-7 floating-element">??</div>
-        <div class="section-container">
-            <h2 class="section-title animate-on-scroll">
-                Technical Skills
-                <span class="section-decorator">{ }</span>
-            </h2>
-            <div class="skills-grid">
-                <div class="skill-card animate-on-scroll" data-skill="frontend">
-                    <span class="skill-shimmer"></span>
-                    <span class="skill-icon">💻</span>
-                    <h3 class="skill-title">Frontend Development</h3>
-                    <p class="skill-desc">React, JavaScript, HTML, CSS, and responsive UI</p>
-                    <div class="skill-progress-container">
-                        <div class="skill-progress frontend"></div>
-                    </div>
-                </div>
-                <div class="skill-card animate-on-scroll" data-skill="backend">
-                    <span class="skill-shimmer"></span>
-                    <span class="skill-icon">⚙️</span>
-                    <h3 class="skill-title">Backend Development</h3>
-                    <p class="skill-desc">Java, Node.js, Python, database design, API development</p>
-                    <div class="skill-progress-container">
-                        <div class="skill-progress backend"></div>
-                    </div>
-                </div>
-                <div class="skill-card animate-on-scroll" data-skill="tools">
-                    <span class="skill-shimmer"></span>
-                    <span class="skill-icon">🛠️</span>
-                    <h3 class="skill-title">Development Tools</h3>
-                    <p class="skill-desc">Git, VS Code, Linux, Docker, and workflow automation</p>
-                    <div class="skill-progress-container">
-                        <div class="skill-progress tools"></div>
-                    </div>
-                </div>
-                <div class="skill-card animate-on-scroll" data-skill="mobile">
-                    <span class="skill-shimmer"></span>
-                    <span class="skill-icon">📱</span>
-                    <h3 class="skill-title">Mobile Development</h3>
-                    <p class="skill-desc">React Native, mobile-first UI, and app UX</p>
-                    <div class="skill-progress-container">
-                        <div class="skill-progress mobile"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="skills-highlight animate-on-scroll">
-                <div class="skills-highlight-title">Top Skills</div>
-                <div class="skills-highlight-tags">
-                    <span class="tech-tag">Spanish Translation</span>
-                    <span class="tech-tag">Customer Support</span>
-                    <span class="tech-tag">Java</span>
-                    <span class="tech-tag">JavaScript</span>
-                    <span class="tech-tag">HTML</span>
-                </div>
-            </div>
-            <div class="skills-credentials animate-on-scroll">
-                <div class="skills-credentials-title">Certifications</div>
-                <div class="skills-credentials-tags">
-                    <span class="tech-tag" title="Credential ID: 4ZMP3RRMLT6N">Google: Foundations of Cybersecurity</span>
-                    <span class="tech-tag" title="Credential ID: 3Q2JRWPYDTHB">Google: Play It Safe: Manage Security Risks</span>
-                </div>
-            </div>
-        </div>
+    <section id="experience" class="wrap experience" aria-labelledby="experience-title">
+      <div>
+        <h2 id="experience-title">Experience<span class="accent">.</span></h2>
+        <p>I’m Eddy Arriaga-Barrientos, based in Greensboro and bilingual in English and Spanish. Working directly with customers has taught me to explain technical choices clearly and build with the person using the software in mind.</p>
+      </div>
+      <div class="roles">
+        <article>
+          <p class="eyebrow">Apple · Since Oct 2025</p>
+          <h3>Technical Specialist</h3>
+          <p>I troubleshoot hardware, software, and connectivity issues and help customers understand their repair options.</p>
+        </article>
+        <article>
+          <p class="eyebrow">University of North Carolina at Greensboro</p>
+          <h3>B.S. Computer Science</h3>
+          <p>Chancellor’s List (Fall 2024) and Alpha Lambda Delta Honor Society.</p>
+        </article>
+        <article>
+          <p class="eyebrow">North Carolina State University · 2024</p>
+          <h3>Cybersecurity Intro Bootcamp</h3>
+          <p>Studied network defense, incident response, and secure development fundamentals.</p>
+        </article>
+        <details>
+          <summary>Earlier roles</summary>
+          <ul>
+            <li>Specialist, Apple (2024–2025)</li>
+            <li>Remote Market Research Interviewer, Global Data Collection Company (2024)</li>
+            <li>Spanish Translator, LanguageLine Solutions (2024)</li>
+            <li>Customer Service Representative &amp; Construction Assistant, Phillips Drywall (2021–2024)</li>
+          </ul>
+        </details>
+      </div>
     </section>
 
-    
-    <section id="projects" class="projects-section">
-        <div class="section-container">
-            <h2 class="section-title animate-on-scroll">
-                Featured Projects
-                <span class="section-decorator">{ }</span>
-            </h2>
-            <div class="projects-grid">
-                <div class="project-card animate-on-scroll">
-                    <div class="project-image">
-                        <div class="project-mockup">
-                            <div class="mockup-header"></div>
-                            <div class="mockup-dots">● ● ●</div>
-                            <div class="project-code-preview">
-                                <pre><code class="language-java">
-&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-&lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-    &lt;title&gt;Java DSA Learning Site - Master Data Structures &amp; Algorithms&lt;/title&gt;
-    &lt;meta name="description" content="Complete Java Data Structures &amp; Algorithms learning platform with interactive examples, quizzes, and flashcards"&gt;
-    &lt;link rel="stylesheet" href="styles.css"&gt;
-    &lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;
-&lt;/head&gt;
-
-</code></pre>
-                            </div>
-                        </div>
-                        <div class="project-overlay"></div>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Java-DSA-Helper</h3>
-                        <p class="project-desc">From beginner to intermediate to advanced, covers all topics of CSC230 and more 
-                        </p>
-                        <div class="project-tech">
-                            <span class="tech-tag">Java</span>
-                            <span class="tech-tag">Swing</span>
-                            <span class="tech-tag">AES Encryption</span>
-                            <span class="tech-tag">DSA</span>
-
-                        </div>
-                        <a href="#" class="project-link">View Project →</a>
-                    </div>
-                </div>
-
-                <div class="project-card animate-on-scroll">
-                    <div class="project-image">
-                        <div class="project-mockup">
-                            <div class="mockup-header"></div>
-                            <div class="mockup-dots">● ● ●</div>
-                            <div class="project-code-preview">
-                                <pre><code class="language-jsx">
-    &lt;!-- Preload critical resources --&gt;
-    &lt;link rel="preload" href="css/style.css" as="style"&gt;
-    &lt;link rel="preload" href="js/script.js" as="script"&gt;
-&lt;/head&gt;
-
-&lt;body data-theme="default" class="font-inter overflow-x-hidden"&gt;
-    &lt;!-- Mobile Touch Indicator --&gt;
-    &lt;div class="mobile-touch-indicator"&gt;&lt;/div&gt;
-
-    &lt;!-- Custom Cursors (Now mobile-enabled) --&gt;
-
-</code></pre>
-                            </div>
-                        </div>
-                        <div class="project-overlay"></div>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Portfolio-Website</h3>
-                        <p class="project-desc">This exact sleek modern portfolio website you see.</p>
-                        <div class="project-tech">
-                            <span class="tech-tag">HTML</span>
-                            <span class="tech-tag">Tailwind CSS</span>
-                            <span class="tech-tag">JavaScript</span>
-                            <span class="tech-tag">Audio API</span>
-                        </div>
-                        <a href="#" class="project-link">View Project →</a>
-                    </div>
-                </div>
-
-                <div class="project-card animate-on-scroll">
-                    <div class="project-image">
-                        <div class="project-mockup">
-                            <div class="mockup-header"></div>
-                            <div class="mockup-dots">● ● ●</div>
-                            <div class="project-code-preview">
-                                <pre><code class="language-js">
-const [stats, setStats] = useState([]);
-
-useEffect(() => {
-    fetchNBAData().then(setStats);
-}, []);
-</code></pre>
-                            </div>
-                        </div>
-                        <div class="project-overlay"></div>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">NBA-Tracker-STATS-APP</h3>
-                        <p class="project-desc">A clean, mobile-first NBA game tracker that displays live scores, scheduled games, and top player stats.</p>
-                        <div class="project-tech">
-                            <span class="tech-tag">React Native</span>
-                            <span class="tech-tag">Firebase</span>
-                            <span class="tech-tag">Redux</span>
-                        </div>
-                        <a href="#" class="project-link">View Project →</a>
-                    </div>
-                </div>
-            </div>
+    <section id="contact" class="contact" aria-labelledby="contact-title">
+      <div class="wrap contact-inner">
+        <h2 id="contact-title">Let’s talk<span aria-hidden="true">.</span></h2>
+        <div>
+          <a class="email" href="mailto:eddyarriaga06@gmail.com">eddyarriaga06@gmail.com <span aria-hidden="true">↗</span></a>
+          <div class="links">
+            <a class="text-link" href="https://www.linkedin.com/in/eddy-arriaga/">LinkedIn <span aria-hidden="true">↗</span></a>
+            <a class="text-link" href="https://github.com/eddyarriaga00">GitHub <span aria-hidden="true">↗</span></a>
+          </div>
         </div>
+      </div>
     </section>
-
-    
-    <section id="experience" class="experience-section">
-        <div class="section-container">
-            <h2 class="section-title animate-on-scroll">
-                Experience &amp; Education
-                <span class="section-decorator">{ }</span>
-            </h2>
-            <div class="timeline">
-                <div class="timeline-line"></div>
-                <div class="timeline-item animate-on-scroll">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-icon">🍎</div>
-                    <div class="timeline-content">
-                        <div class="timeline-date">Oct 2025 - Present</div>
-                        <h3 class="timeline-title">Technical Specialist</h3>
-                        <div class="timeline-company">Apple · Part-time · On-site · Greensboro, NC</div>
-                        <ul class="timeline-list">
-                            <li>Diagnose and resolve hardware, software, and connectivity issues across Apple devices</li>
-                            <li>Educate customers on device features, repairs, and AppleCare coverage options</li>
-                            <li>Collaborate with team members to keep service fast and consistent</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="timeline-item animate-on-scroll">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-icon">🍎</div>
-                    <div class="timeline-content">
-                        <div class="timeline-date">Sep 2025 - Oct 2025</div>
-                        <h3 class="timeline-title">Specialist</h3>
-                        <div class="timeline-company">Apple · Part-time · Greensboro, NC</div>
-                        <ul class="timeline-list">
-                            <li>Assisted customers with iPhones, iPads, Macs, and accessories through tailored recommendations</li>
-                            <li>Completed ongoing Apple training to stay current on features and updates</li>
-                            <li>Built strong customer relationships through clear, proactive communication</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="timeline-item animate-on-scroll">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-icon">🤝</div>
-                    <div class="timeline-content">
-                        <div class="timeline-date">Feb 2025 - Present</div>
-                        <h3 class="timeline-title">Member</h3>
-                        <div class="timeline-company">Alpha Lambda Delta Honor Society</div>
-                        <ul class="timeline-list">
-                            <li>Active member supporting academic excellence and campus leadership initiatives</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="timeline-item animate-on-scroll">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-icon">🍎</div>
-                    <div class="timeline-content">
-                        <div class="timeline-date">Nov 2024 - Feb 2025</div>
-                        <h3 class="timeline-title">Specialist</h3>
-                        <div class="timeline-company">Apple · Part-time · Greensboro, NC</div>
-                        <ul class="timeline-list">
-                            <li>Helped customers choose the right Apple products with needs-based guidance</li>
-                            <li>Stayed current on Apple training and product updates</li>
-                            <li>Strengthened customer relationships through active listening and problem-solving</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="timeline-item animate-on-scroll">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-icon">🎓</div>
-                    <div class="timeline-content">
-                        <div class="timeline-date">Aug 2024 - May 2026</div>
-                        <h3 class="timeline-title">B.S. Computer Science</h3>
-                        <div class="timeline-company">University of North Carolina at Greensboro</div>
-                        <ul class="timeline-list">
-                            <li>Senior standing · Chancellor’s List (Fall 2024)</li>
-                            <li>Activities: Alpha Lambda Delta, Collegiate Entrepreneurship Organization</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="timeline-item animate-on-scroll">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-icon">📊</div>
-                    <div class="timeline-content">
-                        <div class="timeline-date">Jul 2024 - Aug 2024</div>
-                        <h3 class="timeline-title">Remote Market Research Interviewer</h3>
-                        <div class="timeline-company">Global Data Collection Company · Part-time · Remote</div>
-                        <ul class="timeline-list">
-                            <li>Conducted phone interviews to gather accurate survey data</li>
-                            <li>Used computer-assisted interviewing tools for efficient collection</li>
-                            <li>Provided feedback on survey scripts and procedures</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="timeline-item animate-on-scroll">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-icon">🛡️</div>
-                    <div class="timeline-content">
-                        <div class="timeline-date">Jun 2024 - Jul 2024</div>
-                        <h3 class="timeline-title">Cybersecurity Intro Bootcamp</h3>
-                        <div class="timeline-company">North Carolina State University</div>
-                        <ul class="timeline-list">
-                            <li>Covered security fundamentals, network defense, SSDLC, and incident response</li>
-                            <li>Completed hands-on labs in phishing simulations, system hardening, and data protection</li>
-                            <li>Earned a 98% final grade</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="timeline-item animate-on-scroll">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-icon">🌐</div>
-                    <div class="timeline-content">
-                        <div class="timeline-date">May 2024 - Jun 2024</div>
-                        <h3 class="timeline-title">Spanish Translator</h3>
-                        <div class="timeline-company">LanguageLine Solutions · Part-time · Remote</div>
-                        <ul class="timeline-list">
-                            <li>Delivered accurate, culturally appropriate translations across medical, legal, and service settings</li>
-                            <li>Facilitated clear communication between Spanish and English speakers</li>
-                            <li>Maintained confidentiality and handled sensitive information with discretion</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="timeline-item animate-on-scroll">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-icon">🧱</div>
-                    <div class="timeline-content">
-                        <div class="timeline-date">Jun 2021 - May 2024</div>
-                        <h3 class="timeline-title">Customer Service Representative &amp; Construction Assistant</h3>
-                        <div class="timeline-company">Phillips Drywall · Part-time · Lancaster, PA</div>
-                        <ul class="timeline-list">
-                            <li>Worked on drywall projects, measurements, and finishing with precise material application</li>
-                            <li>Managed client communication, contracts, invoices, and project documentation</li>
-                            <li>Coordinated inbound/outbound calls and scheduling with a focus on customer care</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    
-    <section id="contact" class="contact-section">
-        <div class="floating-contact-icons contact-1 floating-element">📧</div>
-        <div class="floating-contact-icons contact-2 floating-element">💬</div>
-        <div class="floating-contact-icons contact-3 floating-element">🔗</div>
-        <div class="floating-contact-icons contact-4 floating-element">💼</div>
-        <div class="floating-contact-icons contact-5 floating-element">📱</div>
-        <div class="section-container">
-            <h2 class="section-title animate-on-scroll">
-                Let's Connect
-                <span class="section-decorator">{ }</span>
-            </h2>
-            <div class="contact-content">
-                <div class="contact-terminal">$ contact --interactive</div>
-                <p class="contact-text animate-on-scroll">
-                    I'm always interested in new opportunities and collaborations.
-                    Whether you're looking for a developer, have a project in mind,
-                    or just want to connect, I'd love to hear from you.
-                </p>
-                <div class="contact-links animate-on-scroll">
-                    <a href="mailto:eddyarriaga06@gmail.com" class="contact-link">
-                        <span class="contact-fill"></span>
-                        <span class="relative">Email Me</span>
-                    </a>
-                    <a href="https://github.com/eddyarriaga00" class="contact-link" target="_blank"
-                        rel="noopener noreferrer">
-                        <span class="contact-fill"></span>
-                        <span class="relative">GitHub</span>
-                    </a>
-                    <a href="https://www.linkedin.com/in/eddy-arriaga/" class="contact-link" target="_blank"
-                        rel="noopener noreferrer">
-                        <span class="contact-fill"></span>
-                        <span class="relative">LinkedIn</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    
-    <footer class="footer">
-        <p class="footer-text">© 2024 Eddy Arriaga-Barrientos. All rights reserved.</p>
-
-        
-        <button class="back-to-top" id="backToTop" title="Back to top" aria-label="Back to top">
-            <div class="back-to-top-icon">↑</div>
-        </button>
-    </footer>
-
-    
-    <div class="settings-panel">
-        <button class="settings-button" id="settingsBtn" aria-label="Open settings" aria-controls="settingsMenu"
-            aria-expanded="false">⚙️</button>
-        <div class="settings-menu" id="settingsMenu" aria-hidden="true">
-            <div class="settings-scroll-container">
-                
-                <div class="settings-main-menu" id="settingsMainMenu">
-                    <div class="settings-header">
-                        <h3 class="settings-main-title">Settings</h3>
-                        <button class="mobile-close-btn" id="settingsCloseBtn" aria-label="Close settings">×</button>
-                    </div>
-                    <div class="settings-categories">
-                        <div class="settings-category" data-section="mouse">
-                            <div class="category-icon">🖱️</div>
-                            <div class="category-info">
-                                <div class="category-title">Mouse Customization</div>
-                                <div class="category-desc">Cursor size, opacity, and behavior</div>
-                            </div>
-                            <div class="category-arrow">→</div>
-                        </div>
-                        <div class="settings-category" data-section="theme">
-                            <div class="category-icon">🎨</div>
-                            <div class="category-info">
-                                <div class="category-title">Theme Customization</div>
-                                <div class="category-desc">Colors, themes, and appearance</div>
-                            </div>
-                            <div class="category-arrow">→</div>
-                        </div>
-                        <div class="settings-category" data-section="music">
-                            <div class="category-icon">🎵</div>
-                            <div class="category-info">
-                                <div class="category-title">Music Player</div>
-                                <div class="category-desc">Audio controls and playlist</div>
-                            </div>
-                            <div class="category-arrow">→</div>
-                        </div>
-                        <div class="settings-category" data-section="misc">
-                            <div class="category-icon">⚙️</div>
-                            <div class="category-info">
-                                <div class="category-title">Misc.</div>
-                                <div class="category-desc">Animations, effects, and preferences</div>
-                            </div>
-                            <div class="category-arrow">→</div>
-                        </div>
-                    </div>
-                </div>
-
-                
-                <div class="settings-section-view" id="mouseSection">
-                    <div class="settings-header">
-                        <button class="settings-back-btn" data-back="main" aria-label="Back to main menu">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
-                            </svg>
-                        </button>
-                        <h3 class="settings-section-title">Mouse Customization</h3>
-                    </div>
-                    <div class="settings-content">
-                        <div class="setting-group">
-                            <label class="setting-label">
-                                <span class="setting-name">Enable Custom Cursor</span>
-                                <span class="setting-desc">Show custom cursor (works on mobile)</span>
-                            </label>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="cursorEnabled" checked>
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-
-                        <div class="setting-group">
-                            <label class="setting-label">
-                                <span class="setting-name">Cursor Size</span>
-                                <span class="setting-desc">Adjust the size of the custom cursor</span>
-                            </label>
-                            <div class="setting-control">
-                                <input type="range" min="8" max="32" value="12" class="setting-slider" id="cursorSize">
-                                <span class="setting-value" id="cursorSizeValue">12px</span>
-                            </div>
-                        </div>
-
-                        <div class="setting-group">
-                            <label class="setting-label">
-                                <span class="setting-name">Cursor Opacity</span>
-                                <span class="setting-desc">Adjust cursor transparency</span>
-                            </label>
-                            <div class="setting-control">
-                                <input type="range" min="20" max="100" value="100" class="setting-slider"
-                                    id="cursorOpacity">
-                                <span class="setting-value" id="cursorOpacityValue">100%</span>
-                            </div>
-                        </div>
-
-                        <div class="setting-group">
-                            <label class="setting-label">
-                                <span class="setting-name">Follower Size</span>
-                                <span class="setting-desc">Size of the cursor follower</span>
-                            </label>
-                            <div class="setting-control">
-                                <input type="range" min="20" max="60" value="36" class="setting-slider"
-                                    id="followerSize">
-                                <span class="setting-value" id="followerSizeValue">36px</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                
-                <div class="settings-section-view" id="themeSection">
-                    <div class="settings-header">
-                        <button class="settings-back-btn" data-back="main" aria-label="Back to main menu">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
-                            </svg>
-                        </button>
-                        <h3 class="settings-section-title">Theme Customization</h3>
-                    </div>
-                    <div class="settings-content">
-                        <div class="setting-group">
-                            <label class="setting-label">
-                                <span class="setting-name">Choose Theme</span>
-                                <span class="setting-desc">Select from preset themes</span>
-                            </label>
-                        </div>
-                        <div class="theme-grid">
-                            <div class="theme-option active" data-theme="default">
-                                <div class="theme-preview default-preview"></div>
-                                Default
-                            </div>
-                            <div class="theme-option" data-theme="jojos">
-                                <div class="theme-preview jojos-preview"></div>
-                                🎀 J's Theme 🎀
-                            </div>
-                            <div class="theme-option" data-theme="discord">
-                                <div class="theme-preview discord-preview"></div>
-                                Discord
-                            </div>
-                            <div class="theme-option" data-theme="spotify">
-                                <div class="theme-preview spotify-preview"></div>
-                                Spotify
-                            </div>
-                            <div class="theme-option" data-theme="vscode">
-                                <div class="theme-preview vscode-preview"></div>
-                                VS Code
-                            </div>
-                            <div class="theme-option" data-theme="ocean">
-                                <div class="theme-preview ocean-preview"></div>
-                                Ocean
-                            </div>
-                        </div>
-
-                        
-                        <div class="custom-theme-section">
-                            <h4 class="custom-theme-title">Create Custom Theme</h4>
-                            <div class="color-pickers">
-                                <div class="color-picker-group">
-                                    <label for="primaryColor">Primary Color</label>
-                                    <input type="color" id="primaryColor" value="#000000" class="color-input">
-                                </div>
-                                <div class="color-picker-group">
-                                    <label for="accentColor">Accent Color</label>
-                                    <input type="color" id="accentColor" value="#ffffff" class="color-input">
-                                </div>
-                            </div>
-                            <button class="apply-custom-theme" id="applyCustomTheme">Apply Custom Theme</button>
-                        </div>
-                    </div>
-                </div>
-
-                
-                <div class="settings-section-view" id="musicSection">
-                    <div class="settings-header">
-                        <button class="settings-back-btn" data-back="main" aria-label="Back to main menu">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
-                            </svg>
-                        </button>
-                        <h3 class="settings-section-title">Music Player</h3>
-                    </div>
-                    <div class="settings-content">
-                        <div class="music-player">
-                            <div id="audioError" class="audio-error hidden">
-                                Music files not found. Make sure to add your audio files to the /music folder or reload the page and try again.
-                            </div>
-
-                            <div class="player-info">
-                                <div class="track-info">
-                                    <div class="track-title" id="currentTrackTitle">Select a track</div>
-                                    <div class="track-artist" id="currentTrackArtist">Click a song to play</div>
-                                </div>
-
-                                <div class="player-controls">
-                                    <button class="control-btn" id="prevBtn" aria-label="Previous track">
-                                        <span class="control-shimmer"></span>
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z" />
-                                        </svg>
-                                    </button>
-                                    <button class="control-btn play-pause-btn" id="playPauseBtn"
-                                        aria-label="Play/Pause">
-                                        <span class="control-shimmer"></span>
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"
-                                            class="play-icon">
-                                            <path d="m7 4 10 8L7 20V4z" />
-                                        </svg>
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"
-                                            class="pause-icon hidden">
-                                            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-                                        </svg>
-                                    </button>
-                                    <button class="control-btn" id="nextBtn" aria-label="Next track">
-                                        <span class="control-shimmer"></span>
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M16 18h2V6h-2v12zM6 18l8.5-6L6 6v12z" />
-                                        </svg>
-                                    </button>
-                                </div>
-
-                                <div class="progress-section">
-                                    <div class="progress-bar" id="progressBar">
-                                        <div class="progress-fill" id="progressFill"></div>
-                                        <div class="progress-handle"></div>
-                                    </div>
-                                    <div class="time-display">
-                                        <span id="currentTime">0:00</span>
-                                        <span id="duration">0:00</span>
-                                    </div>
-                                </div>
-
-                                <div class="volume-section">
-                                    <div class="volume-icon-container">
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"
-                                            class="volume-icon-svg">
-                                            <path
-                                                d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
-                                        </svg>
-                                    </div>
-                                    <div class="volume-slider-container" id="volumeSliderContainer">
-                                        <input type="range" min="0" max="100" value="70" class="volume-slider"
-                                            id="volumeSlider">
-                                        <div class="volume-slider-track">
-                                            <div class="volume-slider-fill" id="volumeSliderFill"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="playlist-section">
-                                <div class="playlist-header">
-                                    <span class="playlist-icon">🎵</span>
-                                    <span>Playlist</span>
-                                </div>
-                                <ul class="playlist" id="playlist">
-                                    <li class="playlist-item" data-index="0">
-                                        <div class="track-number">1</div>
-                                        <div class="track-details">
-                                            <div class="playlist-track-title">Say Slatt Say Ski</div>
-                                            <div class="playlist-track-artist">Lucki</div>
-                                        </div>
-                                        <div class="track-duration">3:09</div>
-                                    </li>
-                                    <li class="playlist-item" data-index="1">
-                                        <div class="track-number">2</div>
-                                        <div class="track-details">
-                                            <div class="playlist-track-title">Limerence</div>
-                                            <div class="playlist-track-artist">Lucki</div>
-                                        </div>
-                                        <div class="track-duration">2:46</div>
-                                    </li>
-                                    <li class="playlist-item" data-index="2">
-                                        <div class="track-number">3</div>
-                                        <div class="track-details">
-                                            <div class="playlist-track-title">Go Hard 2.0</div>
-                                            <div class="playlist-track-artist">Juice WRLD</div>
-                                        </div>
-                                        <div class="track-duration">3:34</div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                
-                <div class="settings-section-view" id="miscSection">
-                    <div class="settings-header">
-                        <button class="settings-back-btn" data-back="main" aria-label="Back to main menu">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
-                            </svg>
-                        </button>
-                        <h3 class="settings-section-title">Misc.</h3>
-                    </div>
-                    <div class="settings-content">
-                        <div class="setting-group">
-                            <label class="setting-label">
-                                <span class="setting-name">Reduced Motion</span>
-                                <span class="setting-desc">Disable heavy animations for better performance</span>
-                            </label>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="reducedMotion">
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-
-                        <div class="setting-group">
-                            <label class="setting-label">
-                                <span class="setting-name">Auto-play Music</span>
-                                <span class="setting-desc">Automatically start music when page loads</span>
-                            </label>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="autoplayMusic">
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-
-                        <div class="setting-group">
-                            <label class="setting-label">
-                                <span class="setting-name">Show Floating Elements</span>
-                                <span class="setting-desc">Display animated code snippets and shapes</span>
-                            </label>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="showFloatingElements" checked>
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-
-                        <div class="setting-group">
-                            <label class="setting-label">
-                                <span class="setting-name">Background Particles</span>
-                                <span class="setting-desc">Show floating particles in background</span>
-                            </label>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="showParticles" checked>
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-
-                        <div class="setting-group">
-                            <label class="setting-label">
-                                <span class="setting-name">Code Snippets Animation</span>
-                                <span class="setting-desc">Enable floating code elements</span>
-                            </label>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="showCodeSnippets" checked>
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-
-                        <div class="setting-group">
-                            <label class="setting-label">
-                                <span class="setting-name">Geometric Shapes</span>
-                                <span class="setting-desc">Display animated geometric elements</span>
-                            </label>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="showGeometricShapes" checked>
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-
-                        <div class="setting-group">
-                            <label class="setting-label">
-                                <span class="setting-name">Animation Speed</span>
-                                <span class="setting-desc">Control speed of all animations</span>
-                            </label>
-                            <div class="setting-control">
-                                <input type="range" min="50" max="200" value="100" class="setting-slider"
-                                    id="animationSpeed">
-                                <span class="setting-value" id="animationSpeedValue">100%</span>
-                            </div>
-                        </div>
-
-
-                        <div class="setting-group">
-                            <button class="reset-settings-btn" id="resetSettings">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                                    <path
-                                        d="M12 6v3l4-4-4-4v3c-4.42 0-8 3.58-8 8 0 1.57.46 3.03 1.24 4.26L6.7 14.8c-.45-.83-.7-1.79-.7-2.8 0-3.31 2.69-6 6-6zm6.76 1.74L17.3 9.2c.44.84.7 1.79.7 2.8 0 3.31-2.69 6-6 6v-3l-4 4 4 4v-3c4.42 0 8-3.58 8-8 0-1.57-.46-3.03-1.24-4.26z" />
-                                </svg>
-                                Reset All Settings
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="js/script.js"></script>
+  </main>
+  <footer class="wrap footer">
+    <a href="#top">Back to top <span aria-hidden="true">↑</span></a>
+    <details class="music">
+      <summary>Music</summary>
+      <div class="music-controls">
+        <label for="track">Track</label>
+        <select id="track">
+          <option value="music/sayslattsayskiLucki.mp3">Say Slatt Say Ski — LUCKI</option>
+          <option value="music/limerenceLucki.mp3">Limerence — LUCKI</option>
+          <option value="music/gohardJuiceWRLD.mp3">Go Hard — Juice WRLD</option>
+        </select>
+        <audio controls preload="none" src="music/sayslattsayskiLucki.mp3" aria-label="Portfolio music player"></audio>
+      </div>
+    </details>
+    <span>© Eddy Arriaga-Barrientos</span>
+  </footer>
 </body>
-
 </html>
