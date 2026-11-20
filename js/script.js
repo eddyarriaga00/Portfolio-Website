@@ -11,3 +11,23 @@ track.addEventListener('change', () => {
         });
     }
 });
+
+const filters = document.querySelector('.filters');
+const projects = document.querySelectorAll('[data-category]');
+filters.hidden = false;
+filters.addEventListener('click', event => {
+    const selected = event.target.closest('button[data-filter]');
+    if (!selected) return;
+
+    for (const button of filters.querySelectorAll('button')) {
+        button.setAttribute('aria-pressed', String(button === selected));
+    }
+    let count = 0;
+    for (const project of projects) {
+        project.hidden = selected.dataset.filter !== 'all' &&
+            project.dataset.category !== selected.dataset.filter;
+        if (!project.hidden) count++;
+    }
+    document.querySelector('#filter-status').textContent =
+        count + (count === 1 ? ' project shown' : ' projects shown');
+});
